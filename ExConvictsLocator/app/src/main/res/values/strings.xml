@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Lokator bivših osuđenika</string>
+    <string name="hint_email">Email*</string>
+    <string name="hint_password">Lozinka*</string>
+    <string name="btn_login">Uloguj se</string>
+    <string name="btn_register">Registruj se</string>
+    <string name="firstName">Ime</string>
+    <string name="lastName">Prezime</string>
+    <string name="email">Email</string>
+    <string name="password">Lozinka</string>
+    <string name="confirm_password">Potvrda lozinke</string>
+</resources>
