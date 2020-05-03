@@ -9,4 +9,10 @@
     <string name="email">Email</string>
     <string name="password">Lozinka</string>
     <string name="confirm_password">Potvrda lozinke</string>
+    <string name="drawerOpen">drawerOpen</string>
+    <string name="drawerClose">drawerClose</string>
+    <string name="profile">Profil</string>
+    <string name="settings">Podešavanja</string>
+    <string name="convicts_list">Lista osuđenika</string>
+    <string name="logout">Odjavi se</string>
 </resources>

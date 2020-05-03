@@ -3,4 +3,10 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#14ccc4</color>
+    
+    <color name="color_1">#14CCC4</color> <!-- Medium Turquoise -->
+    <color name="color_2">#DDFFF7</color> <!-- Light Cyan -->
+    <color name="color_3">#2e748e</color>
+    <color name="color_4">#EAC435</color>
+    <color name="color_5">#FFFFFF</color> <!-- White -->
 </resources>
