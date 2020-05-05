@@ -3,6 +3,7 @@ package com.android.exconvictslocator;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -45,16 +46,16 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.profile:
-                Toast.makeText(MainActivity.this, "Izabran profil", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Izabran profil", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.settings:
-                Toast.makeText(MainActivity.this, "Izabrana podešavanja", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Izabrana podešavanja", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.convicts_list:
-                Toast.makeText(MainActivity.this, "Izabrana lista osuđenika", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Izabrana lista osuđenika", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.logout:
-                Toast.makeText(MainActivity.this, "Izabrana odjava", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Izabrana odjava", Toast.LENGTH_SHORT).show();
                 break;
         }
         return false;
@@ -74,7 +75,12 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                 startActivity(i);
                 break;
             case R.id.settings:
-                Toast.makeText(MainActivity.this, "Izabrana podešavanja", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Izabrana podešavanja", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Podešavanja");
+                builder.setMessage("Izabrana podešavanja");
+                AlertDialog dialog = builder.create();
+                dialog.show();
                 break;
         }
         return true;
