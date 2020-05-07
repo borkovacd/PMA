@@ -54,10 +54,14 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                 startActivity(i2);
                 break;
             case R.id.convicts_list:
-                //Toast.makeText(MainActivity.this, "Izabrana lista osuđenika", Toast.LENGTH_SHORT).show();
+                // ovde sam stavila prijavu nove lokacije za isprobavanje
+                Intent i3 = new Intent(MainActivity.this, UpdateLocationActivity.class);
+                startActivity(i3);
                 break;
             case R.id.logout:
-                //Toast.makeText(MainActivity.this, "Izabrana odjava", Toast.LENGTH_SHORT).show();
+                // ovde sam stavila detalje o osudjeniku za isprobavanje
+                Intent i4 = new Intent(MainActivity.this, ExConvictDetailsActivity.class);
+                startActivity(i4);
                 break;
         }
         return false;
