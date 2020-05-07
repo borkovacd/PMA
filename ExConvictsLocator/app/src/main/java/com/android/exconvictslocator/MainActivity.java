@@ -46,10 +46,12 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.profile:
-                //Toast.makeText(MainActivity.this, "Izabran profil", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(MainActivity.this, UserProfileActivity.class);
+                startActivity(i);
                 break;
             case R.id.settings:
-                //Toast.makeText(MainActivity.this, "Izabrana podešavanja", Toast.LENGTH_SHORT).show();
+                Intent i2 = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(i2);
                 break;
             case R.id.convicts_list:
                 //Toast.makeText(MainActivity.this, "Izabrana lista osuđenika", Toast.LENGTH_SHORT).show();
@@ -75,12 +77,8 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                 startActivity(i);
                 break;
             case R.id.settings:
-                //Toast.makeText(MainActivity.this, "Izabrana podešavanja", Toast.LENGTH_SHORT).show();
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Podešavanja");
-                builder.setMessage("Izabrana podešavanja");
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                Intent i2 = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(i2);
                 break;
         }
         return true;
