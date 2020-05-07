@@ -48,10 +48,7 @@
     <string name="da">DA</string>
     <string name="ne">NE</string>
     <string name="defini_ite_interval_automatske_sinhronizacije">Definišite interval automatske sinhronizacije</string>
-    <string name="potvrdi">Potvrdi</string>
     <string name="defini_ite_radijus_udaljenosti_od_lokacije_gde_je_vi_en_osu_enik_za_koji_elite_da_primate_obave_tenja">Definišite radijus udaljenosti od lokacije gde je viđen osuđenik za koji želite da primate obaveštenja</string>
-    <string name="ne">NE</string>
-    <string name="da">DA</string>
     <string name="omogu_i_pra_enje_lokacije">Omogući praćenje lokacije</string>
     <string name="ukoliko_su_obave_tenja_omogu_ena_dobija_ete_notifikaciju_svaki_put_kada_se_na_ete_u_neposrednoj_blizini_na_kojoj_je_nedavno_vi_en_biv_i_osu_enik">Ukoliko su obaveštenja omogućena, dobijaćete notifikaciju svaki put kada se nađete u neposrednoj blizini na kojoj je nedavno viđen bivši osuđenik</string>
     <string name="omogu_i_obave_tenja">Omogući obaveštenja</string>
