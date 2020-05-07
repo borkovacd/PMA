@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_obavestenja"
+        android:layout_width="222dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/omogu_i_obave_tenja"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Switch
+        android:id="@+id/switchObavestenja"
+        android:layout_width="47dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="116dp"
+        android:layout_marginRight="116dp"
+        android:textOff="@string/ne"
+        android:textOn="@string/da"
+        android:layout_toRightOf="@id/tv_obavestenja"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtObavestenja"
+        android:layout_width="393dp"
+        android:layout_height="82dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="48dp"
+        android:text="@string/ukoliko_su_obave_tenja_omogu_ena_dobija_ete_notifikaciju_svaki_put_kada_se_na_ete_u_neposrednoj_blizini_na_kojoj_je_nedavno_vi_en_biv_i_osu_enik"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.888"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_lokacija"
+        android:layout_width="218dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="144dp"
+        android:text="@string/omogu_i_pra_enje_lokacije"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Switch
+        android:id="@+id/switchLokacija"
+        android:layout_width="47dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="152dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginRight="120dp"
+        android:layout_toRightOf="@id/tv_lokacija"
+        android:layout_alignStart="@id/switchObavestenja"
+        android:layout_alignLeft="@id/switchObavestenja"
+        android:textOff="@string/ne"
+        android:textOn="@string/da"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_radijus"
+        android:layout_width="390dp"
+        android:layout_height="82dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="200dp"
+        android:text="@string/defini_ite_radijus_udaljenosti_od_lokacije_gde_je_vi_en_osu_enik_za_koji_elite_da_primate_obave_tenja"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinnerRadijus"
+        android:layout_width="151dp"
+        android:layout_height="38dp"
+        android:layout_below="@id/tv_radijus"
+        android:background="@android:drawable/btn_dropdown"
+        android:layout_alignRight="@id/tv_radijus"
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:id="@+id/tv_sinhronizacija"
+        android:layout_width="395dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="324dp"
+        android:text="@string/defini_ite_interval_automatske_sinhronizacije"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinnerSinhronizacija"
+        android:layout_width="151dp"
+        android:layout_height="38dp"
+        android:layout_below="@id/tv_sinhronizacija"
+        android:layout_alignLeft="@id/spinnerRadijus"
+        android:layout_alignStart="@id/spinnerRadijus"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown" />
+
+    <Button
+        android:id="@+id/btn_register"
+        android:background="@drawable/button_rectangle_blue"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinnerSinhronizacija"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="@string/potvrdi"
+        android:textColor="@android:color/white"
+        android:textSize="25sp"/>
+
+
+</RelativeLayout>
