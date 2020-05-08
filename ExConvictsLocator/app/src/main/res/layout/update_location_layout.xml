@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_user"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/user_2" />
+
+    <EditText
+        android:id="@+id/et_ImePrezime"
+        android:background="#F0F3F2"
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/iv_user"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/tv_ImePrezime"
+        android:textColor="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_user"
+        android:layout_alignStart="@id/et_ImePrezime"
+        android:layout_alignLeft="@id/et_ImePrezime"
+        android:layout_marginTop="20dp"
+        android:text="Ime i prezime"
+        android:textSize="14sp"/>
+
+    <EditText
+        android:id="@+id/et_Nadimak"
+        android:background="#F0F3F2"
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/et_ImePrezime"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/tv_Nadimak"
+        android:textColor="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_ImePrezime"
+        android:layout_alignStart="@id/et_Nadimak"
+        android:layout_alignLeft="@id/et_Nadimak"
+        android:layout_marginTop="20dp"
+        android:text="Nadimak/pseudonim"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/tv_PrijaviNovuLokaciju"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_Nadimak"
+        android:layout_alignStart="@id/et_Nadimak"
+        android:layout_alignLeft="@id/et_Nadimak"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="29dp"
+        android:text="Prijavi novu lokaciju"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/et_PrijaviNovuLokaciju"
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:layout_below="@id/tv_PrijaviNovuLokaciju"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="7dp"
+        android:autofillHints="Unesite lokaciju"
+        android:background="#F0F3F2"
+        android:drawableRight="@drawable/ic_action_name"
+        android:ems="10"
+        android:hint="Unesite lokaciju"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/tv_Komentar"
+        android:textColor="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_PrijaviNovuLokaciju"
+        android:layout_alignStart="@id/et_PrijaviNovuLokaciju"
+        android:layout_alignLeft="@id/et_PrijaviNovuLokaciju"
+        android:layout_marginTop="20dp"
+        android:text="Komentar"
+        android:textSize="14sp"/>
+
+    <EditText
+        android:id="@+id/MLKomentar"
+        android:layout_width="248dp"
+        android:layout_height="85dp"
+        android:layout_below="@id/tv_Komentar"
+        android:layout_alignStart="@id/tv_Komentar"
+        android:layout_alignLeft="@id/tv_Komentar"
+        android:layout_alignRight="@id/et_PrijaviNovuLokaciju"
+        android:background="#F0F3F2"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:shadowColor="@color/color_5" />
+
+    <Button
+        android:id="@+id/btn_prijavi"
+        android:background="@drawable/button_rectangle_blue"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/MLKomentar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="Prijavi"
+        android:textColor="@android:color/white"
+        android:textSize="25sp"/>
+
+
+</RelativeLayout>

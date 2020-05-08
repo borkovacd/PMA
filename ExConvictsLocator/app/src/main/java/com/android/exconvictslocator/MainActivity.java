@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -46,16 +47,26 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.profile:
-                //Toast.makeText(MainActivity.this, "Izabran profil", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(MainActivity.this, UserProfileActivity.class);
+                startActivity(i);
                 break;
             case R.id.settings:
-                //Toast.makeText(MainActivity.this, "Izabrana podešavanja", Toast.LENGTH_SHORT).show();
+                Intent i2 = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(i2);
                 break;
             case R.id.convicts_list:
-                //Toast.makeText(MainActivity.this, "Izabrana lista osuđenika", Toast.LENGTH_SHORT).show();
+                // ovde sam stavila prijavu nove lokacije za isprobavanje
+                Intent i3 = new Intent(MainActivity.this, UpdateLocationActivity.class);
+                startActivity(i3);
                 break;
             case R.id.logout:
-                //Toast.makeText(MainActivity.this, "Izabrana odjava", Toast.LENGTH_SHORT).show();
+                // ovde sam stavila detalje o osudjeniku za isprobavanje
+                Intent i4 = new Intent(MainActivity.this, ExConvictDetailsActivity.class);
+                startActivity(i4);
+                break;
+            case R.id.all_convicts_list:
+                Intent i5 = new Intent(MainActivity.this, ListOfExConvictes.class);
+                startActivity(i5);
                 break;
         }
         return false;
@@ -75,12 +86,8 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                 startActivity(i);
                 break;
             case R.id.settings:
-                //Toast.makeText(MainActivity.this, "Izabrana podešavanja", Toast.LENGTH_SHORT).show();
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Podešavanja");
-                builder.setMessage("Izabrana podešavanja");
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                Intent i2 = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(i2);
                 break;
         }
         return true;

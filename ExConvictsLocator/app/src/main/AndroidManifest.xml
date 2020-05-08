@@ -9,9 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".ListOfExConvictes"
+            android:label="@string/title_activity_list_of_ex_convictes"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".ExConvictDetailsActivity" />
+        <activity android:name=".UpdateLocationActivity" />
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".UserProfileActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_user"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="42dp"
+        app:srcCompat="@drawable/user_2" />
+
+    <EditText
+        android:id="@+id/et_firstName"
+        android:background="#F0F3F2"
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/iv_user"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/tv_firstName"
+        android:textColor="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_user"
+        android:layout_alignStart="@id/et_firstName"
+        android:layout_alignLeft="@id/et_firstName"
+        android:layout_marginTop="20dp"
+        android:text="@string/firstName"
+        android:textSize="14sp"/>
+
+    <EditText
+        android:id="@+id/et_lastName"
+        android:background="#F0F3F2"
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/et_firstName"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/tv_lastName"
+        android:textColor="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_firstName"
+        android:layout_alignStart="@id/et_lastName"
+        android:layout_alignLeft="@id/et_lastName"
+        android:layout_marginTop="20dp"
+        android:text="@string/lastName"
+        android:textSize="14sp"/>
+
+    <EditText
+        android:id="@+id/et_reg_password"
+        android:background="#F0F3F2"
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/et_lastName"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/tv_reg_password"
+        android:textColor="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_lastName"
+        android:layout_alignStart="@id/et_reg_password"
+        android:layout_alignLeft="@id/et_reg_password"
+        android:layout_marginTop="20dp"
+        android:text="@string/stara_lozinka"
+        android:textSize="14sp"/>
+
+    <EditText
+        android:id="@+id/et_reg_password_2"
+        android:background="#F0F3F2"
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/et_reg_password"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/tv_reg_password_2"
+        android:textColor="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_reg_password"
+        android:layout_alignStart="@id/et_reg_password_2"
+        android:layout_alignLeft="@id/et_reg_password_2"
+        android:layout_marginTop="20dp"
+        android:text="@string/nova_lozinka"
+        android:textSize="14sp"/>
+
+    <EditText
+        android:id="@+id/et_reg_password_3"
+        android:background="#F0F3F2"
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/et_reg_password_2"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/tv_reg_password_3"
+        android:textColor="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_reg_password_2"
+        android:layout_alignStart="@id/et_reg_password_3"
+        android:layout_alignLeft="@id/et_reg_password_3"
+        android:layout_marginTop="20dp"
+        android:text="@string/potvrdi_lozinku"
+        android:textSize="14sp"/>
+
+    <Button
+        android:id="@+id/btn_save"
+        android:background="@drawable/button_rectangle_blue"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_reg_password_3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="@string/sa_uvaj"
+        android:textColor="@android:color/white"
+        android:textSize="25sp"/>
+
+
+</RelativeLayout>
