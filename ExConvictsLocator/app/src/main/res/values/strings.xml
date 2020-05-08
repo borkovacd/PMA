@@ -68,6 +68,10 @@
 
     <string name="tab_map">Mapa</string>
     <string name="tab_list">Lista</string>
-<string name="title_activity_list_of_ex_convictes">Lista osuđenika</string>
+    <string name="title_activity_list_of_ex_convictes">Lista osuđenika</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment1">Hello blank maps</string>
+    <string name="hello_blank_fragment2">Hello blank list</string>
 
 </resources>
