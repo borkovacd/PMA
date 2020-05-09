@@ -1,20 +1,16 @@
 package com.android.exconvictslocator;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -65,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                 startActivity(i4);
                 break;
             case R.id.all_convicts_list:
-                Intent i5 = new Intent(MainActivity.this, ListOfExConvictes.class);
+                Intent i5 = new Intent(MainActivity.this, ListOfExConvicts.class);
                 startActivity(i5);
                 break;
         }

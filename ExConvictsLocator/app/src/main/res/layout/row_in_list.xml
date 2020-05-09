@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:background="@drawable/background_1"
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp">
+<ImageView
+    android:layout_width="140dp"
+    android:layout_height="170dp"
+    android:layout_marginTop="25dp"
+    android:layout_margin="15dp"
+    android:id="@+id/convict_image"
+    android:src="@mipmap/ic_launcher"
+    ></ImageView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+<TextView
+    android:id="@+id/convict_name"
+    android:textColor="@android:color/white"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Ime i prezime"
+    android:textStyle="bold"
+    android:textSize="20dp"
+    android:layout_margin="5dp"
+    ></TextView>
+        <LinearLayout
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:text="Krivicno delo"
+            android:layout_margin="5dp"
+            ></TextView>
+            <TextView
+                android:id="@+id/convict_crime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:text="silovanje"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                ></TextView>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Poslednji put viđen na lokaciji:"
+                android:textColor="@android:color/white"
+                android:layout_margin="5dp"
+                ></TextView>
+            <TextView
+                android:id="@+id/convict_last_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Neka adresa"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"
+                ></TextView>
+        </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Detalji"
+            android:background="@drawable/button_rectangle_blue"
+            android:textColor="@android:color/white"
+            ></Button>
+    </LinearLayout>
+
+</LinearLayout>

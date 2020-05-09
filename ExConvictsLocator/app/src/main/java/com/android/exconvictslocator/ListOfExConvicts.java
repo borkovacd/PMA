@@ -9,7 +9,7 @@ import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
 
-public class ListOfExConvictes extends AppCompatActivity {
+public class ListOfExConvicts extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -18,7 +18,7 @@ public class ListOfExConvictes extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_of_ex_convictes);
+        setContentView(R.layout.activity_list_of_ex_convicts);
 
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabMap = (TabItem) findViewById(R.id.tabMap);
