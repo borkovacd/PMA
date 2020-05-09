@@ -77,5 +77,6 @@
     <string name="poslednji_put_vi_en_na_lokaciji">Poslednji put viđen na lokaciji:</string>
     <string name="detalji">Detalji</string>
     <string name="search">Pretražite...</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>

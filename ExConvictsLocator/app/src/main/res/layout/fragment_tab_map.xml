@@ -6,11 +6,24 @@
     android:background="@color/color_2"
 
     tools:context=".tabMap">
-
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
     <include
         layout="@layout/activity_search"
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
+    <com.google.android.gms.maps.MapView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_convicts_map">
+
+    </com.google.android.gms.maps.MapView>
+    </LinearLayout>
 </FrameLayout>
