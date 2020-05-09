@@ -5,13 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ListOfExConvictes"
+    android:background="@drawable/background_1"
+
+    tools:context=".ListOfExConvicts"
     >
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:tabTextColor="@color/design_default_color_background">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
