@@ -4,9 +4,10 @@
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="270dp"
     android:orientation="horizontal"
-    android:padding="16dp">
+    android:padding="16dp"
+    >
 <ImageView
     android:layout_width="140dp"
     android:layout_height="170dp"
@@ -24,7 +25,6 @@
     android:textColor="@android:color/white"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="Ime i prezime"
     android:textStyle="bold"
     android:textSize="20dp"
     android:layout_margin="5dp"
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
-            android:text="Krivicno delo"
+            android:text="@string/krivicno_delo"
             android:layout_margin="5dp"
             ></TextView>
             <TextView
@@ -46,7 +46,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
-                android:text="silovanje"
                 android:textStyle="bold"
                 android:layout_margin="5dp"
                 ></TextView>
@@ -58,7 +57,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Poslednji put viđen na lokaciji:"
+                android:text="@string/poslednji_put_vi_en_na_lokaciji"
                 android:textColor="@android:color/white"
                 android:layout_margin="5dp"
                 ></TextView>
@@ -66,7 +65,6 @@
                 android:id="@+id/convict_last_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Neka adresa"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
                 android:layout_marginLeft="5dp"
@@ -75,7 +73,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Detalji"
+            android:text="@string/detalji"
             android:background="@drawable/button_rectangle_blue"
             android:textColor="@android:color/white"
             ></Button>

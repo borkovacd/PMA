@@ -73,5 +73,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment1">Hello blank maps</string>
     <string name="hello_blank_fragment2">Hello blank list</string>
+    <string name="krivicno_delo">Krivično delo</string>
+    <string name="poslednji_put_vi_en_na_lokaciji">Poslednji put viđen na lokaciji:</string>
+    <string name="detalji">Detalji</string>
 
 </resources>
