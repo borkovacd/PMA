@@ -7,18 +7,29 @@
 
     tools:context=".tabList">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment2" />
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
 
-    <ListView
-        class="androidx.appcompat.app.AlertController$RecycleListView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/convicts_list_view">
+        <include
+            layout="@layout/activity_search"
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            />
+        <ListView
+            class="androidx.appcompat.app.AlertController$RecycleListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/convicts_list_view">
 
-    </ListView>
+        </ListView>
+    </LinearLayout>
+
 
 </FrameLayout>
