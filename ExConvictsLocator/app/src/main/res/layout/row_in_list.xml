@@ -76,6 +76,7 @@
             android:text="@string/detalji"
             android:background="@drawable/button_rectangle_blue"
             android:textColor="@android:color/white"
+           android:id="@+id/convict_details"
             ></Button>
     </LinearLayout>
 

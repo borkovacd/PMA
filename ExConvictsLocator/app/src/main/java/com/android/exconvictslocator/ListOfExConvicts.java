@@ -24,7 +24,6 @@ public class ListOfExConvicts extends AppCompatActivity {
         tabMap = (TabItem) findViewById(R.id.tabMap);
         tabList = (TabItem) findViewById(R.id.tabList);
         viewPager= findViewById(R.id.viewPager);
-        System.out.println(viewPager);
         pagerAdapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

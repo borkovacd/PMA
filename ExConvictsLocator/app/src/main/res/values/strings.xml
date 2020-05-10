@@ -78,5 +78,10 @@
     <string name="detalji">Detalji</string>
     <string name="search">Pretražite...</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_convict_locations_maps">Map</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pseudonim">Nadimak/ pseudonim:</string>
 
 </resources>

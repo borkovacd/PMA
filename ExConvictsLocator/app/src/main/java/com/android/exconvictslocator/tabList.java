@@ -1,16 +1,20 @@
 package com.android.exconvictslocator;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -76,6 +80,16 @@ public class tabList extends Fragment {
             TextView names = row.findViewById(R.id.convict_name);
             TextView crimes = row.findViewById(R.id.convict_crime);
             TextView locations = row.findViewById(R.id.convict_last_location);
+
+           Button allLocationsBtn = (Button) row.findViewById(R.id.convict_details);
+
+            allLocationsBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    openAllLocationsActivity();
+                }
+            });
+
             images.setImageResource(rImgs[position]);
             names.setText(rNames[position]);
             crimes.setText(rCrimes[position]);
@@ -83,5 +97,12 @@ public class tabList extends Fragment {
 
             return row;
         }
+    }
+
+    public void openAllLocationsActivity(){
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        ConvictLocationsMapsFragment fragment = new ConvictLocationsMapsFragment();
+        transaction.replace(R.id.tab_list_fragment, fragment);
+     transaction.commit();
     }
 }

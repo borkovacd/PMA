@@ -16,7 +16,6 @@ public class PageAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        System.out.println("CAO CAO "+ position);
        switch (position){
            case 0 : return  new tabMap();
            case 1 : return  new tabList();
