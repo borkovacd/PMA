@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,6 +36,22 @@ public class ConvictLocationsMapsFragment extends Fragment implements OnMapReady
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mview = inflater.inflate(R.layout.activity_convict_locations_maps, container, false);
+        Bundle bundle = this.getArguments();
+        String name = "";
+        String nickname ="";
+        int img = -1;
+
+        if(bundle != null) {
+            name = bundle.getString("name");
+            nickname = bundle.getString("nickname");
+            img = bundle.getInt("img");
+        }
+        TextView nameDetail = mview.findViewById(R.id.convict_details_name);
+        TextView nicknameDetail = mview.findViewById(R.id.convict_details_nickname);
+        ImageView imageDetail = mview.findViewById(R.id.convict_details_image);
+        nameDetail.setText(name);
+        nicknameDetail.setText(nickname);
+        imageDetail.setImageResource(img);
         return mview;
 
     }
