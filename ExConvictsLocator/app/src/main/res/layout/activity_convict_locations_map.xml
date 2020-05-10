@@ -9,5 +9,5 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:id="@+id/fragmentmaps"
-        ></androidx.fragment.app.FragmentContainerView>
+        tools:ignore="MissingConstraints"></androidx.fragment.app.FragmentContainerView>
 </androidx.constraintlayout.widget.ConstraintLayout>

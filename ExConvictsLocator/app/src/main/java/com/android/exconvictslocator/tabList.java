@@ -28,6 +28,7 @@ public class tabList extends Fragment {
     String convictsNames [] = {"Pera Perić", "Mika Mikić", "Žika Žikić"};
     String convictsCrimes [] = {"silovanje", "ubistvo", "ubistvo"};
     String convictsLocations [] = {"Bulevar oslobodjenja, Beograd", "Železnička stanica, Novi Sad", "Zeleni venac, Beograd"};
+    String convictsNicknames [] = {"---", "---", "/"};
 
     int convictsImages[] = {R.drawable.img1, R.drawable.img2, R.drawable.img3};
 
@@ -50,7 +51,7 @@ public class tabList extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         listView = getView().findViewById(R.id.convicts_list_view);
-        MyAdapter adapter = new MyAdapter(this.getActivity(), convictsNames, convictsCrimes, convictsImages,convictsLocations);
+        MyAdapter adapter = new MyAdapter(this.getActivity(), convictsNames, convictsCrimes, convictsImages,convictsLocations, convictsNicknames);
         listView.setAdapter(adapter);
     }
 
@@ -60,20 +61,22 @@ public class tabList extends Fragment {
         String rCrimes[];
         int rImgs[];
         String rLocations[];
+        String rNicknames[];
 
-        public MyAdapter(@NonNull Context context, String names[], String crimes[], int imgs[], String locations[] ) {
+        public MyAdapter(@NonNull Context context, String names[], String crimes[], int imgs[], String locations[],String nicknames[] ) {
             super(context, R.layout.row_in_list, R.id.convict_name, names);
             this.context = context;
             this.rCrimes = crimes;
             this.rNames = names;
             this.rImgs = imgs;
             this.rLocations= locations;
+            this.rNicknames= nicknames;
 
         }
 
         @NonNull
         @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             LayoutInflater layoutInflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View row = layoutInflater.inflate(R.layout.row_in_list, parent, false);
             ImageView images = row.findViewById(R.id.convict_image);
@@ -86,7 +89,7 @@ public class tabList extends Fragment {
             allLocationsBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    openAllLocationsActivity();
+                    openAllLocationsActivity(rNames[position], rNicknames[position], rImgs[position]);
                 }
             });
 
@@ -99,8 +102,13 @@ public class tabList extends Fragment {
         }
     }
 
-    public void openAllLocationsActivity(){
+    public void openAllLocationsActivity(String name , String nickname, int img){
         Intent intent = new Intent(getActivity(), ConvictLocationsMapActivity.class);
+        Bundle b = new Bundle();
+        b.putString("name", name);
+        b.putString("nickname", nickname);
+        b.putInt("image", img);
+        intent.putExtras(b);
         startActivity(intent);
     }
 }
