@@ -75,7 +75,15 @@
     <string name="hello_blank_fragment2">Hello blank list</string>
     <string name="krivicno_delo">Krivično delo</string>
     <string name="poslednji_put_vi_en_na_lokaciji">Poslednji put viđen na lokaciji:</string>
+    <string name="sacuvaj">Sačuvaj</string>
+
+    <string name="prijavi_novu_lokaciju">Prijavi novu lokaciju</string>
+    <string name="unesite_lokaciju">Unesite lokaciju</string>
+    <string name="komentar">Komentar</string>
+    <string name="ime_i_prezime">Ime i prezime</string>
+    <string name="nadimak_pseudonim">Nadimak/pseudonim</string>
     <string name="detalji">Detalji</string>
+
     <string name="search">Pretražite...</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_convict_locations_maps">Map</string>
@@ -83,5 +91,16 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="pseudonim">Nadimak/ pseudonim:</string>
+
+    <string name="adresa">Adresa</string>
+    <string name="g_ro_enja">G. rođenja</string>
+    <string name="fizi_ki_opis">Fizički opis</string>
+    <string name="poslednje_a_uriranje">Poslednje ažuriranje</string>
+    <string name="prijavi">Prijavi</string>
+    <string name="lokacije">Lokacije</string>
+    <string name="poslednja_lokacija">Poslednja lokacija</string>
+    <string name="krivi_no_delo">Krivično delo</string>
+    <string name="pol">Pol</string>
+
 
 </resources>
