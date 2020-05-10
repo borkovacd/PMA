@@ -100,9 +100,7 @@ public class tabList extends Fragment {
     }
 
     public void openAllLocationsActivity(){
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        ConvictLocationsMapsFragment fragment = new ConvictLocationsMapsFragment();
-        transaction.replace(R.id.tab_list_fragment, fragment);
-     transaction.commit();
+        Intent intent = new Intent(getActivity(), ConvictLocationsMapActivity.class);
+        startActivity(intent);
     }
 }
