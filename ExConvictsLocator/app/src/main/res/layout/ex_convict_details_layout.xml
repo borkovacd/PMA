@@ -9,7 +9,7 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/user_2" />
+        android:src="@drawable/img1" />
 
     <EditText
         android:id="@+id/et_ImePrezime"
@@ -31,7 +31,7 @@
         android:layout_alignStart="@id/et_ImePrezime"
         android:layout_alignLeft="@id/et_ImePrezime"
         android:layout_marginTop="20dp"
-        android:text="Ime i prezime"
+        android:text="@string/ime_i_prezime"
         android:textSize="14sp"/>
 
     <EditText
@@ -54,7 +54,7 @@
         android:layout_alignStart="@id/et_Nadimak"
         android:layout_alignLeft="@id/et_Nadimak"
         android:layout_marginTop="20dp"
-        android:text="Nadimak/pseudonim"
+        android:text="@string/nadimak_pseudonim"
         android:textSize="14sp"/>
 
     <TextView
@@ -67,7 +67,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="29dp"
-        android:text="Detalji"
+        android:text="@string/detalji"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -81,7 +81,7 @@
         android:layout_alignStart="@id/et_Nadimak"
         android:layout_alignLeft="@id/et_Nadimak"
         android:layout_marginTop="20dp"
-        android:text="Adresa"
+        android:text="@string/adresa"
         android:textSize="14sp"/>
 
     <EditText
@@ -109,7 +109,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="39dp"
-        android:text="Pol"
+        android:text="@string/pol"
         android:textColor="@android:color/white"
         android:textSize="14sp" />
 
@@ -125,7 +125,8 @@
         android:background="#F0F3F2"
         android:ems="10"
         android:inputType="textPersonName"
-        android:layout_marginStart="14dp" />
+        android:layout_marginStart="14dp"
+         />
 
     <TextView
         android:id="@+id/tv_GodinaRodjenja"
@@ -136,7 +137,7 @@
         android:layout_marginLeft="11dp"
         android:layout_marginTop="38dp"
         android:layout_toRightOf="@id/et_Pol"
-        android:text="G. rodjenja"
+        android:text="@string/g_ro_enja"
         android:textColor="@android:color/white"
         android:textSize="14sp" />
 
@@ -164,7 +165,7 @@
         android:layout_alignStart="@id/tv_Pol"
         android:layout_alignLeft="@id/tv_Pol"
         android:layout_marginTop="20dp"
-        android:text="Krivicno delo"
+        android:text="@string/krivi_no_delo"
         android:textSize="14sp"/>
 
     <EditText
@@ -194,7 +195,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginTop="27dp"
-        android:text="Fizicki opis"
+        android:text="@string/fizi_ki_opis"
         android:textColor="@android:color/white"
         android:textSize="14sp" />
 
@@ -222,7 +223,7 @@
         android:layout_alignStart="@id/tv_Opis"
         android:layout_alignLeft="@id/tv_Opis"
         android:layout_marginTop="20dp"
-        android:text="Poslednja lokacija"
+        android:text="@string/poslednja_lokacija"
         android:textColor="@android:color/white"
         android:textSize="14sp" />
 
@@ -253,7 +254,7 @@
         android:layout_alignStart="@id/tv_PoslednjaLokacija"
         android:layout_alignLeft="@id/tv_PoslednjaLokacija"
         android:layout_marginTop="20dp"
-        android:text="Poslednje azuriranje"
+        android:text="@string/poslednje_a_uriranje"
         android:textColor="@android:color/white"
         android:textSize="14sp" />
 
@@ -287,14 +288,14 @@
         android:layout_marginLeft="61dp"
         android:layout_marginTop="28dp"
         android:background="@drawable/button_rectangle_blue"
-        android:text="Prijavi"
+        android:text="@string/prijavi"
         android:textColor="@android:color/white"
         android:textSize="25sp" />
 
     <Button
         android:id="@+id/btn_sveLokacije"
         android:layout_width="wrap_content"
-        android:layout_height="37dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/tv_PoslednjeVreme"
         android:layout_alignTop="@id/btn_prijavi"
         android:layout_alignBottom="@id/btn_prijavi"
@@ -303,9 +304,10 @@
         android:layout_marginBottom="1dp"
         android:layout_toRightOf="@id/btn_prijavi"
         android:background="@drawable/button_rectangle_blue"
-        android:text="Lokacije"
+        android:text="@string/lokacije"
         android:textColor="@android:color/white"
-        android:textSize="25sp" />
+        android:textSize="25sp"
+        android:layout_marginStart="22dp" />
 
 
 </RelativeLayout>
