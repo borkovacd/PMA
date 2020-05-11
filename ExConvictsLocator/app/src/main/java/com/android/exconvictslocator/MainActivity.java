@@ -51,18 +51,13 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                 startActivity(i2);
                 break;
             case R.id.convicts_list:
-                // ovde sam stavila prijavu nove lokacije za isprobavanje
-                Intent i3 = new Intent(MainActivity.this, UpdateLocationActivity.class);
+                Intent i3 = new Intent(MainActivity.this, ListOfExConvicts.class);
                 startActivity(i3);
                 break;
             case R.id.logout:
                 // ovde sam stavila detalje o osudjeniku za isprobavanje
                 Intent i4 = new Intent(MainActivity.this, ExConvictDetailsActivity.class);
                 startActivity(i4);
-                break;
-            case R.id.all_convicts_list:
-                Intent i5 = new Intent(MainActivity.this, ListOfExConvicts.class);
-                startActivity(i5);
                 break;
         }
         return false;
@@ -80,10 +75,6 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             case R.id.login:
                 Intent i = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(i);
-                break;
-            case R.id.settings:
-                Intent i2 = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivity(i2);
                 break;
         }
         return true;

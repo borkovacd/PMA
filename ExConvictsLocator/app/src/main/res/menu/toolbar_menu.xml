@@ -4,12 +4,7 @@
     <item
         android:id="@+id/login"
         android:icon="@drawable/ic_login"
-        android:title="@string/btn_login"
+        android:title="Prijavi se"
         app:showAsAction="always"/>
-
-    <item
-        android:id="@+id/settings"
-        android:icon="@drawable/ic_settings"
-        android:title="@string/settings" />
 
 </menu>
