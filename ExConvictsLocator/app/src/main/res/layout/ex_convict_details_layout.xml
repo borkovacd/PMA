@@ -2,315 +2,212 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/background_1"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <include
+            layout="@layout/convict_details_resume_layout"
+            android:id="@+id/details_resume"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            />
 
-    <ImageView
-        android:id="@+id/iv_user"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/img1" />
 
-    <EditText
-        android:id="@+id/et_ImePrezime"
-        android:background="#F0F3F2"
-        android:layout_width="250dp"
-        android:layout_height="30dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/iv_user"
-        android:layout_marginTop="40dp"
-        android:ems="10"
-        android:inputType="textPersonName" />
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
     <TextView
-        android:id="@+id/tv_ImePrezime"
-        android:textColor="@android:color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/iv_user"
-        android:layout_alignStart="@id/et_ImePrezime"
-        android:layout_alignLeft="@id/et_ImePrezime"
-        android:layout_marginTop="20dp"
-        android:text="@string/ime_i_prezime"
-        android:textSize="14sp"/>
-
-    <EditText
-        android:id="@+id/et_Nadimak"
-        android:background="#F0F3F2"
-        android:layout_width="250dp"
-        android:layout_height="30dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/et_ImePrezime"
-        android:layout_marginTop="40dp"
-        android:ems="10"
-        android:inputType="textPersonName" />
-
-    <TextView
-        android:id="@+id/tv_Nadimak"
         android:textColor="@android:color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/et_ImePrezime"
-        android:layout_alignStart="@id/et_Nadimak"
-        android:layout_alignLeft="@id/et_Nadimak"
-        android:layout_marginTop="20dp"
-        android:text="@string/nadimak_pseudonim"
-        android:textSize="14sp"/>
-
-    <TextView
-        android:id="@+id/tv_Detalji"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/et_Nadimak"
-        android:layout_alignStart="@id/et_Nadimak"
-        android:layout_alignLeft="@id/et_Nadimak"
-        android:layout_marginStart="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="29dp"
-        android:text="@string/detalji"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/tv_Adresa"
-        android:textColor="@android:color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_Detalji"
-        android:layout_alignStart="@id/et_Nadimak"
-        android:layout_alignLeft="@id/et_Nadimak"
-        android:layout_marginTop="20dp"
         android:text="@string/adresa"
-        android:textSize="14sp"/>
-
-    <EditText
-        android:id="@+id/et_Adresa"
-        android:layout_width="250dp"
-        android:layout_height="30dp"
-        android:layout_below="@id/tv_Detalji"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="14dp"
-        android:layout_marginTop="21dp"
-        android:layout_toRightOf="@id/tv_Adresa"
-        android:background="#F0F3F2"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:layout_toEndOf="@id/tv_Adresa"
-        android:layout_marginStart="14dp" />
-
+        android:layout_margin="5dp"
+        ></TextView>
     <TextView
-        android:id="@+id/tv_Pol"
+        android:id="@+id/convict_details_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_Adresa"
-        android:layout_alignStart="@id/tv_Adresa"
-        android:layout_alignLeft="@id/tv_Adresa"
-        android:layout_marginStart="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="39dp"
-        android:text="@string/pol"
         android:textColor="@android:color/white"
-        android:textSize="14sp" />
+        android:textStyle="bold"
+        android:layout_margin="5dp"
+android:text="Neka adresa valfda "
+        ></TextView>
 
-    <EditText
-        android:id="@+id/et_Pol"
-        android:layout_width="70dp"
-        android:layout_height="30dp"
-        android:layout_below="@id/et_Adresa"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="14dp"
-        android:layout_marginTop="21dp"
-        android:layout_toRightOf="@id/tv_Pol"
-        android:background="#F0F3F2"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:layout_marginStart="14dp"
-         />
+</LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_GodinaRodjenja"
-        android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:text="@string/gender"
+                android:layout_margin="5dp"
+                ></TextView>
+            <TextView
+                android:id="@+id/convict_details_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                android:text="Muski"
+                ></TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:text="@string/g_ro_enja"
+                android:layout_margin="5dp"
+                android:layout_marginLeft="25dp"
+                ></TextView>
+            <TextView
+                android:id="@+id/convict_details_birth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+android:text="1968."
+                ></TextView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:text="@string/krivi_no_delo"
+                android:layout_margin="5dp"
+                ></TextView>
+            <TextView
+                android:id="@+id/convict_details_crime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+android:text="silovanje"
+                ></TextView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:text="@string/fizi_ki_opis"
+                android:layout_margin="5dp"
+                ></TextView>
+
+            <ScrollView
+                android:layout_width="wrap_content"
+                android:textStyle="bold"
+                android:layout_height="90dip"
+                android:layout_margin="5dp"
+                >
+
+                <TextView
+                    android:id="@+id/convict_details_description"
+                    android:textColor="@android:color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ovo je neki teksd za probuf sfdfdsfdssdfffffffffffffffffffffffffffffff fdsfds"/>
+
+            </ScrollView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:text="@string/poslednja_lokacija"
+                android:layout_margin="5dp"
+                ></TextView>
+            <TextView
+                android:id="@+id/convict_details_last_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                android:text="Neka lokacija na kojoj je vidjen"
+                ></TextView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:text="@string/poslednje_a_uriranje"
+                android:layout_margin="5dp"
+                ></TextView>
+            <TextView
+                android:id="@+id/convict_details_update_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                android:text="01.04.2020"
+                ></TextView>
+
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_Adresa"
-
-        android:layout_marginLeft="11dp"
-        android:layout_marginTop="38dp"
-        android:layout_toRightOf="@id/et_Pol"
-        android:text="@string/g_ro_enja"
-        android:textColor="@android:color/white"
-        android:textSize="14sp" />
-
-    <EditText
-        android:id="@+id/et_GodinaRodjenja"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:layout_below="@id/et_Adresa"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="14dp"
-        android:layout_marginTop="21dp"
-        android:layout_toRightOf="@id/tv_GodinaRodjenja"
-        android:layout_alignRight="@id/et_Adresa"
-        android:background="#F0F3F2"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:layout_marginStart="14dp" />
-
-    <TextView
-        android:id="@+id/tv_KrivicnoDelo"
-        android:textColor="@android:color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_Pol"
-        android:layout_alignStart="@id/tv_Pol"
-        android:layout_alignLeft="@id/tv_Pol"
-        android:layout_marginTop="20dp"
-        android:text="@string/krivi_no_delo"
-        android:textSize="14sp"/>
-
-    <EditText
-        android:id="@+id/et_KrivicnoDelo"
-        android:layout_width="250dp"
-        android:layout_height="30dp"
-        android:layout_below="@id/tv_Pol"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="14dp"
-        android:layout_marginTop="21dp"
-        android:layout_toRightOf="@id/tv_KrivicnoDelo"
-        android:layout_alignRight="@id/et_Adresa"
-        android:background="#F0F3F2"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:layout_toEndOf="@id/tv_KrivicnoDelo"
-        android:layout_marginStart="14dp" />
-
-
-    <TextView
-        android:id="@+id/tv_Opis"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_KrivicnoDelo"
-        android:layout_alignStart="@id/tv_KrivicnoDelo"
-        android:layout_alignLeft="@id/tv_KrivicnoDelo"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="27dp"
-        android:text="@string/fizi_ki_opis"
-        android:textColor="@android:color/white"
-        android:textSize="14sp" />
-
-    <EditText
-        android:id="@+id/et_Opis"
-        android:layout_width="250dp"
-        android:layout_height="80dp"
-        android:layout_below="@id/et_KrivicnoDelo"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="14dp"
-        android:layout_marginTop="21dp"
-        android:layout_toRightOf="@id/tv_Opis"
-        android:layout_alignRight="@id/et_KrivicnoDelo"
-        android:background="#F0F3F2"
-        android:ems="10"
-        android:layout_toEndOf="@id/tv_KrivicnoDelo"
-        android:layout_marginStart="14dp"
-         />
-
-    <TextView
-        android:id="@+id/tv_PoslednjaLokacija"
-        android:layout_width="85dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/et_Opis"
-        android:layout_alignStart="@id/tv_Opis"
-        android:layout_alignLeft="@id/tv_Opis"
-        android:layout_marginTop="20dp"
-        android:text="@string/poslednja_lokacija"
-        android:textColor="@android:color/white"
-        android:textSize="14sp" />
-
-    <EditText
-        android:id="@+id/et_PoslednjaLokacija"
-        android:layout_width="250dp"
-        android:layout_height="30dp"
-        android:layout_below="@id/et_Opis"
-        android:layout_alignStart="@id/et_Opis"
-        android:layout_alignLeft="@id/et_Opis"
-        android:layout_alignRight="@id/et_Opis"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="-1dp"
-        android:layout_marginLeft="-1dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginRight="-2dp"
-        android:layout_toEndOf="@id/tv_Opis"
-        android:layout_toRightOf="@id/tv_PoslednjaLokacija"
-        android:background="#F0F3F2"
-        android:ems="10"
-        android:inputType="textPersonName" />
-
-    <TextView
-        android:id="@+id/tv_PoslednjeVreme"
-        android:layout_width="85dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_PoslednjaLokacija"
-        android:layout_alignStart="@id/tv_PoslednjaLokacija"
-        android:layout_alignLeft="@id/tv_PoslednjaLokacija"
-        android:layout_marginTop="20dp"
-        android:text="@string/poslednje_a_uriranje"
-        android:textColor="@android:color/white"
-        android:textSize="14sp" />
-
-    <EditText
-        android:id="@+id/et_PoslednjeVreme"
-        android:layout_width="250dp"
-        android:layout_height="30dp"
-        android:layout_below="@id/et_PoslednjaLokacija"
-        android:layout_alignStart="@id/et_PoslednjaLokacija"
-        android:layout_alignLeft="@id/et_PoslednjaLokacija"
-        android:layout_alignRight="@id/et_PoslednjaLokacija"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="-1dp"
-        android:layout_marginLeft="-1dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginRight="-2dp"
-        android:layout_toEndOf="@id/tv_PoslednjaLokacija"
-        android:layout_toRightOf="@id/tv_PoslednjeVreme"
-        android:background="#F0F3F2"
-        android:ems="10"
-        android:inputType="textPersonName" />
-
+        android:orientation="horizontal"
+        >
     <Button
         android:id="@+id/btn_prijavi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_PoslednjeVreme"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="205dp"
-        android:layout_marginLeft="205dp"
-        android:layout_marginTop="19dp"
-        android:layout_marginBottom="9dp"
-        android:background="@drawable/button_rectangle_blue"
-        android:text="@string/prijavi"
+       android:text="@string/prijavi"
+        android:padding="2dp"
+        android:layout_margin="45dp"
         android:textColor="@android:color/white"
-        android:textSize="25sp" />
+        android:background="@drawable/button_rectangle_blue"
+        android:textSize="23sp" />
 
     <Button
         android:id="@+id/btn_sveLokacije"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_PoslednjeVreme"
-        android:layout_alignTop="@id/btn_prijavi"
-        android:layout_alignBottom="@id/btn_prijavi"
-        android:layout_marginLeft="22dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="1dp"
-        android:layout_toRightOf="@id/btn_prijavi"
         android:background="@drawable/button_rectangle_blue"
         android:text="@string/lokacije"
         android:textColor="@android:color/white"
-        android:textSize="25sp"
-        android:layout_marginStart="22dp" />
+        android:padding="2dp"
+        android:layout_margin="45dp"
+        android:textSize="23sp" />
 
-
+    </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>
