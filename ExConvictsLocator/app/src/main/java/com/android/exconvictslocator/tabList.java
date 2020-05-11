@@ -89,7 +89,7 @@ public class tabList extends Fragment {
             allLocationsBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    openAllLocationsActivity(rNames[position], rNicknames[position], rImgs[position], rCrimes[position], rLocations[position]);
+                    openDetailsActivity(rNames[position], rNicknames[position], rImgs[position], rCrimes[position], rLocations[position]);
                 }
             });
 
@@ -102,7 +102,7 @@ public class tabList extends Fragment {
         }
     }
 
-    public void openAllLocationsActivity(String name , String nickname, int img, String crime, String location){
+    public void openDetailsActivity(String name , String nickname, int img, String crime, String location){
         Intent intent = new Intent(getActivity(), ExConvictDetailsActivity.class);
         Bundle b = new Bundle();
         b.putString("name", name);
@@ -112,7 +112,7 @@ public class tabList extends Fragment {
         b.putString("birth", "1968.");
         b.putString("gender", "Muski");
         b.putString("crime",crime );
-        b.putString("updetedAt", "01.04.2020");
+        b.putString("updatedAt", "01.04.2020");
         b.putString("desc", "Crna kosa, Visok oko 182 .........");
         b.putString("lastLocation", location);
         intent.putExtras(b);

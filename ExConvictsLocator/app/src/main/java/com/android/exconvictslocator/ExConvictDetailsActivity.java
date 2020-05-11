@@ -14,6 +14,10 @@ public class ExConvictDetailsActivity extends AppCompatActivity {
     Button btnPrijavi;
     Button btnAllLocations;
 
+    private String mname;
+    private String mnickName;
+    private int mimg;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +32,20 @@ public class ExConvictDetailsActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        setView();
 
         btnAllLocations = findViewById(R.id.btn_sveLokacije);
+        btnAllLocations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openAllLocationsActivity();
+            }
+        });
+    }
+
+
+    private void setView(){
+
         TextView addressV = findViewById(R.id.convict_details_address);
         TextView genderV = findViewById(R.id.convict_details_gender);
         TextView birthV = findViewById(R.id.convict_details_birth);
@@ -52,7 +68,7 @@ public class ExConvictDetailsActivity extends AppCompatActivity {
         String crime = null;
         String desc = null;
         String lastLocation = null;
-        String updetedAt = null;
+        String updatedAt = null;
         int img = -1;
 
 
@@ -60,24 +76,36 @@ public class ExConvictDetailsActivity extends AppCompatActivity {
             name = b.getString("name");
             nickname = b.getString("nickname");
             img = b.getInt("image");
-             address = b.getString("address");
-             birth = b.getString("birth");
+            address = b.getString("address");
+            birth = b.getString("birth");
             gender =b.getString("gender");
-             crime =b.getString("crime");
-             updetedAt = b.getString("updetedAt");
-             desc = b.getString("desc");
-             lastLocation =b.getString("lastLocation");
+            crime =b.getString("crime");
+            updatedAt = b.getString("updatedAt");
+            desc = b.getString("desc");
+            lastLocation =b.getString("lastLocation");
         }
-     addressV.setText(address);
-    genderV.setText(gender);
-         birthV.setText(birth);
-      crimeV.setText(crime);
-       descriptionV.setText(desc);
+        this.mname= name;
+        this.mnickName = nickname;
+        this.mimg = img;
+        addressV.setText(address);
+        genderV.setText(gender);
+        birthV.setText(birth);
+        crimeV.setText(crime);
+        descriptionV.setText(desc);
         lastLocationV.setText(lastLocation);
-        updateTimeV.setText(updetedAt);
-       nameDetailV.setText(name);
+        updateTimeV.setText(updatedAt);
+        nameDetailV.setText(name);
         nicknameDetailV.setText(nickname);
-       imageDetailV.setImageResource(img);
+        imageDetailV.setImageResource(img);
+    }
 
+    public void openAllLocationsActivity(){
+        Intent intent = new Intent(this, ConvictLocationsMapActivity.class);
+        Bundle b = new Bundle();
+        b.putString("name", mname);
+        b.putString("nickname", mnickName);
+        b.putInt("image", mimg);
+        intent.putExtras(b);
+        startActivity(intent);
     }
 }
