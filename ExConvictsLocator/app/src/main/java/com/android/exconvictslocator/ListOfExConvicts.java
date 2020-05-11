@@ -1,15 +1,25 @@
 package com.android.exconvictslocator;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
 
-public class ListOfExConvicts extends AppCompatActivity {
+public class ListOfExConvicts extends MainActivity {
+
+    private DrawerLayout mDrawer;
+    private Toolbar toolbar;
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -18,7 +28,24 @@ public class ListOfExConvicts extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_of_ex_convicts);
+
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View contentView = inflater.inflate(R.layout.activity_list_of_ex_convicts, null, false);
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer);
+        mDrawer.addView(contentView, 0);
+
+        //setContentView(R.layout.activity_list_of_ex_convicts);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar1);
+        navigationView = (NavigationView) findViewById(R.id.navigationView);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        toggle = new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawerOpen, R.string.drawerClose);
+        mDrawer.addDrawerListener(toggle);
+        toggle.syncState();
+        //navigationView.setNavigationItemSelectedListener(this);
+
 
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabMap = (TabItem) findViewById(R.id.tabMap);

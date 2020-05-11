@@ -34,8 +34,7 @@
         <activity android:name=".SearchActivity" />
         <activity
             android:name=".ListOfExConvicts"
-            android:label="@string/title_activity_list_of_ex_convictes"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_list_of_ex_convictes" />
         <activity android:name=".ExConvictDetailsActivity" />
         <activity android:name=".UpdateLocationActivity" />
         <activity android:name=".SettingsActivity" />
