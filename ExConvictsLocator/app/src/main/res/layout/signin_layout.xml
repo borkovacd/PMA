@@ -20,12 +20,12 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="80dp"
         android:background="#F0F3F2"
-        android:drawableLeft="@drawable/ic_action_name"
+        android:drawableLeft="@drawable/ic_person"
         android:hint="@string/hint_email"
         android:autofillHints="@string/hint_email"
         android:ems="10"
         android:inputType="textEmailAddress"
-        android:drawableStart="@drawable/ic_action_name" />
+        android:drawableStart="@drawable/ic_person" />
 
     <EditText
         android:id="@+id/et_password"

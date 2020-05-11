@@ -19,33 +19,19 @@ import com.google.android.material.tabs.TabLayout;
 public class ListOfExConvicts extends MainActivity {
 
     private DrawerLayout mDrawer;
-    private Toolbar toolbar;
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private TabItem tabMap, tabList;
     public PageAdapter pagerAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         View contentView = inflater.inflate(R.layout.activity_list_of_ex_convicts, null, false);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer);
         mDrawer.addView(contentView, 0);
-
-        //setContentView(R.layout.activity_list_of_ex_convicts);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar1);
-        navigationView = (NavigationView) findViewById(R.id.navigationView);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        toggle = new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawerOpen, R.string.drawerClose);
-        mDrawer.addDrawerListener(toggle);
-        toggle.syncState();
-        //navigationView.setNavigationItemSelectedListener(this);
-
 
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabMap = (TabItem) findViewById(R.id.tabMap);
