@@ -55,9 +55,6 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                 startActivity(i3);
                 break;
             case R.id.logout:
-                // ovde sam stavila detalje o osudjeniku za isprobavanje
-                Intent i4 = new Intent(MainActivity.this, ExConvictDetailsActivity.class);
-                startActivity(i4);
                 break;
         }
         return false;
