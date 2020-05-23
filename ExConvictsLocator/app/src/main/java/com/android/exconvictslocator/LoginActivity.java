@@ -18,7 +18,7 @@ public class LoginActivity extends MainActivity {
 
     EditText etEmail, etPassword;
     TextView tvRegister;
-    //Button btnLogin;
+    Button btnLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +30,7 @@ public class LoginActivity extends MainActivity {
 
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
-        //btnLogin = findViewById(R.id.btn_login);
+        btnLogin = findViewById(R.id.btn_login);
         tvRegister = findViewById(R.id.tv_register);
 
         tvRegister.setOnClickListener(new View.OnClickListener() {
@@ -38,6 +38,14 @@ public class LoginActivity extends MainActivity {
             public void onClick(View v) {
                 Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(i);
+            }
+        });
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = etEmail.getText().toString();
+                String password = etPassword.getText().toString();
             }
         });
 
