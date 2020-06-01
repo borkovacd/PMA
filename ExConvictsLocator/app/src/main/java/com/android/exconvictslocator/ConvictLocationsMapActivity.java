@@ -1,22 +1,26 @@
 package com.android.exconvictslocator;
 
 
-import androidx.fragment.app.FragmentActivity;
-import androidx.room.Room;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 
 
-public class ConvictLocationsMapActivity extends FragmentActivity  {
+public class ConvictLocationsMapActivity extends MainActivity  {
+
+    private DrawerLayout mDrawer;
 
     MyDatabase myDatabase =  MyDatabase.getDatabase(this.getApplication());
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_convict_locations_map);
-        ConvictLocationsMapsFragment mapsFragment = new ConvictLocationsMapsFragment();
-        Bundle b = getIntent().getExtras();
-        String name = null; // or other values
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View contentView = inflater.inflate(R.layout.activity_convict_locations_map, null, false);ConvictLocationsMapsFragment mapsFragment = new ConvictLocationsMapsFragment();
+                mDrawer = (DrawerLayout) findViewById(R.id.drawer);Bundle b = getIntent().getExtras();
+                mDrawer.addView(contentView, 0);String name = null; // or other values
         String nickname = null; // or other values
         int img = -1; // or other values
 

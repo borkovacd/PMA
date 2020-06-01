@@ -1,15 +1,20 @@
 package com.android.exconvictslocator;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ExConvictDetailsActivity extends AppCompatActivity {
+public class ExConvictDetailsActivity extends MainActivity {
+
+    private DrawerLayout mDrawer;
 
     Button btnPrijavi;
     Button btnAllLocations;
@@ -21,7 +26,10 @@ public class ExConvictDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ex_convict_details);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View contentView = inflater.inflate(R.layout.activity_ex_convict_details, null, false);
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer);
+        mDrawer.addView(contentView, 0);
 
         btnPrijavi = findViewById(R.id.btn_prijavi);
 

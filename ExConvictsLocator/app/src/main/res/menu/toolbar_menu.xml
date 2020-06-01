@@ -6,5 +6,8 @@
         android:icon="@drawable/ic_login"
         android:title="Prijavi se"
         app:showAsAction="always"/>
-
+    <item
+        android:id="@+id/notify"
+        android:icon="@drawable/ic_notify"
+        android:title="Pošalji notifikaciju" />
 </menu>
