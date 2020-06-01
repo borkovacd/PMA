@@ -7,8 +7,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +16,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.android.exconvictslocator.entities.User;
+import com.android.exconvictslocator.repositories.impl.UserRepository;
+
+import java.util.List;
+
+import io.reactivex.Flowable;
 
 
 /**
@@ -30,6 +35,7 @@ public class tabList extends Fragment {
     String convictsLocations [] = {"Bulevar oslobodjenja, Beograd", "Železnička stanica, Novi Sad", "Zeleni venac, Beograd"};
     String convictsNicknames [] = {"---", "---", "/"};
 
+    private UserRepository userRepo;
     int convictsImages[] = {R.drawable.img1, R.drawable.img2, R.drawable.img3};
 
 
@@ -43,7 +49,13 @@ public class tabList extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         super.onCreateView(inflater, container, savedInstanceState);
+        MyDatabase db =  MyDatabase.getDatabase(getActivity().getApplication());
+        userRepo = UserRepository.getInstance(db.userDao());
+        List<User> saved = userRepo.getUsers();
+        System.out.println("*****************"+ saved.size());
+
         return inflater.inflate(R.layout.fragment_tab_list, container, false);
+
 
     }
 

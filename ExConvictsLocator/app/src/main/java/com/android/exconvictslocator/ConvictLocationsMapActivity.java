@@ -1,29 +1,15 @@
 package com.android.exconvictslocator;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.fragment.app.FragmentActivity;
+import androidx.room.Room;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 public class ConvictLocationsMapActivity extends FragmentActivity  {
 
+    MyDatabase myDatabase =  MyDatabase.getDatabase(this.getApplication());
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +33,9 @@ public class ConvictLocationsMapActivity extends FragmentActivity  {
         mapsFragment.setArguments(arguments);
         getSupportFragmentManager().beginTransaction().add(R.id.fragmentmaps, mapsFragment, "tag").commit();
 
+    }
+    public MyDatabase getMyDatabase() {
+        return myDatabase;
     }
 
 }
