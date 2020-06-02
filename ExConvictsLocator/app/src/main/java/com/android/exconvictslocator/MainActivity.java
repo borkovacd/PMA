@@ -17,8 +17,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.HeaderViewListAdapter;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
+
+import org.w3c.dom.Text;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements  NavigationView.OnNavigationItemSelectedListener {
 
@@ -37,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     ActionBarDrawerToggle toggle;
     Button btn_login;
 
+    TextView nav_header_name, nav_header_email;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +62,18 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        /*View nav_header = navigationView.getHeaderView(R.id.nav_header);
+
+        nav_header_name = (TextView) findViewById(R.id.nav_header_name);
+        nav_header_email = (TextView) findViewById(R.id.nav_header_email);
+        if(sessionManagement.isLoggedIn()) {
+            // get user data from session
+            HashMap<String, String> user = sessionManagement.getUserDetails();
+            // email
+            String email = user.get(SessionManagement.KEY_EMAIL);
+            nav_header_email.setText(email);
+        }*/
 
         createNotificationChannel(); //!!!
 

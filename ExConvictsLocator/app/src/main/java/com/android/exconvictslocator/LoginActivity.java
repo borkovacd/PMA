@@ -78,7 +78,7 @@ public class LoginActivity extends MainActivity {
                             //Pronadjen user sa unetim email-om
                             notExistingEmail = false;
                             if (password.equals(user.getPassword())) {
-                                Toast.makeText(LoginActivity.this, "Uspešno ste se ulogovali.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Uspešno ste se ulogovali.", Toast.LENGTH_LONG).show();
                                 // Creating user login session
                                 sessionManagement.createLoginSession(user.getEmail());
                                 // Starting MainActivity
@@ -86,12 +86,12 @@ public class LoginActivity extends MainActivity {
                                 startActivity(i);
                                 finish();
                             } else {
-                                Toast.makeText(LoginActivity.this, "Neispravan email ili lozinka.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Neispravan email ili lozinka.", Toast.LENGTH_LONG).show();
                             }
                         }
                     }
                     if (notExistingEmail) {
-                        Toast.makeText(LoginActivity.this, "Neispravan email ili lozinka.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Neispravan email ili lozinka.", Toast.LENGTH_LONG).show();
                     }
                 }
             }
