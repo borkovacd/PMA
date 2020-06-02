@@ -32,11 +32,6 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public User getUserByEmail(String email) {
-        return userDao.getUserByEmail(email);
-    }
-
-    @Override
     public Long insertUser(User user) {
         return userDao.insertUser(user);
     }

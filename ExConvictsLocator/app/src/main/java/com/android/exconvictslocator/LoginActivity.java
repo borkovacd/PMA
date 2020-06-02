@@ -2,11 +2,9 @@ package com.android.exconvictslocator;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -17,11 +15,8 @@ import android.widget.Toast;
 import com.android.exconvictslocator.entities.User;
 import com.android.exconvictslocator.repositories.impl.UserRepository;
 
+import java.util.HashMap;
 import java.util.List;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class LoginActivity extends MainActivity {
 
@@ -34,6 +29,9 @@ public class LoginActivity extends MainActivity {
     private MyDatabase myDatabase;
     private UserRepository userRepository;
 
+    // Session Management Class
+    SessionManagement sessionManagement;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +39,11 @@ public class LoginActivity extends MainActivity {
         View contentView = inflater.inflate(R.layout.activity_login, null, false);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer);
         mDrawer.addView(contentView, 0);
+
+        // Session Management class instance
+        sessionManagement = new SessionManagement(getApplicationContext());
+        Toast.makeText(getApplicationContext(), "User Login Status: " + sessionManagement.isLoggedIn(), Toast.LENGTH_LONG).show();
+
 
         myDatabase = MyDatabase.getDatabase(this.getApplication());
         userRepository = UserRepository.getInstance(myDatabase.userDao());
@@ -76,6 +79,12 @@ public class LoginActivity extends MainActivity {
                             notExistingEmail = false;
                             if (password.equals(user.getPassword())) {
                                 Toast.makeText(LoginActivity.this, "Uspešno ste se ulogovali.", Toast.LENGTH_LONG).show();
+                                // Creating user login session
+                                sessionManagement.createLoginSession(user.getEmail());
+                                // Starting MainActivity
+                                Intent i = new Intent(getApplicationContext(), ListOfExConvicts.class);
+                                startActivity(i);
+                                finish();
                             } else {
                                 Toast.makeText(LoginActivity.this, "Neispravan email ili lozinka.", Toast.LENGTH_LONG).show();
                             }

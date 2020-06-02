@@ -17,9 +17,6 @@ public interface UserDao {
     @Query("SELECT * FROM User where email = :email")
     public Flowable<User> getByEmail(String email);
 
-    @Query("SELECT * FROM User where email = :email")
-    public User getUserByEmail(String email);
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public Long insertUser(User user);
 

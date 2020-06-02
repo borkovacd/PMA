@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 
 import com.google.android.material.navigation.NavigationView;
@@ -27,6 +28,9 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     private NotificationManager mNotifyManager;
     private static final int NOTIFICATION_ID = 0;
 
+    // Session Management Class
+    SessionManagement sessionManagement;
+
     DrawerLayout drawerLayout;
     Toolbar toolbar;
     NavigationView navigationView;
@@ -37,6 +41,9 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Session Management class instance
+        sessionManagement = new SessionManagement(getApplicationContext());
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -106,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                 startActivity(i3);
                 break;
             case R.id.logout:
+                sessionManagement.logoutUser();
                 break;
         }
         return false;

@@ -9,8 +9,6 @@ import io.reactivex.Flowable;
 public interface IUserRepository {
     public Flowable<User> getByEmail(String email);
 
-    public User getUserByEmail(String email);
-
     public Long insertUser(User user);
 
     public void deleteUser(User user);
