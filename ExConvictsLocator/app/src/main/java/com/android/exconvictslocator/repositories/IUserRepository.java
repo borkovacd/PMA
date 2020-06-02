@@ -14,4 +14,8 @@ public interface IUserRepository {
     public void deleteUser(User user);
 
     public List<User> getUsers();
+
+    User findUserByEmail(String email);
+
+    void updateUser(User user);
 }

@@ -5,6 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.android.exconvictslocator.entities.User;
 
@@ -17,6 +18,9 @@ public interface UserDao {
     @Query("SELECT * FROM User where email = :email")
     public Flowable<User> getByEmail(String email);
 
+    @Query("SELECT * FROM User where email = :email")
+    public User findUserByEmail(String email);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public Long insertUser(User user);
 
@@ -25,4 +29,7 @@ public interface UserDao {
 
     @Query("SELECT * FROM User")
     public List<User> getUsers();
+
+    @Update
+    void update(User user);
 }

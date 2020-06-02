@@ -46,5 +46,11 @@ public class UserRepository implements IUserRepository {
         return userDao.getUsers();
     }
 
+    @Override
+    public User findUserByEmail(String email) { return userDao.findUserByEmail(email); }
 
+    @Override
+    public void updateUser(User user) {
+        userDao.update(user);
+    }
 }
