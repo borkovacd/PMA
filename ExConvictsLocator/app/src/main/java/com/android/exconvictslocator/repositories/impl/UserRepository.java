@@ -18,17 +18,22 @@ public class UserRepository implements IUserRepository {
     }
 
     public static UserRepository getInstance(UserDao userDao){
-if(instance == null){
-instance= new UserRepository(userDao);
+        if(instance == null){
+            instance= new UserRepository(userDao);
 
-}
-return instance;
+        }
+        return instance;
     }
 
 
     @Override
     public Flowable<User> getByEmail(String email) {
         return userDao.getByEmail(email);
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userDao.getUserByEmail(email);
     }
 
     @Override

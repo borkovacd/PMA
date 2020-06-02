@@ -1,15 +1,17 @@
 package com.android.exconvictslocator;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.android.exconvictslocator.entities.User;
 
 public class RegisterActivity extends MainActivity {
 
@@ -19,6 +21,7 @@ public class RegisterActivity extends MainActivity {
     Button btnRegister;
 
     //LoginDataBaseAdapter loginDataBaseAdapter;
+    MyDatabase myDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,7 @@ public class RegisterActivity extends MainActivity {
         // get Instance of Database Adapter
         //loginDataBaseAdapter=new LoginDataBaseAdapter(this);
         //loginDataBaseAdapter=loginDataBaseAdapter.open();
+        myDatabase =  MyDatabase.getDatabase(this.getApplication());
 
         etFirstName = findViewById(R.id.et_firstName);
         etLastName = findViewById(R.id.et_lastName);
@@ -64,8 +68,12 @@ public class RegisterActivity extends MainActivity {
 
                 if ( !error) {
                     // Save the Data in Database
+                    User user = new User(firstName, lastName, password, email);
                     //loginDataBaseAdapter.insertEntry(email, password);
+                    myDatabase.userDao().insertUser(user);
                     Toast.makeText(getApplicationContext(), "Uspešno kreiran korisnički nalog", Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+                    startActivity(i);
                 }
             }
         });
@@ -74,6 +82,7 @@ public class RegisterActivity extends MainActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //loginDataBaseAdapter.close();
+        //Closing The Database
+        //myDatabase.close();
     }
 }

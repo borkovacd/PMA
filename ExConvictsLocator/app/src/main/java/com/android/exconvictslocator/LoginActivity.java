@@ -1,16 +1,27 @@
 package com.android.exconvictslocator;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.exconvictslocator.entities.User;
+import com.android.exconvictslocator.repositories.impl.UserRepository;
+
+import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class LoginActivity extends MainActivity {
 
@@ -20,6 +31,9 @@ public class LoginActivity extends MainActivity {
     TextView tvRegister;
     Button btnLogin;
 
+    private MyDatabase myDatabase;
+    private UserRepository userRepository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +41,10 @@ public class LoginActivity extends MainActivity {
         View contentView = inflater.inflate(R.layout.activity_login, null, false);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer);
         mDrawer.addView(contentView, 0);
+
+        myDatabase = MyDatabase.getDatabase(this.getApplication());
+        userRepository = UserRepository.getInstance(myDatabase.userDao());
+        List<User> registeredUsers = userRepository.getUsers();
 
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
@@ -46,8 +64,36 @@ public class LoginActivity extends MainActivity {
             public void onClick(View v) {
                 String email = etEmail.getText().toString();
                 String password = etPassword.getText().toString();
+
+                boolean notExistingEmail = true;
+                // Check if any of the fields is empty
+                if (email.equals("") || password.equals("")) {
+                    Toast.makeText(getApplicationContext(), "Polje ne može biti prazno", Toast.LENGTH_LONG).show();
+                } else {
+                    for (User user : registeredUsers) {
+                        if (user.getEmail().equals(email)) {
+                            //Pronadjen user sa unetim email-om
+                            notExistingEmail = false;
+                            if (password.equals(user.getPassword())) {
+                                Toast.makeText(LoginActivity.this, "Uspešno ste se ulogovali.", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Neispravan email ili lozinka.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                    if (notExistingEmail) {
+                        Toast.makeText(LoginActivity.this, "Neispravan email ili lozinka.", Toast.LENGTH_LONG).show();
+                    }
+                }
             }
         });
-
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //Closing The Database
+        //myDatabase.close();
+    }
+
 }
