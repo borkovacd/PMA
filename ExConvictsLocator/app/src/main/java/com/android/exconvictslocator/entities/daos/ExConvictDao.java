@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.android.exconvictslocator.entities.ExConvict;
+import com.android.exconvictslocator.entities.ExConvictReport;
 
 import java.util.List;
 
@@ -22,4 +23,7 @@ public interface ExConvictDao {
 
     @Query("SELECT * FROM ExConvict")
     public List<ExConvict> getExConvicts();
+
+    @Query("SELECT * from ExConvict LEFT JOIN Report Order by Report.date ")
+    public List<ExConvictReport> getExConvictReports();
 }

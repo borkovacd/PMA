@@ -1,6 +1,7 @@
 package com.android.exconvictslocator.repositories.impl;
 
 import com.android.exconvictslocator.entities.ExConvict;
+import com.android.exconvictslocator.entities.ExConvictReport;
 import com.android.exconvictslocator.entities.daos.ExConvictDao;
 import com.android.exconvictslocator.repositories.IExConvictRepository;
 
@@ -36,5 +37,10 @@ exConvictDao.deleteExConvict(exConvict);
     @Override
     public List<ExConvict> getExConvicts() {
         return exConvictDao.getExConvicts();
+    }
+
+    @Override
+    public List<ExConvictReport> getExConvictReports() {
+        return exConvictDao.getExConvictReports();
     }
 }

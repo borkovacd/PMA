@@ -1,6 +1,5 @@
 package com.android.exconvictslocator;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Context;
