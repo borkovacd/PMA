@@ -16,27 +16,22 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import com.android.exconvictslocator.entities.ExConvict;
 import com.android.exconvictslocator.entities.User;
+import com.android.exconvictslocator.repositories.impl.ExConvictRepository;
 import com.android.exconvictslocator.repositories.impl.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.Flowable;
-
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class tabList extends Fragment {
     ListView listView;
-    String convictsNames [] = {"Pera Perić", "Mika Mikić", "Žika Žikić"};
-    String convictsCrimes [] = {"silovanje", "ubistvo", "ubistvo"};
-    String convictsLocations [] = {"Bulevar oslobodjenja, Beograd", "Železnička stanica, Novi Sad", "Zeleni venac, Beograd"};
-    String convictsNicknames [] = {"---", "---", "/"};
-
     private UserRepository userRepo;
-    int convictsImages[] = {R.drawable.img1, R.drawable.img2, R.drawable.img3};
+    private ExConvictRepository exConvictRepo;
+    private List<ExConvict> exConvicts;
 
 
     public tabList() {
@@ -47,13 +42,10 @@ public class tabList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         super.onCreateView(inflater, container, savedInstanceState);
         MyDatabase db =  MyDatabase.getDatabase(getActivity().getApplication());
-        userRepo = UserRepository.getInstance(db.userDao());
-        List<User> saved = userRepo.getUsers();
-        System.out.println("*****************"+ saved.size());
-
+        exConvictRepo = ExConvictRepository.getInstance(db.exConvictDao());
+        exConvicts= exConvictRepo.getExConvicts();
         return inflater.inflate(R.layout.fragment_tab_list, container, false);
 
 
@@ -63,27 +55,25 @@ public class tabList extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         listView = getView().findViewById(R.id.convicts_list_view);
-        MyAdapter adapter = new MyAdapter(this.getActivity(), convictsNames, convictsCrimes, convictsImages,convictsLocations, convictsNicknames);
+        List<String> convictsNames = new ArrayList<String>();
+        for (ExConvict r:
+             exConvicts) {
+            convictsNames.add(r.getFirstName() + " " + r.getLastName());
+        }
+        String[] names = new String[convictsNames.size()];
+        MyAdapter adapter = new MyAdapter(this.getActivity(),this.exConvicts, convictsNames.toArray(names));
         listView.setAdapter(adapter);
     }
 
     class MyAdapter extends ArrayAdapter<String>{
         Context context;
-        String rNames[];
-        String rCrimes[];
-        int rImgs[];
-        String rLocations[];
-        String rNicknames[];
+     List<ExConvict> convicts;
 
-        public MyAdapter(@NonNull Context context, String names[], String crimes[], int imgs[], String locations[],String nicknames[] ) {
+
+        public MyAdapter(@NonNull Context context,List<ExConvict> exConvicts, String names[]) {
             super(context, R.layout.row_in_list, R.id.convict_name, names);
             this.context = context;
-            this.rCrimes = crimes;
-            this.rNames = names;
-            this.rImgs = imgs;
-            this.rLocations= locations;
-            this.rNicknames= nicknames;
-
+        this.convicts= exConvicts;
         }
 
         @NonNull
@@ -101,32 +91,34 @@ public class tabList extends Fragment {
             allLocationsBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    openDetailsActivity(rNames[position], rNicknames[position], rImgs[position], rCrimes[position], rLocations[position]);
+                    openDetailsActivity(convicts.get(position));
                 }
             });
 
-            images.setImageResource(rImgs[position]);
-            names.setText(rNames[position]);
-            crimes.setText(rCrimes[position]);
-            locations.setText(rLocations[position]);
+
+            images.setImageResource(convicts.get(position).getPhoto());
+            names.setText(convicts.get(position).getFirstName() + " " + convicts.get(position).getLastName());
+            crimes.setText(convicts.get(position).getCrime());
+            locations.setText(convicts.get(position).getAddress());
 
             return row;
         }
     }
 
-    public void openDetailsActivity(String name , String nickname, int img, String crime, String location){
+    public void openDetailsActivity(ExConvict exConvict){
         Intent intent = new Intent(getActivity(), ExConvictDetailsActivity.class);
         Bundle b = new Bundle();
-        b.putString("name", name);
-        b.putString("nickname", nickname);
-        b.putInt("image", img);
-        b.putString("address", "Neka adresa");
-        b.putString("birth", "1968.");
-        b.putString("gender", "Muski");
-        b.putString("crime",crime );
+
+        b.putString("name", exConvict.getFirstName() + " " + exConvict.getLastName());
+        b.putString("nickname", exConvict.getPseudonym());
+        b.putInt("image", exConvict.getPhoto());
+        b.putString("address", exConvict.getAddress());
+        b.putString("birth", exConvict.getDateOfBirth());
+        b.putString("gender", exConvict.getGender());
+        b.putString("crime",exConvict.getCrime() );
         b.putString("updatedAt", "01.04.2020");
-        b.putString("desc", "Crna kosa, Visok oko 182 .........");
-        b.putString("lastLocation", location);
+        b.putString("desc", exConvict.getDescription());
+        b.putString("lastLocation", "location");
         intent.putExtras(b);
         startActivity(intent);
     }

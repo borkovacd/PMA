@@ -16,7 +16,7 @@ import com.android.exconvictslocator.entities.daos.UserDao;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities={User.class, ExConvict.class, Report.class}, version=1)
+@Database(entities={User.class, ExConvict.class, Report.class}, version=2)
 public abstract class MyDatabase extends RoomDatabase {
 
     public abstract UserDao userDao();

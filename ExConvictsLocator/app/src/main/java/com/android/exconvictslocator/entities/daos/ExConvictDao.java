@@ -4,8 +4,11 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
 
 import com.android.exconvictslocator.entities.ExConvict;
+
+import java.util.List;
 
 @Dao
 public interface ExConvictDao {
@@ -15,4 +18,8 @@ public interface ExConvictDao {
 
     @Delete
     public void deleteExConvict(ExConvict exConvict);
+
+
+    @Query("SELECT * FROM ExConvict")
+    public List<ExConvict> getExConvicts();
 }

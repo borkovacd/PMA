@@ -18,9 +18,13 @@ public class ConvictLocationsMapActivity extends MainActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View contentView = inflater.inflate(R.layout.activity_convict_locations_map, null, false);ConvictLocationsMapsFragment mapsFragment = new ConvictLocationsMapsFragment();
-                mDrawer = (DrawerLayout) findViewById(R.id.drawer);Bundle b = getIntent().getExtras();
-                mDrawer.addView(contentView, 0);String name = null; // or other values
+                View contentView = inflater.inflate(R.layout.activity_convict_locations_map, null, false);
+
+                ConvictLocationsMapsFragment mapsFragment = new ConvictLocationsMapsFragment();
+                mDrawer = (DrawerLayout) findViewById(R.id.drawer);
+                Bundle b = getIntent().getExtras();
+                mDrawer.addView(contentView, 0);
+                String name = null; // or other values
         String nickname = null; // or other values
         int img = -1; // or other values
 
