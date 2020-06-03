@@ -15,8 +15,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.android.exconvictslocator.entities.User;
 import com.android.exconvictslocator.repositories.impl.UserRepository;
 
-import org.mindrot.jbcrypt.BCrypt;
-
 import java.util.HashMap;
 
 public class UserProfileActivity extends MainActivity {
@@ -54,6 +52,7 @@ public class UserProfileActivity extends MainActivity {
         mDrawer.addView(contentView, 0);
 
 
+        // provera ko je ulogovan
         sessionManagement = new SessionManagement(getApplicationContext());
         sessionManagement.checkLogin();
         // get user data from session
@@ -63,6 +62,7 @@ public class UserProfileActivity extends MainActivity {
 
         myDatabase = MyDatabase.getDatabase(this.getApplication());
         userRepository = UserRepository.getInstance(myDatabase.userDao());
+        User korisnik = userRepository.findUserByEmail(emailUser); // vracam korisnika iz baze na osnovu email-a
 
         etFirstName = findViewById(R.id.et_firstName);
         etLastName = findViewById(R.id.et_lastName);
@@ -70,7 +70,8 @@ public class UserProfileActivity extends MainActivity {
         etNewPassword = findViewById(R.id.et_new_password);
         etRepeatPassword = findViewById(R.id.et_repeat_password);
 
-        User korisnik = userRepository.findUserByEmail(emailUser);
+
+        // popunjavanje imena i prezimena korisnika -> iz baze
         etFirstName.setText(String.valueOf(korisnik.getFirstName()),TextView.BufferType.EDITABLE );
         etLastName.setText(String.valueOf(korisnik.getLastName()),TextView.BufferType.EDITABLE );
 
@@ -78,32 +79,30 @@ public class UserProfileActivity extends MainActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // pracim String promenljivu za svaki EditText
-                String profileFirstName = etFirstName.getText().toString();
-                Toast.makeText(getApplicationContext(), profileFirstName, Toast.LENGTH_LONG).show();
 
+                String profileFirstName = etFirstName.getText().toString();
                 String profileLastName = etLastName.getText().toString();
                 String profileOldPass = etOldPassword.getText().toString();
                 String profileNewPass = etNewPassword.getText().toString();
                 String profileRepeatPass = etRepeatPassword.getText().toString();
 
-                /*
-                // da li se poklapa OldPassword sa njegovom lozinkom kojom se logovao (iz baze)
-                if(BCrypt.checkpw(profileOldPass, korisnik.getPassword())){
+
+                // da li se poklapa OldPassword sa njegovom lozinkom kojom se logovao (iz baze) -> ako uopste hoce da je promeni
+                if(!profileOldPass.equals("") && profileOldPass.equals(korisnik.getPassword()) ){
                     validationOk = true; // globalna boolean promenljiva
+                    Toast.makeText(getApplicationContext(), "ValidationOK : true", Toast.LENGTH_LONG).show();
                 }
 
                 // validacije za prazno polje
                 if(profileFirstName.equals("")){
-                    Toast.makeText(getApplicationContext(), "Neophodno je uneti ime!.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Neophodno je uneti ime!", Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 if(profileLastName.equals("")){
-                    Toast.makeText(getApplicationContext(), "Neophodno je uneti prezime!.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Neophodno je uneti prezime!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                */
 
                 // ako je bilo sta ukucano u oldPassword (tacno ili netacno) svakako da ga obrise
                 if(!profileOldPass.equals(""))
@@ -115,31 +114,32 @@ public class UserProfileActivity extends MainActivity {
                         // postavlja nova polja
 
                         if (profileNewPass.equals(profileRepeatPass)) {
-                            korisnik.setPassword(BCrypt.hashpw(profileNewPass, BCrypt.gensalt())); // kriptovanje sifre
+                            //korisnik.setPassword(BCrypt.hashpw(profileNewPass, BCrypt.gensalt())); // kriptovanje sifre
+                            korisnik.setPassword(profileNewPass);
                             korisnik.setFirstName(profileFirstName);
                             korisnik.setLastName(profileLastName);
                             validationOk = false; // za sledeci krug, da bi opet provere prolazio
                         }
                         else {
-                            Toast.makeText(getApplicationContext(), "Unete lozinke se ne poklapaju!.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Unete lozinke se ne poklapaju!", Toast.LENGTH_LONG).show();
                         }
                     }
                     else { // ukoliko nije ukucan dobar oldPassword
-                        Toast.makeText(getApplicationContext(), "Uneta je neispravna stara lozinka!.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Uneta je neispravna stara lozinka!", Toast.LENGTH_LONG).show();
                         return;
                     }
                 }
                 else if(profileNewPass.equals("") || profileRepeatPass.equals("")) { // nije hteo da menja pass zapravo
                     korisnik.setFirstName(profileFirstName);
                     korisnik.setLastName(profileLastName);
-                    myDatabase.userDao().update(korisnik);
                 }
                 else { // uneo pass manji od 4
-                    Toast.makeText(getApplicationContext(), "Uneta lozinka nije dovoljno dugacka!.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Uneta lozinka nije dovoljno dugacka!", Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                
+                myDatabase.userDao().update(korisnik);
+                Toast.makeText(getApplicationContext(), "Uspesno ste izmenili podatke!", Toast.LENGTH_LONG).show();
 
             }
         });
