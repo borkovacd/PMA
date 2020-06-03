@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.android.exconvictslocator.entities.ExConvict;
 import com.android.exconvictslocator.entities.ExConvictReport;
 import com.android.exconvictslocator.entities.Report;
+import com.android.exconvictslocator.entities.User;
 import com.android.exconvictslocator.repositories.impl.ExConvictRepository;
 import com.android.exconvictslocator.repositories.impl.ReportRepository;
 import com.android.exconvictslocator.repositories.impl.UserRepository;
@@ -50,7 +51,11 @@ public class tabList extends Fragment {
         MyDatabase db =  MyDatabase.getDatabase(getActivity().getApplication());
         exConvictRepo = ExConvictRepository.getInstance(db.exConvictDao());
         reportRepo = ReportRepository.getInstance(db.reportDao());
+        userRepo= UserRepository.getInstance(db.userDao());
         exConvicts= exConvictRepo.getExConvictReports();
+
+       // populateDbInit();
+
 
         return inflater.inflate(R.layout.fragment_tab_list, container, false);
 
@@ -128,7 +133,36 @@ public class tabList extends Fragment {
         b.putString("desc", exConvict.getExConvict().getDescription());
         b.putString("lastLocation", (exConvict.getReports() != null &&  exConvict.getReports().size()> 0 )?
                 exConvict.getReports().get(0).getLocation() : "-");
+        b.putDouble("lat", (exConvict.getReports() != null &&  exConvict.getReports().size()> 0 )?
+                exConvict.getReports().get(0).getLat() : 0);
+        b.putDouble("lang", (exConvict.getReports() != null &&  exConvict.getReports().size()> 0 )?
+                exConvict.getReports().get(0).getLang() : 0);
         intent.putExtras(b);
         startActivity(intent);
+    }
+
+    private  void populateDbInit(){
+    /*    ExConvict exc1 = new ExConvict( "Pera", "Peric", "-",
+                R.drawable.img1, "Topolska 18", "M", "1955", "ubistvo", "opis..........1");
+        ExConvict exc2 = new ExConvict( "Mika", "Mikic", "-",
+                R.drawable.img2, "Topolska 19", "M", "1968", "ubistvo", "opis..........2");
+        ExConvict exc3 = new ExConvict( "Zika", "Zikic", "-",
+                R.drawable.img3, "Topolska 20", "M", "1985", "silovanje", "opis..........3");
+exConvictRepo.insertExConvict(exc1);
+exConvictRepo.insertExConvict(exc2);
+exConvictRepo.insertExConvict(exc3);*/
+//45.264251, 19.827240
+        //ruzin gaj 45.245686, 19.815030
+//kamenicki park 45.227990, 19.849182
+        User user = new User("Jovana", "Novakovic", "password123", "jo@mailinator.com");
+userRepo.insertUser(user);
+    Report report1 = new Report("Zeleznicka stanica",new Date().toString(), "Novi Sad","-", "jo@mailinator.com", 1, 45.264251,  19.827240);
+    Report report2 = new Report("Ruzin gaj",new Date().toString(), "Novi Sad","-", "jo@mailinator.com", 2, 45.245686,  19.815030);
+    Report report3 = new Report("Kamenicki park",new Date().toString(), "Novi Sad","-", "jo@mailinator.com", 1,  45.227990,   19.849182);
+reportRepo.insertReport(report1);
+reportRepo.insertReport(report2);
+reportRepo.insertReport(report3);
+
+
     }
 }
