@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.exconvictslocator.entities.ExConvictReport;
+import com.android.exconvictslocator.repositories.impl.ExConvictRepository;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -19,14 +21,21 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class tabMap extends Fragment implements OnMapReadyCallback {
+
     GoogleMap googleMap;
     MapView mapView;
     View mview;
+    private List<ExConvictReport> exConvicts;
+    private ExConvictRepository exConvictRepo;
+
+
     public tabMap() {
         // Required empty public constructor
     }
@@ -50,18 +59,27 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
             mapView.onResume();
             mapView.getMapAsync(this);
         }
+        MyDatabase db =  MyDatabase.getDatabase(getActivity().getApplication());
+        exConvictRepo = ExConvictRepository.getInstance(db.exConvictDao());
+        exConvicts = exConvictRepo.getExConvictReports();
+
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        //lat 45.267136 , long 19.833549
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(45.267136, 19.833549)).title("Pera Perić"));
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(45.267136, 19.835546)).title("Žika Žikić"));
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(45.267136, 19.835550)).title("Mika Mikić"));
+
+        for(ExConvictReport exr : exConvicts){
+            if (exr.getReports() != null &&  exr.getReports().size()> 0 ) {
+                googleMap.addMarker(new MarkerOptions().position(new LatLng(exr.getReports().get(0).getLat(),
+                        exr.getReports().get(0).getLang())).title(exr.getExConvict().getFirstName() + " " + exr.getExConvict().getLastName()));
+            }
+        }
 
         CameraPosition camera = CameraPosition.builder().target(new LatLng(45.267136, 19.833549)).zoom(16).bearing(0).build();
-    googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(camera));
+         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(camera));
     }
+
+
 }

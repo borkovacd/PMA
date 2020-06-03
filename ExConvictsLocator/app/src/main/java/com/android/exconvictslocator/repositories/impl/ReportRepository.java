@@ -1,7 +1,6 @@
 package com.android.exconvictslocator.repositories.impl;
 
 import com.android.exconvictslocator.entities.Report;
-import com.android.exconvictslocator.entities.daos.ExConvictDao;
 import com.android.exconvictslocator.entities.daos.ReportDao;
 import com.android.exconvictslocator.repositories.IReportRepository;
 

@@ -25,16 +25,22 @@ public class Report {
     private String userId;
     @ColumnInfo
     private int exConvictId;
+    @ColumnInfo
+    private double lat;
+    @ColumnInfo
+    private double lang;
 
     public Report(){}
 
-    public Report(String location, String date, String city, String comment, String userId, int exConvictId) {
+    public Report(String location, String date, String city, String comment, String userId, int exConvictId, double lat, double lang) {
         this.location = location;
         this.date = date;
         this.city = city;
         this.comment = comment;
         this.userId = userId;
         this.exConvictId = exConvictId;
+        this.lang = lang;
+        this.lat = lat;
     }
 
     public int getId() {
@@ -91,5 +97,21 @@ public class Report {
 
     public void setExConvictId(int exConvictId) {
         this.exConvictId = exConvictId;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLang() {
+        return lang;
+    }
+
+    public void setLang(double lang) {
+        this.lang = lang;
     }
 }

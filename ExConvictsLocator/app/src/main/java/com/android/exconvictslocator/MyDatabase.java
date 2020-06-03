@@ -7,16 +7,15 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.android.exconvictslocator.entities.ExConvict;
+import com.android.exconvictslocator.entities.ExConvictReport;
 import com.android.exconvictslocator.entities.Report;
 import com.android.exconvictslocator.entities.User;
 import com.android.exconvictslocator.entities.daos.ExConvictDao;
 import com.android.exconvictslocator.entities.daos.ReportDao;
 import com.android.exconvictslocator.entities.daos.UserDao;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-@Database(entities={User.class, ExConvict.class, Report.class}, version=1)
+@Database(entities={User.class, ExConvict.class, Report.class}, version=3)
 public abstract class MyDatabase extends RoomDatabase {
 
     public abstract UserDao userDao();
@@ -38,4 +37,18 @@ public abstract class MyDatabase extends RoomDatabase {
         }
         return INSTANCE;
     }
+
+    private  void populateDbInit(){
+        ExConvict exc1 = new ExConvict( "Pera", "Peric", "-",
+        R.drawable.img1, "Topolska 18", "M", "1955", "ubistvo", "opis..........1");
+        ExConvict exc2 = new ExConvict( "Mika", "Mikic", "-",
+                R.drawable.img2, "Topolska 19", "M", "1968", "ubistvo", "opis..........2");
+        ExConvict exc3 = new ExConvict( "Zika", "Zikic", "-",
+                R.drawable.img3, "Topolska 20", "M", "1985", "silovanje", "opis..........3");
+
+
+
+
+    }
+
 }

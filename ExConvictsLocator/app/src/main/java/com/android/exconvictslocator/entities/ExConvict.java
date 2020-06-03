@@ -18,7 +18,7 @@ public class ExConvict {
     @ColumnInfo
     private String pseudonym;
     @ColumnInfo
-    private String photo;
+    private int photo;
     @ColumnInfo
     private String address;
     @ColumnInfo
@@ -32,7 +32,7 @@ public class ExConvict {
 
     public ExConvict(){}
 
-    public ExConvict(String firstName, String lastName, String pseudonym, String photo, String address, String gender, String dateOfBirth, String crime, String description) {
+    public ExConvict(String firstName, String lastName, String pseudonym, int photo, String address, String gender, String dateOfBirth, String crime, String description) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.pseudonym = pseudonym;
@@ -76,11 +76,11 @@ public class ExConvict {
         this.pseudonym = pseudonym;
     }
 
-    public String getPhoto() {
+    public int getPhoto() {
         return photo;
     }
 
-    public void setPhoto(String photo) {
+    public void setPhoto(int photo) {
         this.photo = photo;
     }
 
