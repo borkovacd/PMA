@@ -11,9 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import com.android.exconvictslocator.entities.User;
 import com.android.exconvictslocator.repositories.impl.UserRepository;
@@ -29,7 +26,7 @@ public class UserProfileActivity extends MainActivity {
     private MyDatabase myDatabase;
     private UserRepository userRepository;
 
-    private MutableLiveData<User> user2 = new MutableLiveData<>();
+//    private MutableLiveData<User> user2 = new MutableLiveData<>();
 
     private String emailUser;
 
@@ -73,16 +70,9 @@ public class UserProfileActivity extends MainActivity {
         etNewPassword = findViewById(R.id.et_new_password);
         etRepeatPassword = findViewById(R.id.et_repeat_password);
 
-        final ProfileTask task = new ProfileTask();
-        task.execute(emailUser);
-
-        user2.observe((LifecycleOwner) this.getLifecycle(), new Observer<User>() {
-            @Override
-            public void onChanged(User user) {
-                etFirstName.setText(String.valueOf(user.getFirstName()),TextView.BufferType.EDITABLE );
-                etLastName.setText(String.valueOf(user.getLastName()),TextView.BufferType.EDITABLE );
-            }
-        });
+        User korisnik = userRepository.findUserByEmail(emailUser);
+        etFirstName.setText(String.valueOf(korisnik.getFirstName()),TextView.BufferType.EDITABLE );
+        etLastName.setText(String.valueOf(korisnik.getLastName()),TextView.BufferType.EDITABLE );
 
         btnSave = findViewById(R.id.btn_save);
         btnSave.setOnClickListener(new View.OnClickListener() {
@@ -90,14 +80,16 @@ public class UserProfileActivity extends MainActivity {
             public void onClick(View v) {
                 // pracim String promenljivu za svaki EditText
                 String profileFirstName = etFirstName.getText().toString();
+                Toast.makeText(getApplicationContext(), profileFirstName, Toast.LENGTH_LONG).show();
+
                 String profileLastName = etLastName.getText().toString();
                 String profileOldPass = etOldPassword.getText().toString();
                 String profileNewPass = etNewPassword.getText().toString();
                 String profileRepeatPass = etRepeatPassword.getText().toString();
 
-
+                /*
                 // da li se poklapa OldPassword sa njegovom lozinkom kojom se logovao (iz baze)
-                if(BCrypt.checkpw(profileOldPass, user2.getValue().getPassword())){
+                if(BCrypt.checkpw(profileOldPass, korisnik.getPassword())){
                     validationOk = true; // globalna boolean promenljiva
                 }
 
@@ -111,6 +103,7 @@ public class UserProfileActivity extends MainActivity {
                     Toast.makeText(getApplicationContext(), "Neophodno je uneti prezime!.", Toast.LENGTH_LONG).show();
                     return;
                 }
+                */
 
                 // ako je bilo sta ukucano u oldPassword (tacno ili netacno) svakako da ga obrise
                 if(!profileOldPass.equals(""))
@@ -122,9 +115,9 @@ public class UserProfileActivity extends MainActivity {
                         // postavlja nova polja
 
                         if (profileNewPass.equals(profileRepeatPass)) {
-                            user2.getValue().setPassword(BCrypt.hashpw(profileNewPass, BCrypt.gensalt())); // kriptovanje sifre
-                            user2.getValue().setFirstName(profileFirstName);
-                            user2.getValue().setLastName(profileLastName);
+                            korisnik.setPassword(BCrypt.hashpw(profileNewPass, BCrypt.gensalt())); // kriptovanje sifre
+                            korisnik.setFirstName(profileFirstName);
+                            korisnik.setLastName(profileLastName);
                             validationOk = false; // za sledeci krug, da bi opet provere prolazio
                         }
                         else {
@@ -137,17 +130,17 @@ public class UserProfileActivity extends MainActivity {
                     }
                 }
                 else if(profileNewPass.equals("") || profileRepeatPass.equals("")) { // nije hteo da menja pass zapravo
-                    user2.getValue().setFirstName(profileFirstName);
-                    user2.getValue().setLastName(profileLastName);
+                    korisnik.setFirstName(profileFirstName);
+                    korisnik.setLastName(profileLastName);
+                    myDatabase.userDao().update(korisnik);
                 }
                 else { // uneo pass manji od 4
                     Toast.makeText(getApplicationContext(), "Uneta lozinka nije dovoljno dugacka!.", Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                // pravi se opet novi task -> UPISIVANJE U BAZU
-                UpdateProfileTask task1 = new UpdateProfileTask();
-                task1.execute(user2.getValue()); // saljem celog user-a (getValue jer je Mutable)
+                
+
             }
         });
 
@@ -159,7 +152,7 @@ public class UserProfileActivity extends MainActivity {
         protected Void doInBackground(String... strings) {
 
             User userPom = userRepository.findUserByEmail(strings[0]);
-            user2.postValue(userPom);
+//            user2.postValue(userPom);
 
             return null;
         }
