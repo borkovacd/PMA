@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.android.exconvictslocator.entities.User;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 public class RegisterActivity extends MainActivity {
 
     private DrawerLayout mDrawer;
@@ -68,7 +70,8 @@ public class RegisterActivity extends MainActivity {
 
                 if ( !error) {
                     // Save the Data in Database
-                    User user = new User(firstName, lastName, password, email);
+                    String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+                    User user = new User(firstName, lastName, hashedPassword, email);
                     //loginDataBaseAdapter.insertEntry(email, password);
                     myDatabase.userDao().insertUser(user);
                     Toast.makeText(getApplicationContext(), "Uspešno kreiran korisnički nalog", Toast.LENGTH_LONG).show();

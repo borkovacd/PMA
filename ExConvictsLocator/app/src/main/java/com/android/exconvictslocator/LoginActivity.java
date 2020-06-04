@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.android.exconvictslocator.entities.User;
 import com.android.exconvictslocator.repositories.impl.UserRepository;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -77,7 +79,7 @@ public class LoginActivity extends MainActivity {
                         if (user.getEmail().equals(email)) {
                             //Pronadjen user sa unetim email-om
                             notExistingEmail = false;
-                            if (password.equals(user.getPassword())) {
+                            if(BCrypt.checkpw(password, user.getPassword())) {
                                 Toast.makeText(getApplicationContext(), "Uspešno ste se ulogovali.", Toast.LENGTH_LONG).show();
                                 // Creating user login session
                                 sessionManagement.createLoginSession(user.getEmail());
