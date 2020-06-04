@@ -15,6 +15,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.android.exconvictslocator.entities.User;
 import com.android.exconvictslocator.repositories.impl.UserRepository;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.util.HashMap;
 
 public class UserProfileActivity extends MainActivity {
@@ -88,9 +90,8 @@ public class UserProfileActivity extends MainActivity {
 
 
                 // da li se poklapa OldPassword sa njegovom lozinkom kojom se logovao (iz baze) -> ako uopste hoce da je promeni
-                if(!profileOldPass.equals("") && profileOldPass.equals(korisnik.getPassword()) ){
+                if(!profileOldPass.equals("") && BCrypt.checkpw(profileOldPass, korisnik.getPassword())) {
                     validationOk = true; // globalna boolean promenljiva
-                    Toast.makeText(getApplicationContext(), "ValidationOK : true", Toast.LENGTH_LONG).show();
                 }
 
                 // validacije za prazno polje
@@ -114,8 +115,8 @@ public class UserProfileActivity extends MainActivity {
                         // postavlja nova polja
 
                         if (profileNewPass.equals(profileRepeatPass)) {
-                            //korisnik.setPassword(BCrypt.hashpw(profileNewPass, BCrypt.gensalt())); // kriptovanje sifre
-                            korisnik.setPassword(profileNewPass);
+                            korisnik.setPassword(BCrypt.hashpw(profileNewPass, BCrypt.gensalt())); // kriptovanje sifre
+                            //korisnik.setPassword(profileNewPass);
                             korisnik.setFirstName(profileFirstName);
                             korisnik.setLastName(profileLastName);
                             validationOk = false; // za sledeci krug, da bi opet provere prolazio
