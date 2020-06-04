@@ -8,6 +8,10 @@ import android.content.SharedPreferences.Editor;
 
 import java.util.HashMap;
 
+/**
+ * All session related functions
+ * ( to make them available in all activities)
+ */
 public class SessionManagement {
 
     // Shared Preferences

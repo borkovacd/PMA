@@ -34,6 +34,9 @@ public class LoginActivity extends MainActivity {
     // Session Management Class
     SessionManagement sessionManagement;
 
+    // Alert Dialog Manager
+    AlertDialogManager alert = new AlertDialogManager();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +47,7 @@ public class LoginActivity extends MainActivity {
 
         // Session Management class instance
         sessionManagement = new SessionManagement(getApplicationContext());
-        Toast.makeText(getApplicationContext(), "User Login Status: " + sessionManagement.isLoggedIn(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "User Login Status: " + sessionManagement.isLoggedIn(), Toast.LENGTH_LONG).show();
 
 
         myDatabase = MyDatabase.getDatabase(this.getApplication());
@@ -73,14 +76,16 @@ public class LoginActivity extends MainActivity {
                 boolean notExistingEmail = true;
                 // Check if any of the fields is empty
                 if (email.equals("") || password.equals("")) {
-                    Toast.makeText(getApplicationContext(), "Polje ne može biti prazno", Toast.LENGTH_LONG).show();
+                    alert.showAlertDialog(LoginActivity.this, "Login failed..", "Please enter username and password", false);
+                    //Toast.makeText(getApplicationContext(), "Polje ne može biti prazno", Toast.LENGTH_LONG).show();
                 } else {
                     for (User user : registeredUsers) {
                         if (user.getEmail().equals(email)) {
                             //Pronadjen user sa unetim email-om
                             notExistingEmail = false;
                             if(BCrypt.checkpw(password, user.getPassword())) {
-                                Toast.makeText(getApplicationContext(), "Uspešno ste se ulogovali.", Toast.LENGTH_LONG).show();
+                                alert.showAlertDialog(LoginActivity.this, "Login successful!", "You are now logged in", true);
+                                //Toast.makeText(getApplicationContext(), "Uspešno ste se ulogovali.", Toast.LENGTH_LONG).show();
                                 // Creating user login session
                                 sessionManagement.createLoginSession(user.getEmail());
                                 // Starting MainActivity
@@ -88,12 +93,14 @@ public class LoginActivity extends MainActivity {
                                 startActivity(i);
                                 finish();
                             } else {
-                                Toast.makeText(getApplicationContext(), "Neispravan email ili lozinka.", Toast.LENGTH_LONG).show();
+                                alert.showAlertDialog(LoginActivity.this, "Login failed..", "Username/Password is incorrect", false);
+                                //Toast.makeText(getApplicationContext(), "Neispravan email ili lozinka.", Toast.LENGTH_LONG).show();
                             }
                         }
                     }
                     if (notExistingEmail) {
-                        Toast.makeText(getApplicationContext(), "Neispravan email ili lozinka.", Toast.LENGTH_LONG).show();
+                        alert.showAlertDialog(LoginActivity.this, "Login failed..", "Username/Password is incorrect", false);
+                        //Toast.makeText(getApplicationContext(), "Neispravan email ili lozinka.", Toast.LENGTH_LONG).show();
                     }
                 }
             }

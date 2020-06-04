@@ -13,6 +13,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,6 +63,11 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        /*if(sessionManagement.isLoggedIn()) {
+            toolbar.getMenu();
+            //.findItem(R.id.login).setVisible(false);
+        }*/
 
         /*View nav_header = navigationView.getHeaderView(R.id.nav_header);
 

@@ -37,7 +37,7 @@ public class ListOfExConvicts extends MainActivity {
 
         // Session Management class instance
         sessionManagement = new SessionManagement(getApplicationContext());
-        Toast.makeText(getApplicationContext(), "User Login Status: " + sessionManagement.isLoggedIn(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "User Login Status: " + sessionManagement.isLoggedIn(), Toast.LENGTH_SHORT).show();
 
         /**
          * Call this function whenever you want to check user login
