@@ -1,7 +1,5 @@
 package com.android.exconvictslocator;
 
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.drawerlayout.widget.DrawerLayout;
 
 public class ExConvictDetailsActivity extends MainActivity {
 
@@ -22,6 +22,21 @@ public class ExConvictDetailsActivity extends MainActivity {
     private String mnickName;
     private int mimg;
 
+    TextView addressV, genderV, birthV, crimeV, descriptionV ;
+    TextView lastLocationV, updateTimeV, nameDetailV, nicknameDetailV ;
+    ImageView imageDetailV ;
+
+    String name = null;
+    String nickname = null;
+    String address = null;
+    String birth = null;
+    String gender = null;
+    String crime = null;
+    String desc = null;
+    String lastLocation = null;
+    String updatedAt = null;
+    int img = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,16 +45,18 @@ public class ExConvictDetailsActivity extends MainActivity {
         mDrawer = (DrawerLayout) findViewById(R.id.drawer);
         mDrawer.addView(contentView, 0);
 
+        setView();
+
         btnPrijavi = findViewById(R.id.btn_prijavi);
 
         btnPrijavi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(ExConvictDetailsActivity.this, UpdateLocationActivity.class);
-                startActivity(i);
+//                Intent i = new Intent(ExConvictDetailsActivity.this, UpdateLocationActivity.class);
+//                startActivity(i);
+                openUpdateLocationActivity();
             }
         });
-        setView();
 
         btnAllLocations = findViewById(R.id.btn_sveLokacije);
         btnAllLocations.setOnClickListener(new View.OnClickListener() {
@@ -53,30 +70,21 @@ public class ExConvictDetailsActivity extends MainActivity {
 
     private void setView(){
 
-        TextView addressV = findViewById(R.id.convict_details_address);
-        TextView genderV = findViewById(R.id.convict_details_gender);
-        TextView birthV = findViewById(R.id.convict_details_birth);
-        TextView crimeV = findViewById(R.id.convict_details_crime);
-        TextView descriptionV = findViewById(R.id.convict_details_description);
-        TextView lastLocationV = findViewById(R.id.convict_details_last_location);
-        TextView updateTimeV = findViewById(R.id.convict_details_update_time);
-        TextView nameDetailV = findViewById(R.id.convict_details_name);
-        TextView nicknameDetailV = findViewById(R.id.convict_details_nickname);
-        ImageView imageDetailV = findViewById(R.id.convict_details_image);
+        addressV = findViewById(R.id.convict_details_address);
+        genderV = findViewById(R.id.convict_details_gender);
+        birthV = findViewById(R.id.convict_details_birth);
+        crimeV = findViewById(R.id.convict_details_crime);
+        descriptionV = findViewById(R.id.convict_details_description);
+        lastLocationV = findViewById(R.id.convict_details_last_location);
+        updateTimeV = findViewById(R.id.convict_details_update_time);
+        nameDetailV = findViewById(R.id.convict_details_name);
+        nicknameDetailV = findViewById(R.id.convict_details_nickname);
+        imageDetailV = findViewById(R.id.convict_details_image);
 
 
 
         Bundle b = getIntent().getExtras();
-        String name = null;
-        String nickname = null;
-        String address = null;
-        String birth = null;
-        String gender = null;
-        String crime = null;
-        String desc = null;
-        String lastLocation = null;
-        String updatedAt = null;
-        int img = -1;
+
 
 
         if(b != null) {
@@ -112,6 +120,25 @@ public class ExConvictDetailsActivity extends MainActivity {
         b.putString("name", mname);
         b.putString("nickname", mnickName);
         b.putInt("image", mimg);
+        intent.putExtras(b);
+        startActivity(intent);
+    }
+
+    public void openUpdateLocationActivity(){
+        Intent intent = new Intent(this , UpdateLocationActivity.class);
+        Bundle b = new Bundle();
+
+        b.putString("name", name);
+        b.putString("nickname", nickname);
+        b.putInt("image", img);
+        b.putString("address", address);
+        b.putString("birth", birth);
+        b.putString("gender", gender);
+        b.putString("crime", crime);
+        b.putString("updatedAt",  updatedAt);
+        b.putString("desc", desc);
+        b.putString("lastLocation", lastLocation);
+
         intent.putExtras(b);
         startActivity(intent);
     }

@@ -1,18 +1,31 @@
 package com.android.exconvictslocator;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+
+import androidx.drawerlayout.widget.DrawerLayout;
 
 public class UpdateLocationActivity extends MainActivity {
 
     private DrawerLayout mDrawer;
+
+    String nameSurname = null;
+    String nickname = null;
+    String lastLocation = null;
+    String updatedAt = null;
+    String comment = null ;
+    int img = -1;
+
+    // polja sa forme
+    ImageView ivUser ;
+    EditText etImePrezime, etNadimak ;
+    EditText etPrijaviNovuLokaciju, etKomentar ;
+    Button btnPrijavi ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,5 +34,33 @@ public class UpdateLocationActivity extends MainActivity {
         View contentView = inflater.inflate(R.layout.activity_update_location, null, false);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer);
         mDrawer.addView(contentView, 0);
+
+        setView();
+
+        btnPrijavi = findViewById(R.id.btn_prijavi);
+        btnPrijavi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etImePrezime = findViewById(R.id.et_ImePrezime);
+                etNadimak = findViewById(R.id.et_Nadimak);
+                etPrijaviNovuLokaciju = findViewById(R.id.et_PrijaviNovuLokaciju);
+                etKomentar = findViewById(R.id.MLKomentar);
+                ivUser = findViewById(R.id.iv_user);
+
+                Bundle b = getIntent().getExtras();
+
+                if (b != null) {
+                    nameSurname = b.getString("name");
+                    nickname = b.getString("nickname");
+                    updatedAt = b.getString("updatedAt");
+
+                }
+
+            }
+        });
+    }
+
+    private void setView(){
+
     }
 }
