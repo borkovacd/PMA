@@ -1,12 +1,14 @@
 package com.android.exconvictslocator;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabItem;
@@ -53,7 +55,7 @@ public class ListOfExConvicts extends MainActivity {
             String email = user.get(SessionManagement.KEY_EMAIL);
             Toast.makeText(getApplicationContext(), "Ulogovan korisnik: " + email, Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(getApplicationContext(), "Koristite aplikaciju u neprijavljenom režimu. Da biste koristili napredne funckije aplikacije, ulogujete se na vaš korisnički nalog.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Koristite aplikaciju u neprijavljenom režimu. Da biste koristili napredne funkcije aplikacije, ulogujete se na vaš korisnički nalog.", Toast.LENGTH_LONG).show();
         }
 
 
@@ -86,5 +88,11 @@ public class ListOfExConvicts extends MainActivity {
             }
         });
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        //Primer
+        //String marketPref = sharedPref.getString("distance_radius", "-1");
+        //Toast.makeText(this, marketPref, Toast.LENGTH_LONG).show();
     }
+
 }

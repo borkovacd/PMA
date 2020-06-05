@@ -1,22 +1,40 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory app:title="@string/messages_header">
-
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
-
-        <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
-            app:useSimpleSummaryProvider="true" />
-
+    <PreferenceCategory app:title="@string/notifications">
+        <SwitchPreferenceCompat
+            app:key="enable_notifications"
+            app:summaryOff="@string/enable_notification_summary_off"
+            app:summaryOn="@string/enable_notification_summary_on"
+            app:title="@string/enable_notifications" />
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="@string/location">
+        <SwitchPreferenceCompat
+            app:key="enable_location"
+            app:title="@string/enable_location" />
+        <ListPreference
+            app:key="distance_radius"
+            app:defaultValue="2"
+            app:entries="@array/distance_radius_entries"
+            app:entryValues="@array/distance_radius_values"
+            app:title="@string/define_distance_radius"
+            app:summary="@string/define_distance_radius_summary"
+            app:useSimpleSummaryProvider="true"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/synchronization">
+        <ListPreference
+            app:key="synhonization_interval"
+            app:defaultValue="30"
+            app:entries="@array/synchronization_interval_entries"
+            app:entryValues="@array/synchronization_interval_values"
+            app:title="@string/define_synhronization_interval"
+            app:useSimpleSummaryProvider="true"/>
+    </PreferenceCategory>
+
+    <!--
     <PreferenceCategory app:title="@string/sync_header">
 
         <SwitchPreferenceCompat
@@ -30,6 +48,6 @@
             app:summaryOn="@string/attachment_summary_on"
             app:title="@string/attachment_title" />
 
-    </PreferenceCategory>
+    </PreferenceCategory>-->
 
 </PreferenceScreen>

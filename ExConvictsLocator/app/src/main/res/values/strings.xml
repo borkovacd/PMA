@@ -100,5 +100,17 @@
     <string name="pol">Pol</string>
     <string name="gender">Pol</string>
 
+    <!-- SETTINGS -->
+    <string name="notifications">Obaveštenja</string>
+    <string name="enable_notifications">Omogući obaveštenja</string>
+    <string name="enable_notification_summary_on">Dobijajte obaveštenje svaki put kada se nađete u neposrednoj blizini lokacije na kojoj je nedavno viđen bivši osuđenik</string>
+    <string name="enable_notification_summary_off">Ne primajte obaveštenja kada se nađete u neposrednoj blizini lokacije na kojoj je nedavno viđen bivši osuđenik</string>
+    <string name="location">Lokacija</string>
+    <string name="enable_location">Omogući praćenje lokacije</string>
+    <string name="define_distance_radius">Definišite radijus udaljenosti</string>
+    <string name="define_distance_radius_summary">Definišite radijus udaljenosti od lokacije gde je viđen osuđenik za koji želite da primate obaveštenja</string>
+    <string name="synchronization">Sinhronizacija</string>
+    <string name="define_synhronization_interval">Definišite interval automatske sinhronizacije</string>
+
 
 </resources>

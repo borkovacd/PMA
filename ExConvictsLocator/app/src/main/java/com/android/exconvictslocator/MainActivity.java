@@ -6,12 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.preference.PreferenceManager;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +24,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.HeaderViewListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -80,6 +83,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
+        //Postavljanje podrazumevanih vrednosti za podešavanja
+        PreferenceManager.setDefaultValues(this,
+                R.xml.root_preferences, false);
 
         createNotificationChannel(); //!!!
 
@@ -175,6 +181,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.notify:
                 sendNotification();
+                break;
+            case R.id.settings:
+                Intent i2 = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(i2);
                 break;
         }
         return true;
