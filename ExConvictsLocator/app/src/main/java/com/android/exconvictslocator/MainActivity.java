@@ -29,7 +29,7 @@ import org.w3c.dom.Text;
 
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity implements  NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     // *** NOTIFICATIONS ***
     // Every notification channel must be associated with an ID that is unique within your package.
@@ -58,17 +58,19 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         navigationView = (NavigationView) findViewById(R.id.navigationView);
 
-        Menu menu = navigationView.getMenu();
+        //Podešavanje NavigationDrawer-a
+        //u zavisnosti da li postoji ulogovan korisnik
+        Menu nav_menu = navigationView.getMenu();
         View nav_view = navigationView.getHeaderView(0);
         TextView name = nav_view.findViewById(R.id.nav_header_name);
         TextView email = nav_view.findViewById(R.id.nav_header_email);
         if (sessionManagement.isLoggedIn()) {
-            menu.findItem(R.id.login).setVisible(false);
+            nav_menu.findItem(R.id.login).setVisible(false);
             HashMap<String, String> user = sessionManagement.getUserDetails();
             email.setText(user.get(SessionManagement.KEY_EMAIL));
             name.setText(user.get(SessionManagement.KEY_NAME));
         } else {
-            menu.findItem(R.id.logout).setVisible(false);
+            nav_menu.findItem(R.id.logout).setVisible(false);
         }
 
         setSupportActionBar(toolbar);
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
 
         createNotificationChannel(); //!!!
 
@@ -148,10 +151,14 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(sessionManagement.isLoggedIn()) {
-            getMenuInflater().inflate(R.menu.toolbar_menu_logged,menu);
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        //Podešavanja Toolbar-a
+        //u zavisnosti da li postoji ulogovan korisnik
+        Menu toolbarMenu = toolbar.getMenu();
+        if (sessionManagement.isLoggedIn()) {
+            toolbarMenu.findItem(R.id.login).setVisible(false);
         } else {
-            getMenuInflater().inflate(R.menu.toolbar_menu,menu);
+            toolbarMenu.findItem(R.id.logout).setVisible(false);
         }
         return true;
     }

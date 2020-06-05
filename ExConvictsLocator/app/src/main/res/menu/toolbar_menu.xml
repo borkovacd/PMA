@@ -5,7 +5,12 @@
     <item
         android:id="@+id/login"
         android:icon="@drawable/ic_login"
-        android:title="Prijavi se"
+        android:title="@string/btn_login"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/logout"
+        android:icon="@drawable/ic_login"
+        android:title="@string/logout"
         app:showAsAction="always"/>
     <item
         android:id="@+id/notify"
