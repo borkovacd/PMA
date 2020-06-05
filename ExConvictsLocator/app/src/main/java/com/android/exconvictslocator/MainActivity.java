@@ -23,10 +23,6 @@ import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
-import org.w3c.dom.Text;
-
-import java.util.HashMap;
-
 public class MainActivity extends AppCompatActivity implements  NavigationView.OnNavigationItemSelectedListener {
 
     // *** NOTIFICATIONS ***

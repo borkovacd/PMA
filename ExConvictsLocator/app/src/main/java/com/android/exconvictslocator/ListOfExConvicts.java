@@ -44,12 +44,18 @@ public class ListOfExConvicts extends MainActivity {
          * This will redirect user to LoginActivity is he is not
          * logged in
          * */
-        sessionManagement.checkLogin();
-        // get user data from session
-        HashMap<String, String> user = sessionManagement.getUserDetails();
-        // email
-        String email = user.get(SessionManagement.KEY_EMAIL);
-        Toast.makeText(getApplicationContext(), "Logged In User: " + email, Toast.LENGTH_LONG).show();
+        //sessionManagement.checkLogin();
+
+        if(sessionManagement.isLoggedIn()) {
+            // Get user data from session
+            HashMap<String, String> user = sessionManagement.getUserDetails();
+            // Email
+            String email = user.get(SessionManagement.KEY_EMAIL);
+            Toast.makeText(getApplicationContext(), "Ulogovan korisnik: " + email, Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Koristite aplikaciju u neprijavljenom režimu. Da biste koristili napredne funckije aplikacije, ulogujete se na vaš korisnički nalog.", Toast.LENGTH_LONG).show();
+        }
+
 
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabMap = (TabItem) findViewById(R.id.tabMap);

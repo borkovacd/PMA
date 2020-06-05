@@ -97,7 +97,7 @@ public class SessionManagement {
         editor.clear();
         editor.apply(); //editor.commit();
         // After logout redirect user to Login Activity
-        Intent i = new Intent(_context, LoginActivity.class);
+        Intent i = new Intent(_context, ListOfExConvicts.class);
         // Closing all the Activities
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         // Add new Flag to start new Activity

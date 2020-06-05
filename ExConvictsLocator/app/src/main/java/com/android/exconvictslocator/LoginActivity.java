@@ -76,16 +76,16 @@ public class LoginActivity extends MainActivity {
                 boolean notExistingEmail = true;
                 // Check if any of the fields is empty
                 if (email.equals("") || password.equals("")) {
-                    alert.showAlertDialog(LoginActivity.this, "Login failed..", "Please enter username and password", false);
-                    //Toast.makeText(getApplicationContext(), "Polje ne može biti prazno", Toast.LENGTH_LONG).show();
+                    //alert.showAlertDialog(LoginActivity.this, "Login failed..", "Please enter username and password", false);
+                    Toast.makeText(getApplicationContext(), "Polje ne može biti prazno", Toast.LENGTH_LONG).show();
                 } else {
                     for (User user : registeredUsers) {
                         if (user.getEmail().equals(email)) {
                             //Pronadjen user sa unetim email-om
                             notExistingEmail = false;
                             if(BCrypt.checkpw(password, user.getPassword())) {
-                                alert.showAlertDialog(LoginActivity.this, "Login successful!", "You are now logged in", true);
-                                //Toast.makeText(getApplicationContext(), "Uspešno ste se ulogovali.", Toast.LENGTH_LONG).show();
+                                //alert.showAlertDialog(LoginActivity.this, "Login successful!", "You are now logged in", true);
+                                Toast.makeText(getApplicationContext(), "Uspešno ste se ulogovali.", Toast.LENGTH_LONG).show();
                                 // Creating user login session
                                 sessionManagement.createLoginSession(user.getEmail());
                                 // Starting MainActivity
@@ -93,14 +93,14 @@ public class LoginActivity extends MainActivity {
                                 startActivity(i);
                                 finish();
                             } else {
-                                alert.showAlertDialog(LoginActivity.this, "Login failed..", "Username/Password is incorrect", false);
-                                //Toast.makeText(getApplicationContext(), "Neispravan email ili lozinka.", Toast.LENGTH_LONG).show();
+                                //alert.showAlertDialog(LoginActivity.this, "Login failed..", "Username/Password is incorrect", false);
+                                Toast.makeText(getApplicationContext(), "Neispravan email ili lozinka.", Toast.LENGTH_LONG).show();
                             }
                         }
                     }
                     if (notExistingEmail) {
-                        alert.showAlertDialog(LoginActivity.this, "Login failed..", "Username/Password is incorrect", false);
-                        //Toast.makeText(getApplicationContext(), "Neispravan email ili lozinka.", Toast.LENGTH_LONG).show();
+                        //alert.showAlertDialog(LoginActivity.this, "Login failed..", "Username/Password is incorrect", false);
+                        Toast.makeText(getApplicationContext(), "Neispravan email ili lozinka.", Toast.LENGTH_LONG).show();
                     }
                 }
             }
