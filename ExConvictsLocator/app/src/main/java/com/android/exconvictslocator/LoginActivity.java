@@ -87,7 +87,12 @@ public class LoginActivity extends MainActivity {
                                 //alert.showAlertDialog(LoginActivity.this, "Login successful!", "You are now logged in", true);
                                 Toast.makeText(getApplicationContext(), "Uspešno ste se ulogovali.", Toast.LENGTH_LONG).show();
                                 // Creating user login session
-                                sessionManagement.createLoginSession(user.getEmail());
+                                if(user.getFirstName() != null && user.getLastName() != null) {
+                                    String name = user.getFirstName() + ' ' + user.getLastName();
+                                    sessionManagement.createLoginSession(user.getEmail(), name);
+                                } else {
+                                    sessionManagement.createLoginSession(user.getEmail(), null);
+                                }
                                 // Starting MainActivity
                                 Intent i = new Intent(getApplicationContext(), ListOfExConvicts.class);
                                 startActivity(i);

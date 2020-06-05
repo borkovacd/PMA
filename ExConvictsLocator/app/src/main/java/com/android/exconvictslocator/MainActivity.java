@@ -10,11 +10,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +24,10 @@ import android.widget.HeaderViewListAdapter;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
+
+import org.w3c.dom.Text;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements  NavigationView.OnNavigationItemSelectedListener {
 
@@ -40,8 +46,6 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     ActionBarDrawerToggle toggle;
     Button btn_login;
 
-    TextView nav_header_name, nav_header_email;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,29 +57,26 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         navigationView = (NavigationView) findViewById(R.id.navigationView);
+
+        Menu menu = navigationView.getMenu();
+        View nav_view = navigationView.getHeaderView(0);
+        TextView name = nav_view.findViewById(R.id.nav_header_name);
+        TextView email = nav_view.findViewById(R.id.nav_header_email);
+        if (sessionManagement.isLoggedIn()) {
+            menu.findItem(R.id.login).setVisible(false);
+            HashMap<String, String> user = sessionManagement.getUserDetails();
+            email.setText(user.get(SessionManagement.KEY_EMAIL));
+            name.setText(user.get(SessionManagement.KEY_NAME));
+        } else {
+            menu.findItem(R.id.logout).setVisible(false);
+        }
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawerOpen, R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-
-        /*if(sessionManagement.isLoggedIn()) {
-            toolbar.getMenu();
-            //.findItem(R.id.login).setVisible(false);
-        }*/
-
-        /*View nav_header = navigationView.getHeaderView(R.id.nav_header);
-
-        nav_header_name = (TextView) findViewById(R.id.nav_header_name);
-        nav_header_email = (TextView) findViewById(R.id.nav_header_email);
-        if(sessionManagement.isLoggedIn()) {
-            // get user data from session
-            HashMap<String, String> user = sessionManagement.getUserDetails();
-            // email
-            String email = user.get(SessionManagement.KEY_EMAIL);
-            nav_header_email.setText(email);
-        }*/
 
         createNotificationChannel(); //!!!
 
@@ -134,6 +135,10 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                 Intent i3 = new Intent(MainActivity.this, ListOfExConvicts.class);
                 startActivity(i3);
                 break;
+            case R.id.login:
+                Intent i4 = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(i4);
+                break;
             case R.id.logout:
                 sessionManagement.logoutUser();
                 break;
@@ -143,7 +148,11 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu,menu);
+        if(sessionManagement.isLoggedIn()) {
+            getMenuInflater().inflate(R.menu.toolbar_menu_logged,menu);
+        } else {
+            getMenuInflater().inflate(R.menu.toolbar_menu,menu);
+        }
         return true;
     }
 
@@ -154,10 +163,14 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                 Intent i = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(i);
                 break;
+            case R.id.logout:
+                sessionManagement.logoutUser();
+                break;
             case R.id.notify:
                 sendNotification();
                 break;
         }
         return true;
     }
+
 }

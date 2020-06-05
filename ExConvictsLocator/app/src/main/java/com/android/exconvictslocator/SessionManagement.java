@@ -35,6 +35,7 @@ public class SessionManagement {
     // Email address
     // (Variable is public in order to access it from outside)
     public static final String KEY_EMAIL = "email";
+    public static final String KEY_NAME = "name";
 
     // Constructor
     public SessionManagement(Context context) {
@@ -46,11 +47,13 @@ public class SessionManagement {
     /**
      * Create login session
      * */
-    public void createLoginSession(String email){
+    public void createLoginSession(String email, String name){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGGED_IN, true);
         // Storing email in pref
         editor.putString(KEY_EMAIL, email);
+        editor.putString(KEY_NAME, name);
+
         // commit changes
         editor.apply(); //editor.commit();
         // apply() VS commit()
@@ -66,6 +69,7 @@ public class SessionManagement {
         HashMap<String, String> user = new HashMap<String, String>();
         // user email id
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
+        user.put(KEY_NAME, pref.getString(KEY_NAME, null));
         // return user
         return user;
     }
