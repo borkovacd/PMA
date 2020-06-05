@@ -14,12 +14,17 @@ public class UpdateLocationActivity extends MainActivity {
 
     private DrawerLayout mDrawer;
 
+    // polja sa dobijenim podacima
     String nameSurname = null;
     String nickname = null;
-    String lastLocation = null;
     String updatedAt = null;
-    String comment = null ;
     int img = -1;
+
+    // prazna polja
+    String lastLocation = null;
+    String comment = null ;
+
+
 
     // polja sa forme
     ImageView ivUser ;
@@ -41,18 +46,12 @@ public class UpdateLocationActivity extends MainActivity {
         btnPrijavi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                etImePrezime = findViewById(R.id.et_ImePrezime);
-                etNadimak = findViewById(R.id.et_Nadimak);
-                etPrijaviNovuLokaciju = findViewById(R.id.et_PrijaviNovuLokaciju);
-                etKomentar = findViewById(R.id.MLKomentar);
-                ivUser = findViewById(R.id.iv_user);
+
 
                 Bundle b = getIntent().getExtras();
 
                 if (b != null) {
-                    nameSurname = b.getString("name");
-                    nickname = b.getString("nickname");
-                    updatedAt = b.getString("updatedAt");
+
 
                 }
 
@@ -61,6 +60,24 @@ public class UpdateLocationActivity extends MainActivity {
     }
 
     private void setView(){
+        etImePrezime = findViewById(R.id.et_ImePrezime);
+        etNadimak = findViewById(R.id.et_Nadimak);
+        etPrijaviNovuLokaciju = findViewById(R.id.et_PrijaviNovuLokaciju);
+        etKomentar = findViewById(R.id.MLKomentar);
+        ivUser = findViewById(R.id.iv_user);
+
+        Bundle b = getIntent().getExtras();
+        if (b != null) {
+            nameSurname = b.getString("name");
+            nickname = b.getString("nickname");
+            updatedAt = b.getString("updatedAt");
+            img = b.getInt("image");
+
+        }
+
+        etImePrezime.setText(nameSurname);
+        etNadimak.setText(nickname);
+        ivUser.setImageResource(img);
 
     }
 }
