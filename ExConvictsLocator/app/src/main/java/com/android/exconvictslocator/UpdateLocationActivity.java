@@ -1,6 +1,7 @@
 package com.android.exconvictslocator;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,17 @@ import android.widget.ImageView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.android.exconvictslocator.entities.ExConvictReport;
+import com.android.exconvictslocator.entities.Report;
+import com.android.exconvictslocator.entities.User;
+import com.android.exconvictslocator.repositories.impl.ExConvictRepository;
+import com.android.exconvictslocator.repositories.impl.ReportRepository;
+import com.android.exconvictslocator.repositories.impl.UserRepository;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
 public class UpdateLocationActivity extends MainActivity {
 
     private DrawerLayout mDrawer;
@@ -17,20 +29,31 @@ public class UpdateLocationActivity extends MainActivity {
     // polja sa dobijenim podacima
     String nameSurname = null;
     String nickname = null;
-    String updatedAt = null;
     int img = -1;
 
     // prazna polja
-    String lastLocation = null;
+    String newLocation = null;
     String comment = null ;
+    String updatedAt ;
 
-
+    // Dodatna polja za izvestaj
+    String userId;
+    int exConvictId ;
+    String city ;
+    double lat, lang ;
 
     // polja sa forme
     ImageView ivUser ;
     EditText etImePrezime, etNadimak ;
     EditText etPrijaviNovuLokaciju, etKomentar ;
     Button btnPrijavi ;
+
+    private ExConvictRepository exConvictRepo;
+    private ReportRepository reportRepo;
+    private UserRepository userRepository;
+    private List<ExConvictReport> exConvicts;
+    private MyDatabase myDatabase;
+    private String emailUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,21 +63,16 @@ public class UpdateLocationActivity extends MainActivity {
         mDrawer = (DrawerLayout) findViewById(R.id.drawer);
         mDrawer.addView(contentView, 0);
 
+        myDatabase = MyDatabase.getDatabase(this.getApplication());
+        reportRepo = ReportRepository.getInstance(myDatabase.reportDao());
+
         setView();
 
         btnPrijavi = findViewById(R.id.btn_prijavi);
         btnPrijavi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                Bundle b = getIntent().getExtras();
-
-                if (b != null) {
-
-
-                }
-
+                openAllLocationsActivity();
             }
         });
     }
@@ -70,7 +88,6 @@ public class UpdateLocationActivity extends MainActivity {
         if (b != null) {
             nameSurname = b.getString("name");
             nickname = b.getString("nickname");
-            updatedAt = b.getString("updatedAt");
             img = b.getInt("image");
 
         }
@@ -78,6 +95,74 @@ public class UpdateLocationActivity extends MainActivity {
         etImePrezime.setText(nameSurname);
         etNadimak.setText(nickname);
         ivUser.setImageResource(img);
+
+    }
+
+    public void openAllLocationsActivity() {
+        Intent intent = new Intent(this, ConvictLocationsMapActivity.class);
+        Bundle b = new Bundle();
+
+        // --- PODACI ZA IZVESTAJ ---
+        // Lokacija
+        newLocation = etPrijaviNovuLokaciju.getText().toString();
+
+        // Datum prijave
+        updatedAt = new Date().toString();
+
+        // Grad ??
+        city = "";
+
+        // Komentar
+        comment = etKomentar.getText().toString();
+
+        // UserId = email korisnika koji vrsi prijavu
+        userId = emailUser;
+
+        // ExConvictId ?? -> preko cega da ga trazim (koje polje je unique)
+        exConvictId = 0;
+
+        // Lat ?? -> latituda
+        lat = 0.0;
+
+        // Lang ?? -> longituda
+        lang = 0.0;
+
+        Report report = new Report();
+        report.setCity(city);
+        report.setComment(comment);
+        report.setDate(updatedAt);
+        report.setExConvictId(exConvictId);
+        report.setLang(lang);
+        report.setLat(lat);
+        report.setLocation(newLocation);
+        report.setUserId(userId);
+
+        // myDatabase.reportDao().insertReport(report);
+
+        // pronaci report  na osnovu id-ja osudjenika (ExConvictReport klasa) (ili cega vec)
+        // exConvictReport.getReports().add(report)
+
+
+        // Ulogovani korisnik
+        sessionManagement = new SessionManagement(getApplicationContext());
+        sessionManagement.checkLogin();
+        HashMap<String, String> user = sessionManagement.getUserDetails();
+        emailUser = user.get(SessionManagement.KEY_EMAIL);
+        myDatabase = MyDatabase.getDatabase(this.getApplication());
+        userRepository = UserRepository.getInstance(myDatabase.userDao());
+        User korisnik = userRepository.findUserByEmail(emailUser);
+
+
+
+        b.putString("name", nameSurname);
+        b.putString("nickname", nickname);
+        b.putInt("image", img);
+
+
+
+
+        intent.putExtras(b);
+        startActivity(intent);
 
     }
 }
