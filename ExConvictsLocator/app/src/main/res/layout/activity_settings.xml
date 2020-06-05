@@ -7,8 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_1"
     tools:context=".SettingsActivity"
-    android:textColor="@android:color/white"
-    android:layout_marginTop="50dp">
+    android:textColor="@android:color/white">
 
 
     <!--<include
@@ -20,8 +19,11 @@
 
     <FrameLayout
         android:id="@+id/settings"
+        android:layout_marginLeft="-20dp"
+        android:layout_marginStart="-20dp"
         android:layout_marginTop="50dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="@color/color_5" />
 
 </RelativeLayout>

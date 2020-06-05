@@ -110,7 +110,7 @@
     <string name="define_distance_radius">Definišite radijus udaljenosti</string>
     <string name="define_distance_radius_summary">Definišite radijus udaljenosti od lokacije gde je viđen osuđenik za koji želite da primate obaveštenja</string>
     <string name="synchronization">Sinhronizacija</string>
-    <string name="define_synhronization_interval">Definišite interval automatske sinhronizacije</string>
+    <string name="define_synhronization_interval">Definišite interval sinhronizacije</string>
 
 
 </resources>

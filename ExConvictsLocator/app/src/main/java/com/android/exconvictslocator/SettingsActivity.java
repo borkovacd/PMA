@@ -25,13 +25,13 @@ public class SettingsActivity extends MainActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.activity_settings, new SettingsFragment())
+                .replace(R.id.settings, new SettingsFragment())
                 .commit();
 
-        ActionBar actionBar = getSupportActionBar();
+        /*ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        }*/
 
         /*Spinner dropdownRadius = findViewById(R.id.spinnerRadijus);
         String[] items = new String[]{"1km", "2km", "5km"};
