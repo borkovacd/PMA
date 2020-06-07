@@ -50,6 +50,7 @@ public class UpdateLocationActivity extends MainActivity {
     private ExConvictRepository exConvictRepo;
     private ReportRepository reportRepo;
     private UserRepository userRepository;
+
     private List<ExConvictReport> exConvicts;
     private MyDatabase myDatabase;
     private String emailUser;
@@ -144,10 +145,9 @@ public class UpdateLocationActivity extends MainActivity {
 
         myDatabase.reportDao().insertReport(report);
 
+        ExConvictReport exConvictReport = new ExConvictReport();
+
         // exConvictReport.getReports().add(report)
-
-
-
 
         b.putString("name", nameSurname);
         b.putString("nickname", nickname);
