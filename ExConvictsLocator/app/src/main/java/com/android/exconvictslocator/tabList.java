@@ -3,11 +3,6 @@ package com.android.exconvictslocator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +11,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.android.exconvictslocator.entities.ExConvict;
 import com.android.exconvictslocator.entities.ExConvictReport;
 import com.android.exconvictslocator.entities.Report;
@@ -38,6 +38,8 @@ public class tabList extends Fragment {
     private ReportRepository reportRepo;
     private List<ExConvictReport> exConvicts;
 
+    private int idExConvict ;
+
 
     public tabList() {
         // Required empty public constructor
@@ -54,7 +56,7 @@ public class tabList extends Fragment {
         userRepo= UserRepository.getInstance(db.userDao());
         exConvicts= exConvictRepo.getExConvictReports();
 
-       // populateDbInit();
+        //populateDbInit();
 
 
         return inflater.inflate(R.layout.fragment_tab_list, container, false);
@@ -121,6 +123,7 @@ public class tabList extends Fragment {
         Intent intent = new Intent(getActivity(), ExConvictDetailsActivity.class);
         Bundle b = new Bundle();
 
+        b.putInt("idExConvict", exConvict.getExConvict().getId());
         b.putString("name", exConvict.getExConvict().getFirstName() + " " + exConvict.getExConvict().getLastName());
         b.putString("nickname", exConvict.getExConvict().getPseudonym());
         b.putInt("image", exConvict.getExConvict().getPhoto());
@@ -142,7 +145,7 @@ public class tabList extends Fragment {
     }
 
     private  void populateDbInit(){
-    /*    ExConvict exc1 = new ExConvict( "Pera", "Peric", "-",
+       ExConvict exc1 = new ExConvict( "Pera", "Peric", "-",
                 R.drawable.img1, "Topolska 18", "M", "1955", "ubistvo", "opis..........1");
         ExConvict exc2 = new ExConvict( "Mika", "Mikic", "-",
                 R.drawable.img2, "Topolska 19", "M", "1968", "ubistvo", "opis..........2");
@@ -150,7 +153,7 @@ public class tabList extends Fragment {
                 R.drawable.img3, "Topolska 20", "M", "1985", "silovanje", "opis..........3");
 exConvictRepo.insertExConvict(exc1);
 exConvictRepo.insertExConvict(exc2);
-exConvictRepo.insertExConvict(exc3);*/
+exConvictRepo.insertExConvict(exc3);
 //45.264251, 19.827240
         //ruzin gaj 45.245686, 19.815030
 //kamenicki park 45.227990, 19.849182

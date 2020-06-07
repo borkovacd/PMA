@@ -13,7 +13,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.android.exconvictslocator.entities.ExConvictReport;
 import com.android.exconvictslocator.entities.Report;
-import com.android.exconvictslocator.entities.User;
 import com.android.exconvictslocator.repositories.impl.ExConvictRepository;
 import com.android.exconvictslocator.repositories.impl.ReportRepository;
 import com.android.exconvictslocator.repositories.impl.UserRepository;
@@ -38,7 +37,7 @@ public class UpdateLocationActivity extends MainActivity {
 
     // Dodatna polja za izvestaj
     String userId;
-    int exConvictId ;
+    int idExConvict, exConvictId ;
     String city ;
     double lat, lang ;
 
@@ -89,6 +88,7 @@ public class UpdateLocationActivity extends MainActivity {
             nameSurname = b.getString("name");
             nickname = b.getString("nickname");
             img = b.getInt("image");
+            idExConvict = b.getInt("idExConvict");
 
         }
 
@@ -116,10 +116,15 @@ public class UpdateLocationActivity extends MainActivity {
         comment = etKomentar.getText().toString();
 
         // UserId = email korisnika koji vrsi prijavu
+        // Ulogovani korisnik
+        sessionManagement = new SessionManagement(getApplicationContext());
+        sessionManagement.checkLogin();
+        HashMap<String, String> user = sessionManagement.getUserDetails();
+        emailUser = user.get(SessionManagement.KEY_EMAIL);
         userId = emailUser;
 
-        // ExConvictId ?? -> preko cega da ga trazim (koje polje je unique)
-        exConvictId = 0;
+        // ExConvictId
+        exConvictId = idExConvict;
 
         // Lat ?? -> latituda
         lat = 0.0;
@@ -137,29 +142,17 @@ public class UpdateLocationActivity extends MainActivity {
         report.setLocation(newLocation);
         report.setUserId(userId);
 
-        // myDatabase.reportDao().insertReport(report);
+        myDatabase.reportDao().insertReport(report);
 
-        // pronaci report  na osnovu id-ja osudjenika (ExConvictReport klasa) (ili cega vec)
         // exConvictReport.getReports().add(report)
 
-
-        // Ulogovani korisnik
-        sessionManagement = new SessionManagement(getApplicationContext());
-        sessionManagement.checkLogin();
-        HashMap<String, String> user = sessionManagement.getUserDetails();
-        emailUser = user.get(SessionManagement.KEY_EMAIL);
-        myDatabase = MyDatabase.getDatabase(this.getApplication());
-        userRepository = UserRepository.getInstance(myDatabase.userDao());
-        User korisnik = userRepository.findUserByEmail(emailUser);
 
 
 
         b.putString("name", nameSurname);
         b.putString("nickname", nickname);
         b.putInt("image", img);
-
-
-
+        b.putInt("idExConvict", idExConvict);
 
         intent.putExtras(b);
         startActivity(intent);

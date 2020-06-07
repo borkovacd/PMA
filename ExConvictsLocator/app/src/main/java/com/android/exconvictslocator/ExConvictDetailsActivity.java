@@ -22,10 +22,13 @@ public class ExConvictDetailsActivity extends MainActivity {
     private String mnickName;
     private int mimg;
 
+
+
     TextView addressV, genderV, birthV, crimeV, descriptionV ;
     TextView lastLocationV, updateTimeV, nameDetailV, nicknameDetailV ;
     ImageView imageDetailV ;
 
+    int idExConvict = 0;
     String name = null;
     String nickname = null;
     String address = null;
@@ -88,6 +91,7 @@ public class ExConvictDetailsActivity extends MainActivity {
 
 
         if(b != null) {
+            idExConvict = b.getInt("idExConvict");
             name = b.getString("name");
             nickname = b.getString("nickname");
             img = b.getInt("image");
@@ -120,6 +124,8 @@ public class ExConvictDetailsActivity extends MainActivity {
         b.putString("name", mname);
         b.putString("nickname", mnickName);
         b.putInt("image", mimg);
+        b.putInt("idExConvict", idExConvict);
+
         intent.putExtras(b);
         startActivity(intent);
     }
@@ -128,6 +134,7 @@ public class ExConvictDetailsActivity extends MainActivity {
         Intent intent = new Intent(this , UpdateLocationActivity.class);
         Bundle b = new Bundle();
 
+        b.putInt("idExConvict", idExConvict);
         b.putString("name", name);
         b.putString("nickname", nickname);
         b.putInt("image", img);
