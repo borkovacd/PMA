@@ -34,9 +34,6 @@ public class LoginActivity extends MainActivity {
     // Session Management Class
     SessionManagement sessionManagement;
 
-    // Alert Dialog Manager
-    AlertDialogManager alert = new AlertDialogManager();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
