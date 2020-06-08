@@ -22,7 +22,7 @@
             android:id="@+id/searchView1"
              android:layout_height="wrap_content"
             android:layout_width="match_parent"
-
+android:searchIcon="@drawable/ic_search"
             >
         </SearchView>
         <ListView

@@ -2,6 +2,7 @@ package com.android.exconvictslocator;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -70,7 +72,11 @@ public class tabList extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         listView = getView().findViewById(R.id.convicts_list_view);
         sv = getView().findViewById(R.id.searchView1);
-        sv.setQueryHint("Search..");
+        int id = sv.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        TextView textView = (TextView) sv.findViewById(id);
+        textView.setTextColor(Color.WHITE);
+        textView.setHintTextColor(Color.WHITE);
+        sv.setQueryHint("Pretraga...");
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
@@ -84,7 +90,6 @@ public class tabList extends Fragment {
                 List<String> convictsNames = new ArrayList<String>();
                 List<ExConvictReport> filtered = new ArrayList<>();
                 for (ExConvictReport e : exConvicts) {
-                    System.out.println(e.getExConvict().getId());
                     if ( e.getExConvict().getFirstName().toLowerCase().contains(txt.toLowerCase()) || (e.getExConvict().getLastName().toLowerCase().contains(txt.toLowerCase()))) {
                         filtered.add(e);                    }
                 }

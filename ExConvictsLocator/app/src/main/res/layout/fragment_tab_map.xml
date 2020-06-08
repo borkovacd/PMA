@@ -13,12 +13,12 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical">
-    <include
-        layout="@layout/activity_search"
-        android:id="@+id/search_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        <SearchView
+            android:id="@+id/searchViewMap"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+
+            />
     <com.google.android.gms.maps.MapView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
