@@ -11,9 +11,9 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
 
+        <!-- TEXT Customization -->
         <item name="android:textSize">18sp</item>
-
-    <!--<item name="android:textAllCaps">false</item>-->
+        <item name="android:textAllCaps">false</item>
 
         <!--<item name="android:textColor">@color/color_5</item>
         <item name="android:textColorSecondary">@color/color_5</item>-->
