@@ -2,18 +2,23 @@ package com.android.exconvictslocator;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.android.exconvictslocator.entities.ExConvict;
@@ -27,19 +32,18 @@ import com.android.exconvictslocator.repositories.impl.UserRepository;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class tabList extends Fragment {
     ListView listView;
+    SearchView sv;
     private UserRepository userRepo;
     private ExConvictRepository exConvictRepo;
     private ReportRepository reportRepo;
     private List<ExConvictReport> exConvicts;
-
-    private int idExConvict ;
-
 
     public tabList() {
         // Required empty public constructor
@@ -50,35 +54,56 @@ public class tabList extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        View rootView=inflater.inflate(R.layout.fragment_tab_list, container, false);
         MyDatabase db =  MyDatabase.getDatabase(getActivity().getApplication());
         exConvictRepo = ExConvictRepository.getInstance(db.exConvictDao());
         reportRepo = ReportRepository.getInstance(db.reportDao());
         userRepo= UserRepository.getInstance(db.userDao());
         exConvicts= exConvictRepo.getExConvictReports();
-
+        sv=(SearchView) rootView.findViewById(R.id.searchView1);
+        //db.clearAllTables();
         // populateDbInit();
-        // populateDbInit2();
-
-
-        return inflater.inflate(R.layout.fragment_tab_list, container, false);
-
-
+         //populateDbInit2();
+        return rootView;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         listView = getView().findViewById(R.id.convicts_list_view);
-        List<String> convictsNames = new ArrayList<String>();
-        for (ExConvictReport r:
-             exConvicts) {
-            convictsNames.add(r.getExConvict().getFirstName() + " " + r.getExConvict().getLastName());
-        }
+        sv = getView().findViewById(R.id.searchView1);
+        int id = sv.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        TextView textView = (TextView) sv.findViewById(id);
+        textView.setTextColor(Color.WHITE);
+        textView.setHintTextColor(Color.WHITE);
+        sv.setQueryHint("Pretraga...");
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
+            @Override
+            public boolean onQueryTextSubmit(String txt) {
+                return false;
+            }
 
-        String[] names = new String[convictsNames.size()];
-        MyAdapter adapter = new MyAdapter(this.getActivity(),this.exConvicts, convictsNames.toArray(names));
-        listView.setAdapter(adapter);
+            @Override
+            public boolean onQueryTextChange(String txt) {
+
+                List<String> convictsNames = new ArrayList<String>();
+                List<ExConvictReport> filtered = new ArrayList<>();
+                for (ExConvictReport e : exConvicts) {
+                    if ( e.getExConvict().getFirstName().toLowerCase().contains(txt.toLowerCase()) || (e.getExConvict().getLastName().toLowerCase().contains(txt.toLowerCase()))) {
+                        filtered.add(e);                    }
+                }
+                for (ExConvictReport r:
+                        filtered) {
+                    convictsNames.add(r.getExConvict().getFirstName() + " " + r.getExConvict().getLastName());
+                }
+                String[] names = new String[convictsNames.size()];
+                MyAdapter adapter = new MyAdapter(getActivity(),filtered, convictsNames.toArray(names));
+                listView.setAdapter(adapter);
+                return false;
+            }
+        });
+
     }
 
     class MyAdapter extends ArrayAdapter<String>{
@@ -155,9 +180,7 @@ public class tabList extends Fragment {
 exConvictRepo.insertExConvict(exc1);
 exConvictRepo.insertExConvict(exc2);
 exConvictRepo.insertExConvict(exc3);
-//45.264251, 19.827240
-        //ruzin gaj 45.245686, 19.815030
-//kamenicki park 45.227990, 19.849182
+
         User user = new User("Jovana", "Novakovic", "password123", "jo@mailinator.com");
 userRepo.insertUser(user);
     Report report1 = new Report("Zeleznicka stanica",new Date().toString(), "Novi Sad","-", "jo@mailinator.com", 1, 45.264251,  19.827240);
@@ -171,6 +194,7 @@ reportRepo.insertReport(report3);
     }
 
     private  void populateDbInit2(){
+        System.out.println("**********************************IZVRESENOOOOOO");
         ExConvict exc1 = new ExConvict( "Miloš", "Petrović", "Pele",
                 R.drawable.img1, "Bulevar patrijarha Pavla 14, 21 000, Novi Sad, Srbija", "Muški",
                 "12.12.1955.", "ubistvo sa predumišljajem, pljačka, učešće u organizovanom kriminalu",
@@ -181,12 +205,13 @@ reportRepo.insertReport(report3);
         ExConvict exc3 = new ExConvict( "Nenad", "Mićić", "Velja",
                 R.drawable.img3, "Braće Dronjak 26, 21 000, Novi Sad, Srbija", "Muški", "27.03.1985.",
                 "silovanje, ubistvo iz nehata", "Visina 185cm, težina 80 kg, boja očiju: plava, plava kosa vezana u rep, tetovaža u obliku zmaja na vratu, slika džokera na levoj potkolenici, ožiljci na licu, potiljku i gornjem delu leve ruke, beleg na stomaku.");
+       exc1.setId(1);
+       exc2.setId(2);
+       exc3.setId(3);
         exConvictRepo.insertExConvict(exc1);
         exConvictRepo.insertExConvict(exc2);
         exConvictRepo.insertExConvict(exc3);
-        //45.264251, 19.827240
-        //ruzin gaj 45.245686, 19.815030
-        //kamenicki park 45.227990, 19.849182
+
         User user = new User("Jovana", "Novakovic", "password123", "jo@mailinator.com");
         userRepo.insertUser(user);
         Report report1 = new Report("Zeleznicka stanica",new Date().toString(), "Novi Sad","-", "jo@mailinator.com", 1, 45.264251,  19.827240);

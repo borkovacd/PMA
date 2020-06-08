@@ -7,7 +7,6 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.android.exconvictslocator.entities.ExConvict;
-import com.android.exconvictslocator.entities.ExConvictReport;
 import com.android.exconvictslocator.entities.Report;
 import com.android.exconvictslocator.entities.User;
 import com.android.exconvictslocator.entities.daos.ExConvictDao;
@@ -29,26 +28,17 @@ public abstract class MyDatabase extends RoomDatabase {
         if (INSTANCE == null) {
             synchronized (MyDatabase.class) {
                 if (INSTANCE == null) {
+
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            MyDatabase.class, NAME).fallbackToDestructiveMigration().allowMainThreadQueries()
+                            MyDatabase.class, NAME)
+                            .fallbackToDestructiveMigration()
+                            .allowMainThreadQueries()
                             .build();
+
                 }
             }
         }
         return INSTANCE;
-    }
-
-    private  void populateDbInit(){
-        ExConvict exc1 = new ExConvict( "Pera", "Peric", "-",
-        R.drawable.img1, "Topolska 18", "M", "1955", "ubistvo", "opis..........1");
-        ExConvict exc2 = new ExConvict( "Mika", "Mikic", "-",
-                R.drawable.img2, "Topolska 19", "M", "1968", "ubistvo", "opis..........2");
-        ExConvict exc3 = new ExConvict( "Zika", "Zikic", "-",
-                R.drawable.img3, "Topolska 20", "M", "1985", "silovanje", "opis..........3");
-
-
-
-
     }
 
 }
