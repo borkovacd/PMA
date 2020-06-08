@@ -56,7 +56,8 @@ public class tabList extends Fragment {
         userRepo= UserRepository.getInstance(db.userDao());
         exConvicts= exConvictRepo.getExConvictReports();
 
-        //populateDbInit();
+        // populateDbInit();
+        // populateDbInit2();
 
 
         return inflater.inflate(R.layout.fragment_tab_list, container, false);
@@ -165,6 +166,35 @@ userRepo.insertUser(user);
 reportRepo.insertReport(report1);
 reportRepo.insertReport(report2);
 reportRepo.insertReport(report3);
+
+
+    }
+
+    private  void populateDbInit2(){
+        ExConvict exc1 = new ExConvict( "Miloš", "Petrović", "Pele",
+                R.drawable.img1, "Bulevar patrijarha Pavla 14, 21 000, Novi Sad, Srbija", "Muški",
+                "12.12.1955.", "ubistvo sa predumišljajem, pljačka, učešće u organizovanom kriminalu",
+                "Visina 185cm, težina 80 kg, boja očiju: plava, plava kosa vezana u rep, tetovaža u obliku zmaja na vratu, slika džokera na levoj potkolenici, ožiljci na licu, potiljku i gornjem delu leve ruke, beleg na stomaku.");
+        ExConvict exc2 = new ExConvict( "Nikola", "Milošević", "Džoni",
+                R.drawable.img2, "Bulevar kralja Aleksandra 19, 11 000, Beograd, Srbija", "Muški", "14.04.1968.",
+                "ubistvo iz nehata, ubistvo sa predumišljajem", "Visina 185cm, težina 80 kg, boja očiju: plava, plava kosa vezana u rep, tetovaža u obliku zmaja na vratu, slika džokera na levoj potkolenici, ožiljci na licu, potiljku i gornjem delu leve ruke, beleg na stomaku.");
+        ExConvict exc3 = new ExConvict( "Nenad", "Mićić", "Velja",
+                R.drawable.img3, "Braće Dronjak 26, 21 000, Novi Sad, Srbija", "Muški", "27.03.1985.",
+                "silovanje, ubistvo iz nehata", "Visina 185cm, težina 80 kg, boja očiju: plava, plava kosa vezana u rep, tetovaža u obliku zmaja na vratu, slika džokera na levoj potkolenici, ožiljci na licu, potiljku i gornjem delu leve ruke, beleg na stomaku.");
+        exConvictRepo.insertExConvict(exc1);
+        exConvictRepo.insertExConvict(exc2);
+        exConvictRepo.insertExConvict(exc3);
+        //45.264251, 19.827240
+        //ruzin gaj 45.245686, 19.815030
+        //kamenicki park 45.227990, 19.849182
+        User user = new User("Jovana", "Novakovic", "password123", "jo@mailinator.com");
+        userRepo.insertUser(user);
+        Report report1 = new Report("Zeleznicka stanica",new Date().toString(), "Novi Sad","-", "jo@mailinator.com", 1, 45.264251,  19.827240);
+        Report report2 = new Report("Ruzin gaj",new Date().toString(), "Novi Sad","-", "jo@mailinator.com", 2, 45.245686,  19.815030);
+        Report report3 = new Report("Kamenicki park",new Date().toString(), "Novi Sad","-", "jo@mailinator.com", 1,  45.227990,   19.849182);
+        reportRepo.insertReport(report1);
+        reportRepo.insertReport(report2);
+        reportRepo.insertReport(report3);
 
 
     }
