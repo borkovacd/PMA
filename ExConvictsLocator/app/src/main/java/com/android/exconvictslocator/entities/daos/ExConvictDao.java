@@ -24,6 +24,6 @@ public interface ExConvictDao {
     @Query("SELECT * FROM ExConvict")
     public List<ExConvict> getExConvicts();
 
-    @Query("SELECT * from ExConvict LEFT JOIN Report Order by Report.date ")
+    @Query("SELECT * from ExConvict ")
     public List<ExConvictReport> getExConvictReports();
 }

@@ -15,4 +15,5 @@ public interface ReportDao {
 
     @Delete
     public void deleteReport(Report report);
+
 }
