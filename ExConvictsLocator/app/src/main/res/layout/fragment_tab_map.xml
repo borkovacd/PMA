@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_2"
+    android:background="@drawable/background_1"
 
     tools:context=".tabMap">
     <LinearLayout
@@ -17,6 +17,7 @@
             android:id="@+id/searchViewMap"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:searchIcon="@drawable/ic_search"
 
             />
     <com.google.android.gms.maps.MapView

@@ -1,5 +1,6 @@
 package com.android.exconvictslocator;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.android.exconvictslocator.entities.ExConvict;
 import com.android.exconvictslocator.entities.ExConvictReport;
@@ -66,6 +68,10 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
         MyDatabase db =  MyDatabase.getDatabase(getActivity().getApplication());
         exConvictRepo = ExConvictRepository.getInstance(db.exConvictDao());
         exConvicts = exConvictRepo.getExConvictReports();
+        int id = sv.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        TextView textView = (TextView) sv.findViewById(id);
+        textView.setTextColor(Color.WHITE);
+        textView.setHintTextColor(Color.WHITE);
         sv.setQueryHint("Pretraga...");
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
