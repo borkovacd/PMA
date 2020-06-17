@@ -62,8 +62,8 @@ public class tabList extends Fragment {
         exConvicts= exConvictRepo.getExConvictReports();
         sv=(SearchView) rootView.findViewById(R.id.searchView1);
         //db.clearAllTables();
-        // populateDbInit();
-         //populateDbInit2();
+        //populateDbInit();
+        //populateDbInit2();
         return rootView;
     }
 
