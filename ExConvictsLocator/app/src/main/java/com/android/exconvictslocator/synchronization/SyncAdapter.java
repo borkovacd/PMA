@@ -7,12 +7,17 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
+import android.util.Log;
+
+import com.android.exconvictslocator.entities.ExConvict;
 
 /**
  * Handle the transfer of data between a server and an
  * app, using the Android sync adapter framework.
  */
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
+
+    private static final String TAG = SyncAdapter.class.getSimpleName();
 
     // Global variables
     // Define a variable to contain a content resolver instance
@@ -59,6 +64,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             String authority,
             ContentProviderClient provider,
             SyncResult syncResult) {
+
+        Log.i(TAG, "onPerformSync() was called");
+
+        //192.168.1.9 - Moja IP adresa
+        final String uri = "http://192.168.1.9:8080/api/exConvicts";
+        ExConvict exConvict = new RestTask().getExConvicts(uri);
+        Log.d("RESTTASK", "Rezultat: " + exConvict.getFirstName() + ' ' + exConvict.getLastName());
+
         /*
          * Put the data transfer code here.
          */

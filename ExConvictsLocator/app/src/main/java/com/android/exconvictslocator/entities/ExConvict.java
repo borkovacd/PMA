@@ -5,29 +5,43 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+
 @Entity
 public class ExConvict {
+
     @NonNull
     @ColumnInfo
     @PrimaryKey(autoGenerate = true)
+    @JsonProperty("id")
     private int id;
     @ColumnInfo
+    @JsonProperty("firstName")
     private String firstName;
     @ColumnInfo
+    @JsonProperty("lastName")
     private String lastName;
     @ColumnInfo
+    @JsonProperty("pseudonym")
     private String pseudonym;
     @ColumnInfo
+    @JsonProperty("photo")
     private int photo;
     @ColumnInfo
+    @JsonProperty("address")
     private String address;
     @ColumnInfo
+    @JsonProperty("gender")
     private String gender;
     @ColumnInfo
+    @JsonProperty("dateOfBirth")
     private String dateOfBirth;
     @ColumnInfo
+    @JsonProperty("crime")
     private String crime;
     @ColumnInfo
+    @JsonProperty("description")
     private String description;
 
     public ExConvict(){}

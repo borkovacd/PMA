@@ -41,7 +41,7 @@ public class ListOfExConvicts extends MainActivity {
     public static final String ACCOUNT = "dummyaccount";
     // Sync interval constants
     public static final long SECONDS_PER_MINUTE = 60L;
-    public static final long SYNC_INTERVAL_IN_MINUTES = 60L;
+    public static final long SYNC_INTERVAL_IN_MINUTES = 1L; //60L
     public static final long SYNC_INTERVAL =
             SYNC_INTERVAL_IN_MINUTES *
                     SECONDS_PER_MINUTE;
@@ -63,6 +63,8 @@ public class ListOfExConvicts extends MainActivity {
         mAccount = CreateSyncAccount(this);
         // Get the content resolver for your app
         mResolver = getContentResolver();
+
+        //Ovo ne bih rekao da radi za sada bilo sta
         /*
          * Turn on periodic syncing
          */
@@ -71,6 +73,8 @@ public class ListOfExConvicts extends MainActivity {
                 AUTHORITY,
                 Bundle.EMPTY,
                 SYNC_INTERVAL);
+
+
 
         // Session Management class instance
         sessionManagement = new SessionManagement(getApplicationContext());
@@ -161,6 +165,22 @@ public class ListOfExConvicts extends MainActivity {
              */
         }
         return newAccount;
+    }
+
+    //Samo privremeno, dok se ne odradi neka pocetna verzija sinhronizacije
+    //Sinhronizacija na zahtev pritiskom na button "Sync"
+    public void onRefreshButtonClick(View v) {
+        // Pass the settings flags by inserting them in a bundle
+        Bundle settingsBundle = new Bundle();
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        /*
+         * Request the sync for the default account, authority, and
+         * manual sync settings
+         */
+        ContentResolver.requestSync(mAccount, AUTHORITY, settingsBundle);
     }
 
 }
