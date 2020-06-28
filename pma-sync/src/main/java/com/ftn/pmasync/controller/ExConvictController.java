@@ -23,7 +23,7 @@ public class ExConvictController {
 	@Autowired
 	private ExConvictService exConvictService;
 	
-	/*@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<ExConvictDTO>> getExConvicts() {
 		List<ExConvictDTO> exConvictsDTO = new ArrayList<ExConvictDTO>();
 		List<ExConvict> exConvicts = exConvictService.getExConvicts();
@@ -33,9 +33,9 @@ public class ExConvictController {
 			exConvictsDTO.add(exConvictDTO);
 		}
 		return new ResponseEntity<List<ExConvictDTO>> (exConvictsDTO, HttpStatus.OK);		
-	}*/
+	}
 	
-	@RequestMapping(method = RequestMethod.GET)
+	/*@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<ExConvictDTO> getExConvict() {
 		List<ExConvict> exConvicts = exConvictService.getExConvicts();
 		for(ExConvict exConvict : exConvicts) {
@@ -44,7 +44,7 @@ public class ExConvictController {
 			return new ResponseEntity<ExConvictDTO> (exConvictDTO, HttpStatus.OK);	
 		}		
 		return new ResponseEntity<ExConvictDTO> (HttpStatus.OK);
-	}
+	}*/
 	
 	
 

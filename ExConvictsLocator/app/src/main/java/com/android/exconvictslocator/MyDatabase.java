@@ -22,9 +22,10 @@ public abstract class MyDatabase extends RoomDatabase {
     public abstract ExConvictDao exConvictDao();
 
     public static final String NAME = "MyDataBase";
+    //private static volatile MyDatabase INSTANCE;
     private static volatile MyDatabase INSTANCE;
 
-    static MyDatabase getDatabase(final Context context) {
+    public static MyDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (MyDatabase.class) {
                 if (INSTANCE == null) {

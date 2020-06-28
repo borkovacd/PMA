@@ -9,7 +9,9 @@ import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.android.exconvictslocator.MyDatabase;
 import com.android.exconvictslocator.entities.ExConvict;
+import com.android.exconvictslocator.repositories.impl.ExConvictRepository;
 
 /**
  * Handle the transfer of data between a server and an
@@ -22,6 +24,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     // Global variables
     // Define a variable to contain a content resolver instance
     ContentResolver contentResolver;
+
+    private ExConvictRepository exConvictRepository;
 
     /**
      * Set up the sync adapter
@@ -67,10 +71,28 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         Log.i(TAG, "onPerformSync() was called");
 
-        //192.168.1.9 - Moja IP adresa
-        final String uri = "http://192.168.1.9:8080/api/exConvicts";
-        ExConvict exConvict = new RestTask().getExConvicts(uri);
-        Log.d("RESTTASK", "Rezultat: " + exConvict.getFirstName() + ' ' + exConvict.getLastName());
+        // !!!!!
+        //API 21 RADI, API 25 RADI, API 29 NE RADI!!!
+
+        // TODO 1 -> Pronaći način za automatsko detektovanje ip adrese interneta
+        final String uri = "http://10.5.50.253:8080/api/exConvicts";
+        ExConvict[] exConvicts = new RestTask().getExConvicts(uri);
+        Log.d("RESTTASK", "Rezultat: " + exConvicts.length);
+        // TODO 2 -> Nakon preuzimanje svih osuđenika popuniti bazu na telefonu
+
+        MyDatabase db =  MyDatabase.getDatabase(this.getContext());
+        exConvictRepository = ExConvictRepository.getInstance(db.exConvictDao());
+
+        for(ExConvict exConvict: exConvicts) {
+            exConvictRepository.insertExConvict(exConvict);
+        }
+
+        // TODO 3 -> Provera da li se desi konflikt u bazi ili update
+
+        //TODO 4 -> Provera da li ako je zika zikic bio na id-u 2 a na serveru se pojavi pera peric na tom id-u dodje do update-a
+
+        //TODO 5 -> A reports?
+
 
         /*
          * Put the data transfer code here.
