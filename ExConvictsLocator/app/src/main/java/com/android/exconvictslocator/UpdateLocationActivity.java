@@ -142,10 +142,11 @@ public class UpdateLocationActivity extends MainActivity {
         report.setLat(lat);
         report.setLocation(newLocation);
         report.setUserId(userId);
+        report.setSync(false);
 
         myDatabase.reportDao().insertReport(report);
 
-        ExConvictReport exConvictReport = new ExConvictReport();
+        // ExConvictReport exConvictReport = new ExConvictReport();
 
         // exConvictReport.getReports().add(report)
 

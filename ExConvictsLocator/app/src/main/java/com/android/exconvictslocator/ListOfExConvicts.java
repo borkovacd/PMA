@@ -4,6 +4,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
+import com.android.exconvictslocator.synchronization.SyncReportService;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
@@ -181,6 +183,11 @@ public class ListOfExConvicts extends MainActivity {
          * manual sync settings
          */
         ContentResolver.requestSync(mAccount, AUTHORITY, settingsBundle);
+    }
+
+    public void onNewSyncButtonClick(View v) {
+        Intent intent3 = new Intent(this, SyncReportService.class);
+        startService(intent3);
     }
 
 }
