@@ -20,7 +20,7 @@ public interface ReportDao {
     @Delete
     public void deleteReport(Report report);
 
-    @Query("SELECT * FROM Report where isSync = 1")
+    @Query("SELECT * FROM Report where isSync = 0")
     public List<Report> getNotSyncedReports();
 
     @Update

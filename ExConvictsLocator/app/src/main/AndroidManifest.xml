@@ -69,6 +69,12 @@
                 android:resource="@xml/authenticator" />
         </service>
 
+        <service
+            android:enabled = "true"
+            android:name="com.android.exconvictslocator.synchronization.SyncReportService">
+        </service>
+
+
         <provider
             android:name="com.android.exconvictslocator.synchronization.provider.StubProvider"
             android:authorities="com.android.exconvictslocator.synchronization.provider"
