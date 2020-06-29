@@ -6,7 +6,7 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(foreignKeys ={ @ForeignKey(entity=User.class, parentColumns="email", childColumns="userId"),
+@Entity(foreignKeys ={ @ForeignKey(entity=User.class, parentColumns="id", childColumns="userId"),
         @ForeignKey(entity=ExConvict.class, parentColumns="id", childColumns="exConvictId")  })
 public class Report {
     @NonNull
