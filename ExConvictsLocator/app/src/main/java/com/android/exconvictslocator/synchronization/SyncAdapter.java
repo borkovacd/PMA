@@ -6,12 +6,25 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SyncResult;
+import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
+
 import com.android.exconvictslocator.MyDatabase;
 import com.android.exconvictslocator.entities.ExConvict;
+import com.android.exconvictslocator.entities.Report;
+import com.android.exconvictslocator.entities.User;
 import com.android.exconvictslocator.repositories.impl.ExConvictRepository;
+import com.android.exconvictslocator.repositories.impl.ReportRepository;
+import com.android.exconvictslocator.repositories.impl.UserRepository;
+
+import java.math.BigInteger;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.nio.ByteOrder;
 
 /**
  * Handle the transfer of data between a server and an
@@ -26,6 +39,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     ContentResolver contentResolver;
 
     private ExConvictRepository exConvictRepository;
+    private UserRepository userRepository;
+    private ReportRepository reportRepository;
 
     /**
      * Set up the sync adapter
@@ -61,6 +76,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      * sync adapter runs in a background thread, so you don't have to set
      * up your own background processing.
      */
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onPerformSync(
             Account account,
@@ -75,17 +91,36 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         //API 21 RADI, API 25 RADI, API 29 NE RADI!!!
 
         // TODO 1 -> Pronaći način za automatsko detektovanje ip adrese interneta
-        final String uri = "http://10.5.50.253:8080/api/exConvicts";
+        //Isprobati sa telefonom
+        //String ip = wifiIpAddress(this.getContext().getApplicationContext());
+        //Log.d("RESTTASK", ip);
+        final String uri = "http://192.168.137.1:8080/api/exConvicts";
         ExConvict[] exConvicts = new RestTask().getExConvicts(uri);
-        Log.d("RESTTASK", "Rezultat: " + exConvicts.length);
+        final String uri2 = "http://192.168.137.1:8080/api/users";
+        User[] users = new RestTask().getUsers(uri2);
+        final String uri3 = "http://192.168.137.1:8080/api/reports";
+        Report[] reports = new RestTask().getReports(uri3);
+        Log.d("RESTTASK", "Rezultat (exConvicts) : " + exConvicts.length);
+        Log.d("RESTTASK", "Rezultat (users) : " + users.length);
+        Log.d("RESTTASK", "Rezultat (reports) : " + reports.length);
         // TODO 2 -> Nakon preuzimanje svih osuđenika popuniti bazu na telefonu
 
         MyDatabase db =  MyDatabase.getDatabase(this.getContext());
         exConvictRepository = ExConvictRepository.getInstance(db.exConvictDao());
+        reportRepository = ReportRepository.getInstance(db.reportDao());
+        userRepository = UserRepository.getInstance(db.userDao());
 
         for(ExConvict exConvict: exConvicts) {
             exConvictRepository.insertExConvict(exConvict);
         }
+        for(User user: users) {
+            userRepository.insertUser(user);
+        }
+        /*for(Report report: reports) {
+            reportRepository.insertReport(report);
+        }*/
+
+        Log.d("RESTTASK", "Kraj");
 
         // TODO 3 -> Provera da li se desi konflikt u bazi ili update
 
@@ -97,5 +132,29 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         /*
          * Put the data transfer code here.
          */
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    protected String wifiIpAddress(Context context) {
+        WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
+        Log.d("RESTTASK", "Ip je " + ipAddress);
+
+        // Convert little-endian to big-endianif needed
+        if (ByteOrder.nativeOrder().equals(ByteOrder.LITTLE_ENDIAN)) {
+            ipAddress = Integer.reverseBytes(ipAddress);
+        }
+
+        byte[] ipByteArray = BigInteger.valueOf(ipAddress).toByteArray();
+
+        String ipAddressString;
+        try {
+            ipAddressString = InetAddress.getByAddress(ipByteArray).getHostAddress();
+        } catch (UnknownHostException ex) {
+            Log.e("WIFIIP", "Unable to get host address.");
+            ipAddressString = null;
+        }
+
+        return ipAddressString;
     }
 }

@@ -14,20 +14,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-//@Entity
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
 	
-	//@Id
-	@NotNull
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	
 	@Column(name = "email", unique = true)
 	private String email;
 	
 	@Column
 	private String firstName;
+	
 	@Column
 	private String lastName;
 	

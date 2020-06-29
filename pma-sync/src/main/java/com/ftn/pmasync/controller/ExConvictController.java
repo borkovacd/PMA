@@ -35,17 +35,6 @@ public class ExConvictController {
 		return new ResponseEntity<List<ExConvictDTO>> (exConvictsDTO, HttpStatus.OK);		
 	}
 	
-	/*@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<ExConvictDTO> getExConvict() {
-		List<ExConvict> exConvicts = exConvictService.getExConvicts();
-		for(ExConvict exConvict : exConvicts) {
-			ModelMapper modelMapper = new ModelMapper();
-			ExConvictDTO exConvictDTO = modelMapper.map(exConvict, ExConvictDTO.class);
-			return new ResponseEntity<ExConvictDTO> (exConvictDTO, HttpStatus.OK);	
-		}		
-		return new ResponseEntity<ExConvictDTO> (HttpStatus.OK);
-	}*/
-	
 	
 
 }
