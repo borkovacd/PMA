@@ -16,6 +16,7 @@ import com.android.exconvictslocator.entities.Report;
 import com.android.exconvictslocator.repositories.impl.ExConvictRepository;
 import com.android.exconvictslocator.repositories.impl.ReportRepository;
 import com.android.exconvictslocator.repositories.impl.UserRepository;
+import com.android.exconvictslocator.synchronization.SyncReportService;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -142,10 +143,11 @@ public class UpdateLocationActivity extends MainActivity {
         report.setLat(lat);
         report.setLocation(newLocation);
         report.setUserId(userId);
+        report.setSync(false);
 
         myDatabase.reportDao().insertReport(report);
 
-        ExConvictReport exConvictReport = new ExConvictReport();
+        // ExConvictReport exConvictReport = new ExConvictReport();
 
         // exConvictReport.getReports().add(report)
 
@@ -157,5 +159,10 @@ public class UpdateLocationActivity extends MainActivity {
         intent.putExtras(b);
         startActivity(intent);
 
+    }
+
+    public void onNewSyncButtonClick(View v) {
+        Intent intent3 = new Intent(this, SyncReportService.class);
+        startService(intent3);
     }
 }

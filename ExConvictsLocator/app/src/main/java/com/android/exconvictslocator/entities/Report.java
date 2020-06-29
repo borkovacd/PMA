@@ -29,6 +29,8 @@ public class Report {
     private double lat;
     @ColumnInfo
     private double lang;
+    @ColumnInfo
+    private boolean isSync = true ;
 
     public Report(){}
 
@@ -113,5 +115,13 @@ public class Report {
 
     public void setLang(double lang) {
         this.lang = lang;
+    }
+
+    public boolean isSync() {
+        return isSync;
+    }
+
+    public void setSync(boolean sync) {
+        isSync = sync;
     }
 }

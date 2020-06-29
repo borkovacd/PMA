@@ -41,7 +41,7 @@ public class ListOfExConvicts extends MainActivity {
     public static final String ACCOUNT = "dummyaccount";
     // Sync interval constants
     public static final long SECONDS_PER_MINUTE = 60L;
-    public static final long SYNC_INTERVAL_IN_MINUTES = 1L; //60L
+    public static final long SYNC_INTERVAL_IN_MINUTES = 60L; //60L
     public static final long SYNC_INTERVAL =
             SYNC_INTERVAL_IN_MINUTES *
                     SECONDS_PER_MINUTE;

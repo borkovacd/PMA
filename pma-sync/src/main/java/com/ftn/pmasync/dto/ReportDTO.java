@@ -1,4 +1,4 @@
-package com.ftn.pmasync.model;
+package com.ftn.pmasync.dto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,33 +11,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Report {
+public class ReportDTO {
 	
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     private int id;
-    @Column
     private String location;
-    @Column
     private String date;
-    @Column
     private String city;
-    @Column
     private String comment;
-    @Column
     private String userId;
-    @Column
     private int exConvictId;
-    @Column
     private double lat;
-    @Column
     private double lang;
-    @Column
     private boolean isSync ;
 
 }
