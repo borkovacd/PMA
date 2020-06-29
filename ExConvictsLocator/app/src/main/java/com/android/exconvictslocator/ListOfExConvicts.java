@@ -2,8 +2,10 @@ package com.android.exconvictslocator;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
+import com.android.exconvictslocator.synchronization.SyncReceiver;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
@@ -31,6 +34,10 @@ public class ListOfExConvicts extends MainActivity {
 
     // Session Management Class
     SessionManagement sessionManagement;
+
+    private PendingIntent pendingIntent;
+    private SyncReceiver sync;
+    public static String SYNC_DATA = "SYNC_DATA";
 
     // Constants
     // The authority for the sync adapter's content provider
@@ -98,6 +105,8 @@ public class ListOfExConvicts extends MainActivity {
         }
 
 
+        sync = new SyncReceiver();
+
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabMap = (TabItem) findViewById(R.id.tabMap);
         tabList = (TabItem) findViewById(R.id.tabList);
@@ -132,6 +141,26 @@ public class ListOfExConvicts extends MainActivity {
         //Primer
         //String marketPref = sharedPref.getString("distance_radius", "-1");
         //Toast.makeText(this, marketPref, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(SYNC_DATA);
+
+        filter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
+        filter.addAction("android.net.wifi.STATE_CHANGE");
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(sync, filter);
+        /*
+        Intent intent = new Intent(ListOfExConvicts.this, SyncReportService.class);
+        intent.putExtra("activityName", "ListOfExConvicts");
+
+        startService(intent);
+          */
+
+
     }
 
     /**

@@ -1,6 +1,9 @@
 package com.android.exconvictslocator;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +17,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.android.exconvictslocator.entities.User;
 import com.android.exconvictslocator.repositories.impl.UserRepository;
+import com.android.exconvictslocator.synchronization.SyncReceiver;
+import com.android.exconvictslocator.synchronization.SyncReportService;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -25,6 +30,10 @@ public class UserProfileActivity extends MainActivity {
 
     private MyDatabase myDatabase;
     private UserRepository userRepository;
+
+    private PendingIntent pendingIntent;
+    private SyncReceiver sync;
+    public static String SYNC_DATA = "SYNC_DATA";
 
 //    private MutableLiveData<User> user2 = new MutableLiveData<>();
 
@@ -145,6 +154,7 @@ public class UserProfileActivity extends MainActivity {
             }
         });
 
+        sync = new SyncReceiver();
 
     }
 
@@ -157,6 +167,26 @@ public class UserProfileActivity extends MainActivity {
 
             return null;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(SYNC_DATA);
+
+        filter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
+        filter.addAction("android.net.wifi.STATE_CHANGE");
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(sync, filter);
+
+        Intent intent = new Intent(UserProfileActivity.this, SyncReportService.class);
+        intent.putExtra("activityName", "UserProfileActivity");
+
+        startService(intent);
+
+
+
     }
 
 

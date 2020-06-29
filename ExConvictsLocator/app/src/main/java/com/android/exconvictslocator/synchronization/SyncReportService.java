@@ -42,12 +42,12 @@ public class SyncReportService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 
-        SyncTask task1 = new SyncTask();
+        ActivityTask task1 = new ActivityTask();
         task1.execute();
 
     }
 
-    private class SyncTask extends AsyncTask<Void, Void, Void> {
+    private class ActivityTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
             String url = "http://" + ip + ":8080/api/reports/syncReports";
