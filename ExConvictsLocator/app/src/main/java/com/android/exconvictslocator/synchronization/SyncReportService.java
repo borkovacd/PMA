@@ -3,7 +3,6 @@ package com.android.exconvictslocator.synchronization;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -23,7 +22,7 @@ import java.util.List;
 
 public class SyncReportService extends IntentService {
 
-    private MyDatabase myDatabase;
+    private MyDatabase myDatabase = MyDatabase.getDatabase(this.getApplication()) ;
     private List<Report> reports ;
     private  String ip = "192.168.0.16";
 
@@ -42,28 +41,18 @@ public class SyncReportService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-//        Handler handler = new Handler(Looper.getMainLooper());
-//        handler.post(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                Toast.makeText(getApplicationContext(), "Automatsko pokretanje", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//        return;
-        Toast.makeText(getApplicationContext(), "Pokrecem sinhronizaciju", Toast.LENGTH_SHORT).show();
-        ActivityTask task1 = new ActivityTask();
+
+        SyncTask task1 = new SyncTask();
         task1.execute();
 
     }
 
-    private class ActivityTask extends AsyncTask<Void, Void, Void> {
+    private class SyncTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
             String url = "http://" + ip + ":8080/api/reports/syncReports";
-            myDatabase = MyDatabase.getDatabase(this.getApplication());
             reports = myDatabase.reportDao().getNotSyncedReports();
+
             RestTemplate restTemplate = new RestTemplate();
 
             try {
