@@ -200,8 +200,10 @@ public class ListOfExConvicts extends MainActivity {
         return newAccount;
     }
 
+
     //Samo privremeno, dok se ne odradi neka pocetna verzija sinhronizacije
     //Sinhronizacija na zahtev pritiskom na button "Sync"
+    /*
     public void onRefreshButtonClick(View v) {
         // Pass the settings flags by inserting them in a bundle
         Bundle settingsBundle = new Bundle();
@@ -209,14 +211,12 @@ public class ListOfExConvicts extends MainActivity {
                 ContentResolver.SYNC_EXTRAS_MANUAL, true);
         settingsBundle.putBoolean(
                 ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-        /*
-         * Request the sync for the default account, authority, and
-         * manual sync settings
-         */
+
+         //Request the sync for the default account, authority, and
+         //manual sync settings
+
         ContentResolver.requestSync(mAccount, AUTHORITY, settingsBundle);
-
-
-    }
+    }*/
 
     private void setAccountSyncable() {
         if (ContentResolver.getIsSyncable(mAccount, AUTHORITY) == 0) {

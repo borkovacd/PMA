@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             name.setText(user.get(SessionManagement.KEY_NAME));
         } else {
             nav_menu.findItem(R.id.logout).setVisible(false);
+            nav_menu.findItem(R.id.profile).setVisible(false);
         }
 
         setSupportActionBar(toolbar);
