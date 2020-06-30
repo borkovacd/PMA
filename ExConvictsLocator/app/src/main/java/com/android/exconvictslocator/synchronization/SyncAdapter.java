@@ -14,6 +14,7 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 
 import com.android.exconvictslocator.MyDatabase;
+import com.android.exconvictslocator.R;
 import com.android.exconvictslocator.entities.ExConvict;
 import com.android.exconvictslocator.entities.ExConvictReport;
 import com.android.exconvictslocator.entities.Report;
@@ -99,8 +100,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         // TODO 1 -> Pronaći način za automatsko detektovanje ip adrese interneta
         // TODO 1 -> Potencijalno reseno ako su telefon i lap konektovani na istu wifi mrezu, otkomentarisati
         //Isprobati sa telefonom
-        String ip = wifiIpAddress(this.getContext().getApplicationContext());
-        Log.d("RESTTASK", ip);
+        //String ip = wifiIpAddress(this.getContext().getApplicationContext());
+        //Log.d("RESTTASK", ip);
         //String ip_address  = getIpAddress();
         //Log.d("RESTTASK", ip_address);
 
@@ -127,6 +128,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         exConvictsReports = exConvictRepository.getExConvictReports();
 
         for(ExConvict exConvict: exConvicts) {
+            exConvict.setPhoto(R.drawable.img1);
             exConvictRepository.insertExConvict(exConvict);
         }
         for(User user: users) {
