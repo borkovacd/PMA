@@ -23,7 +23,7 @@ import java.util.List;
 
 public class SyncReportService extends IntentService {
 
-    private MyDatabase myDatabase = MyDatabase.getDatabase(this.getApplication()) ;
+    private MyDatabase myDatabase ;
     private List<Report> reports ;
     private List<User> users ;
     private  String ip = "192.168.0.73";
@@ -43,6 +43,7 @@ public class SyncReportService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
+        myDatabase = MyDatabase.getDatabase(this.getApplication()) ;
 
         ActivityTask task1 = new ActivityTask();
         task1.execute();
