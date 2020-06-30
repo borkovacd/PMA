@@ -24,8 +24,12 @@ import com.android.exconvictslocator.repositories.impl.UserRepository;
 
 import java.math.BigInteger;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.nio.ByteOrder;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -98,6 +102,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         //Isprobati sa telefonom
         //String ip = wifiIpAddress(this.getContext().getApplicationContext());
         //Log.d("RESTTASK", ip);
+        //String ip_address  = getIpAddress();
+        //Log.d("RESTTASK", ip_address);
+
         final String uri = "http://192.168.137.1:8080/api/exConvicts";
         //final String uri = "http://" + ip + ":8080/api/exConvicts";
         ExConvict[] exConvicts = new RestTask().getExConvicts(uri);
@@ -146,7 +153,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     protected String wifiIpAddress(Context context) {
         WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
-        Log.d("RESTTASK", "Ip je " + ipAddress);
 
         // Convert little-endian to big-endianif needed
         if (ByteOrder.nativeOrder().equals(ByteOrder.LITTLE_ENDIAN)) {
@@ -164,5 +170,33 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
 
         return ipAddressString;
+    }
+
+    private String getIpAddress() {
+        String ip = "";
+        try {
+            Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface
+                    .getNetworkInterfaces();
+            while (enumNetworkInterfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = enumNetworkInterfaces
+                        .nextElement();
+                Enumeration<InetAddress> enumInetAddress = networkInterface
+                        .getInetAddresses();
+                while (enumInetAddress.hasMoreElements()) {
+                    InetAddress inetAddress = enumInetAddress.nextElement();
+
+                    if (inetAddress.isSiteLocalAddress()) {
+                        ip += "SiteLocalAddress: "
+                                + inetAddress.getHostAddress() + "\n";
+                    }
+                }
+            }
+
+        } catch (SocketException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            ip += "Something Wrong! " + e.toString() + "\n";
+        }
+        return ip;
     }
 }
