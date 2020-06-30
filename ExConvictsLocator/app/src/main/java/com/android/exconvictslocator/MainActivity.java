@@ -4,7 +4,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,7 +20,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 
-import com.android.exconvictslocator.synchronization.SyncReceiver;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.HashMap;
@@ -42,25 +40,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     ActionBarDrawerToggle toggle;
     Button btn_login;
-
-    private PendingIntent pendingIntent;
-    private SyncReceiver sync;
-    public static String SYNC_DATA = "SYNC_DATA";
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(SYNC_DATA);
-
-        filter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
-        filter.addAction("android.net.wifi.STATE_CHANGE");
-        registerReceiver(sync, filter);
-        System.out.println("main activity ON RESUME");
-
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,27 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         createNotificationChannel(); //!!!
 
-        sync = new SyncReceiver();
 
-        /*
-        Intent i = new Intent(this, SyncReportService.class);
-        i.putExtra("activityName", "MainActivity");
-        startService(i);
-        */
-
-        /*
-        // Retrieve a PendingIntent that will perform a broadcast
-        Intent intent = new Intent(this, SyncReportService.class);
-        pendingIntent = PendingIntent.getService(this, 0, intent, 0);
-        */
-        System.out.println("main activity ON CREATE");
-
-    }
-
-    @Override
-    protected void onPause() {
-        unregisterReceiver(sync);
-        super.onPause();
     }
 
     public void sendNotification() {

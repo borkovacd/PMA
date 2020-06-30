@@ -5,6 +5,7 @@ import android.accounts.AccountManager;
 import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.android.exconvictslocator.synchronization.SyncReceiver;
+import com.android.exconvictslocator.synchronization.SyncReportService;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
@@ -158,14 +160,17 @@ public class ListOfExConvicts extends MainActivity {
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(sync, filter);
 
-        /*
         Intent intent = new Intent(ListOfExConvicts.this, SyncReportService.class);
         intent.putExtra("activityName", "ListOfExConvicts");
         startService(intent);
-         */
-
-
     }
+
+    @Override
+    protected void onPause() {
+        unregisterReceiver(sync);
+        super.onPause();
+    }
+
 
     /**
      * Create a new dummy account for the sync adapter
