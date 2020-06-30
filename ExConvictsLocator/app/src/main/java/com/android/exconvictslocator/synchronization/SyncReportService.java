@@ -26,7 +26,7 @@ public class SyncReportService extends IntentService {
     private MyDatabase myDatabase = MyDatabase.getDatabase(this.getApplication()) ;
     private List<Report> reports ;
     private List<User> users ;
-    private  String ip = "192.168.0.16";
+    private  String ip = "192.168.0.73";
 
     public SyncReportService() {
         super("");
