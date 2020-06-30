@@ -28,7 +28,6 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.nio.ByteOrder;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -113,6 +112,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         //final String uri2 = "http://" + ip + ":8080/api/users";
         User[] users = new RestTask().getUsers(uri2);
         final String uri3 = "http://192.168.0.71:8080/api/reports";
+
         //final String uri3 = "http://" + ip + ":8080/api/reports";
         Report[] reports = new RestTask().getReports(uri3);
         Log.d("RESTTASK", "Rezultat (exConvicts) : " + exConvicts.length);
