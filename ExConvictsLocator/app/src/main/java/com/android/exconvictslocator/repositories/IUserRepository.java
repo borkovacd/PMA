@@ -18,4 +18,6 @@ public interface IUserRepository {
     User findUserByEmail(String email);
 
     void updateUser(User user);
+
+    public List<User> getNotSyncedUsers();
 }

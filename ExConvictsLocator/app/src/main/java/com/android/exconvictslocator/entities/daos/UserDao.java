@@ -32,4 +32,7 @@ public interface UserDao {
 
     @Update
     void update(User user);
+
+    @Query("SELECT * FROM User where isSync = 0")
+    public List<User> getNotSyncedUsers();
 }

@@ -53,4 +53,9 @@ public class UserRepository implements IUserRepository {
     public void updateUser(User user) {
         userDao.update(user);
     }
+
+    @Override
+    public List<User> getNotSyncedUsers() {
+        return userDao.getNotSyncedUsers();
+    }
 }

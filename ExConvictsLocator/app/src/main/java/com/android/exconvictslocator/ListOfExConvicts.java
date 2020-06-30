@@ -153,12 +153,13 @@ public class ListOfExConvicts extends MainActivity {
         filter.addAction("android.net.wifi.STATE_CHANGE");
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(sync, filter);
+
         /*
         Intent intent = new Intent(ListOfExConvicts.this, SyncReportService.class);
         intent.putExtra("activityName", "ListOfExConvicts");
-
         startService(intent);
-          */
+
+         */
 
 
     }

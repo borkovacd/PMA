@@ -24,6 +24,8 @@ public class User {
     private String lastName;
     @ColumnInfo
     private String password;
+    @ColumnInfo
+    private boolean isSync = false ;
 
 
     public User(){}
@@ -73,5 +75,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isSync() {
+        return isSync;
+    }
+
+    public void setSync(boolean sync) {
+        isSync = sync;
     }
 }
