@@ -48,7 +48,7 @@ public class ListOfExConvicts extends MainActivity {
     public static final String ACCOUNT = "dummyaccount";
     // Sync interval constants
     public static final long SECONDS_PER_MINUTE = 60L;
-    public static final long SYNC_INTERVAL_IN_MINUTES = 60L; //60L
+    public static final long SYNC_INTERVAL_IN_MINUTES = 2L; //60L
     public static final long SYNC_INTERVAL =
             SYNC_INTERVAL_IN_MINUTES *
                     SECONDS_PER_MINUTE;
@@ -73,13 +73,17 @@ public class ListOfExConvicts extends MainActivity {
 
         //Ovo ne bih rekao da radi za sada bilo sta
         /*
-         * Turn on periodic syncing
+         * Turn on periodic syncings
          */
+
+        setAccountSyncable();
+
         ContentResolver.addPeriodicSync(
                 mAccount,
                 AUTHORITY,
-                Bundle.EMPTY,
-                SYNC_INTERVAL);
+                Bundle.EMPTY, SYNC_INTERVAL);
+
+        ContentResolver.setSyncAutomatically(mAccount, AUTHORITY, true);
 
 
 
@@ -158,7 +162,6 @@ public class ListOfExConvicts extends MainActivity {
         Intent intent = new Intent(ListOfExConvicts.this, SyncReportService.class);
         intent.putExtra("activityName", "ListOfExConvicts");
         startService(intent);
-
          */
 
 
@@ -211,6 +214,14 @@ public class ListOfExConvicts extends MainActivity {
          * manual sync settings
          */
         ContentResolver.requestSync(mAccount, AUTHORITY, settingsBundle);
+
+
+    }
+
+    private void setAccountSyncable() {
+        if (ContentResolver.getIsSyncable(mAccount, AUTHORITY) == 0) {
+            ContentResolver.setIsSyncable(mAccount, AUTHORITY, 1);
+        }
     }
 
 }
