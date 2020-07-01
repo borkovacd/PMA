@@ -43,4 +43,9 @@ exConvictDao.deleteExConvict(exConvict);
     public List<ExConvictReport> getExConvictReports() {
         return exConvictDao.getExConvictReports();
     }
+
+    @Override
+    public ExConvictReport getExConvictByIdWithReports(int id) {
+        return exConvictDao.getExConvictByIdWithReports(id);
+    }
 }

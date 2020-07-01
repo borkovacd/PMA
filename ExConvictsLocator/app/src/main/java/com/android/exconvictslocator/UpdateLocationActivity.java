@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
@@ -13,6 +12,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -25,6 +25,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.android.exconvictslocator.entities.Address;
 import com.android.exconvictslocator.entities.ExConvictReport;
 import com.android.exconvictslocator.entities.Report;
 import com.android.exconvictslocator.repositories.impl.ExConvictRepository;
@@ -32,6 +33,7 @@ import com.android.exconvictslocator.repositories.impl.ReportRepository;
 import com.android.exconvictslocator.repositories.impl.UserRepository;
 import com.android.exconvictslocator.synchronization.SyncReportService;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +43,13 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
 
     private DrawerLayout mDrawer;
 
-    private String[] addresses = new String[] {"Danila Kisa", "Bulevar oslobodjenja ", "Sutjeska", "Djurdja Brankovica", "Alekse Santica"};
+    private Address[] addresses = new Address[] {
+            new Address(1, "Danila Kisa", 45.12, 19.15),
+            new Address(2, "Bulevar oslobodjenja", 45.13, 19.45),
+            new Address(3, "Sutjeska", 45.172, 19.155),
+            new Address(4, "Djurdja Brankovica", 45.5512, 19.15),
+            new Address(5, "Alekse Santica", 45.1562, 19.15),
+            };
 
     // polja sa dobijenim podacima
     String nameSurname = null;
@@ -87,11 +95,24 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
 
         myDatabase = MyDatabase.getDatabase(this.getApplication());
         reportRepo = ReportRepository.getInstance(myDatabase.reportDao());
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<Address> adapter = new ArrayAdapter<Address>(this,
                 android.R.layout.simple_dropdown_item_1line, addresses);
         AutoCompleteTextView actv = (AutoCompleteTextView)findViewById(R.id.et_PrijaviNovuLokaciju);
         actv.setThreshold(1);
         actv.setAdapter(adapter);
+        actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+                                    long arg3) {
+                Address selected = (Address) arg0.getAdapter().getItem(arg2);
+                newLocation = selected.getName();
+                lang = selected.getLang();
+                lat = selected.getLat();
+                System.out.println("Clicked " + arg2 + " name: " + selected.getName() + ", id = " + selected.getId());
+
+            }
+        });
         setView();
         btnPrijavi = findViewById(R.id.btn_prijavi);
 
@@ -147,14 +168,12 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
         Bundle b = new Bundle();
 
         // --- PODACI ZA IZVESTAJ ---
-        // Lokacija
-        newLocation = etPrijaviNovuLokaciju.getText().toString();
 
         // Datum prijave
-        updatedAt = new Date().toString();
-
-        // Grad ??
-        city = "";
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
+        updatedAt = formatter.format(new Date());
+        // Grad
+        city = "Novi Sad";
 
         // Komentar
         comment = etKomentar.getText().toString();
@@ -170,11 +189,6 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
         // ExConvictId
         exConvictId = idExConvict;
 
-        // Lat ?? -> latituda
-        lat = 0.0;
-
-        // Lang ?? -> longituda
-        lang = 0.0;
 
         Report report = new Report();
         report.setCity(city);
@@ -187,11 +201,12 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
         report.setUserId(userId);
         report.setSync(false);
 
-        myDatabase.reportDao().insertReport(report);
+System.out.println("!!!!!!!!!!" + report);
+       myDatabase.reportDao().insertReport(report);
 
-        // ExConvictReport exConvictReport = new ExConvictReport();
+         ExConvictReport exConvictReport = new ExConvictReport();
 
-        // exConvictReport.getReports().add(report)
+         exConvictReport.getReports().add(report);
 
         b.putString("name", nameSurname);
         b.putString("nickname", nickname);
@@ -210,12 +225,10 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
 
     @Override
     public void onLocationChanged(Location location) {
-        Toast.makeText(this, "Location: lat ="+ location.getLatitude() + ", lan= "+
-                location.getLongitude(),Toast.LENGTH_SHORT);
 
         try {
             Geocoder geocoder = new Geocoder(UpdateLocationActivity.this, Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLatitude(), 1);
+            List<android.location.Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLatitude(), 1);
             String address = addresses.get(0).getAddressLine(0);
             System.out.println(address);
 

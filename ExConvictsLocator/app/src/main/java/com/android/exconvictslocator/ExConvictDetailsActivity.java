@@ -126,6 +126,7 @@ public class ExConvictDetailsActivity extends MainActivity {
         b.putInt("image", mimg);
         b.putInt("idExConvict", idExConvict);
 
+
         intent.putExtras(b);
         startActivity(intent);
     }
