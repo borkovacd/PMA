@@ -1,14 +1,28 @@
 package com.android.exconvictslocator;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.android.exconvictslocator.entities.ExConvictReport;
@@ -21,10 +35,13 @@ import com.android.exconvictslocator.synchronization.SyncReportService;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
-public class UpdateLocationActivity extends MainActivity {
+public class UpdateLocationActivity extends MainActivity implements LocationListener {
 
     private DrawerLayout mDrawer;
+
+    private String[] addresses = new String[] {"Danila Kisa", "Bulevar oslobodjenja ", "Sutjeska", "Djurdja Brankovica", "Alekse Santica"};
 
     // polja sa dobijenim podacima
     String nameSurname = null;
@@ -44,9 +61,11 @@ public class UpdateLocationActivity extends MainActivity {
 
     // polja sa forme
     ImageView ivUser ;
+    ImageButton locateMe;
     EditText etImePrezime, etNadimak ;
-    EditText etPrijaviNovuLokaciju, etKomentar ;
+    EditText  etKomentar ;
     Button btnPrijavi ;
+    AutoCompleteTextView etPrijaviNovuLokaciju;
 
     private ExConvictRepository exConvictRepo;
     private ReportRepository reportRepo;
@@ -55,6 +74,8 @@ public class UpdateLocationActivity extends MainActivity {
     private List<ExConvictReport> exConvicts;
     private MyDatabase myDatabase;
     private String emailUser;
+
+    LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,16 +87,35 @@ public class UpdateLocationActivity extends MainActivity {
 
         myDatabase = MyDatabase.getDatabase(this.getApplication());
         reportRepo = ReportRepository.getInstance(myDatabase.reportDao());
-
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, addresses);
+        AutoCompleteTextView actv = (AutoCompleteTextView)findViewById(R.id.et_PrijaviNovuLokaciju);
+        actv.setThreshold(1);
+        actv.setAdapter(adapter);
         setView();
-
         btnPrijavi = findViewById(R.id.btn_prijavi);
+
+        locateMe.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                locate();
+            }
+
+        });
         btnPrijavi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openAllLocationsActivity();
             }
         });
+
+        if(ContextCompat.checkSelfPermission(UpdateLocationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(UpdateLocationActivity.this, new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            }, 100);
+
+        }
     }
 
     private void setView(){
@@ -84,6 +124,7 @@ public class UpdateLocationActivity extends MainActivity {
         etPrijaviNovuLokaciju = findViewById(R.id.et_PrijaviNovuLokaciju);
         etKomentar = findViewById(R.id.MLKomentar);
         ivUser = findViewById(R.id.iv_user);
+        locateMe = findViewById(R.id.locate_me);
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
@@ -97,6 +138,7 @@ public class UpdateLocationActivity extends MainActivity {
         etImePrezime.setText(nameSurname);
         etNadimak.setText(nickname);
         ivUser.setImageResource(img);
+        locateMe.setImageResource(R.drawable.ic_action_name);
 
     }
 
@@ -165,4 +207,47 @@ public class UpdateLocationActivity extends MainActivity {
         Intent intent3 = new Intent(this, SyncReportService.class);
         startService(intent3);
     }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Toast.makeText(this, "Location: lat ="+ location.getLatitude() + ", lan= "+
+                location.getLongitude(),Toast.LENGTH_SHORT);
+
+        try {
+            Geocoder geocoder = new Geocoder(UpdateLocationActivity.this, Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLatitude(), 1);
+            String address = addresses.get(0).getAddressLine(0);
+            System.out.println(address);
+
+
+          }catch (Exception e) {
+            System.out.println(e.getStackTrace());
+        }
+
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
+    }
+
+    @SuppressLint("MissingPermission")
+    private void locate(){
+        try {
+            locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, UpdateLocationActivity.this);
+        }catch (Exception e) {
+            System.out.println(e.getStackTrace());
+        }
+        }
 }
