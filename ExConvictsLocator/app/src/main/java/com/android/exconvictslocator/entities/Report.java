@@ -124,4 +124,20 @@ public class Report {
     public void setSync(boolean sync) {
         isSync = sync;
     }
+
+    @Override
+    public String toString() {
+        return "Report{" +
+                "id=" + id +
+                ", location='" + location + '\'' +
+                ", date='" + date + '\'' +
+                ", city='" + city + '\'' +
+                ", comment='" + comment + '\'' +
+                ", userId='" + userId + '\'' +
+                ", exConvictId=" + exConvictId +
+                ", lat=" + lat +
+                ", lang=" + lang +
+                ", isSync=" + isSync +
+                '}';
+    }
 }

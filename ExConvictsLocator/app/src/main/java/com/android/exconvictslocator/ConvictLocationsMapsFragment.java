@@ -12,6 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.exconvictslocator.entities.ExConvict;
+import com.android.exconvictslocator.entities.ExConvictReport;
+import com.android.exconvictslocator.entities.Report;
+import com.android.exconvictslocator.repositories.impl.ExConvictRepository;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -26,6 +30,13 @@ public class ConvictLocationsMapsFragment extends Fragment implements OnMapReady
     GoogleMap googleMap;
     MapView mapView;
     View mview;
+    int exConvictId;
+    String name = "";
+    String nickname ="";
+    int img = -1;
+    private ExConvictRepository exConvictRepo;
+    ExConvictReport exConvict;
+
     public ConvictLocationsMapsFragment() {
         // Required empty public constructor
     }
@@ -34,18 +45,21 @@ public class ConvictLocationsMapsFragment extends Fragment implements OnMapReady
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        MyDatabase db =  MyDatabase.getDatabase(getActivity().getApplication());
+        exConvictRepo = ExConvictRepository.getInstance(db.exConvictDao());
         // Inflate the layout for this fragment
         mview = inflater.inflate(R.layout.activity_convict_locations_maps, container, false);
         Bundle bundle = this.getArguments();
-        String name = "";
-        String nickname ="";
-        int img = -1;
+
 
         if(bundle != null) {
             name = bundle.getString("name");
             nickname = bundle.getString("nickname");
             img = bundle.getInt("img");
+            exConvictId = bundle.getInt("idExConvict");
         }
+        exConvict = exConvictRepo.getExConvictByIdWithReports(exConvictId);
+
         TextView nameDetail = mview.findViewById(R.id.convict_details_name);
         TextView nicknameDetail = mview.findViewById(R.id.convict_details_nickname);
         ImageView imageDetail = mview.findViewById(R.id.convict_details_image);
@@ -71,11 +85,12 @@ public class ConvictLocationsMapsFragment extends Fragment implements OnMapReady
         MapsInitializer.initialize(getContext());
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         //lat 45.267136 , long 19.833549
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(45.267136, 19.833549)).title("Pera Perić"));
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(45.267136, 19.835546)).title("Žika Žikić"));
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(45.267136, 19.835550)).title("Mika Mikić"));
+        CameraPosition camera = CameraPosition.builder().target(new LatLng(45.267136, 19.833549)).zoom(10).bearing(0).build();
 
-        CameraPosition camera = CameraPosition.builder().target(new LatLng(45.267136, 19.833549)).zoom(16).bearing(0).build();
+        for(Report r : exConvict.getReports()){
+            googleMap.addMarker(new MarkerOptions().position(new LatLng(r.getLat(), r.getLang())).title(exConvict.getExConvict().getFirstName() + " " + exConvict.getExConvict().getLastName()));
+            camera =  CameraPosition.builder().target(new LatLng(r.getLat(), r.getLang())).zoom(10).bearing(0).build();
+        }
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(camera));
     }
 }

@@ -28,6 +28,8 @@ import com.android.exconvictslocator.repositories.impl.ReportRepository;
 import com.android.exconvictslocator.repositories.impl.UserRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -57,6 +59,15 @@ public class tabList extends Fragment {
         reportRepo = ReportRepository.getInstance(db.reportDao());
         userRepo= UserRepository.getInstance(db.userDao());
         exConvicts= exConvictRepo.getExConvictReports();
+        for(ExConvictReport er :exConvicts){
+            Collections.sort(er.getReports(), new Comparator<Report>(){
+                public int compare(Report s1, Report s2) {
+                    return s2.getId()- s1.getId();
+                }
+            });
+
+
+        }
         sv=(SearchView) rootView.findViewById(R.id.searchView1);
         //db.clearAllTables();
         //populateDbInit();
@@ -136,8 +147,7 @@ public class tabList extends Fragment {
             images.setImageResource(convicts.get(position).getExConvict().getPhoto());
             names.setText(convicts.get(position).getExConvict().getFirstName() + " " + convicts.get(position).getExConvict().getLastName());
             crimes.setText(convicts.get(position).getExConvict().getCrime());
-            locations.setText(convicts.get(position).getExConvict().getAddress());
-
+            locations.setText(convicts.get(position).getReports().size() > 0?  convicts.get(position).getReports().get(0).getLocation() : "-");
             return row;
         }
     }
