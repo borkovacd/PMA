@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -48,12 +49,6 @@ public class ListOfExConvicts extends MainActivity {
     public static final String ACCOUNT_TYPE = "example.com";
     // The account name
     public static final String ACCOUNT = "dummyaccount";
-    // Sync interval constants
-    public static final long SECONDS_PER_MINUTE = 60L;
-    public static final long SYNC_INTERVAL_IN_MINUTES = 2L; //60L
-    public static final long SYNC_INTERVAL =
-            SYNC_INTERVAL_IN_MINUTES *
-                    SECONDS_PER_MINUTE;
     // Instance fields
     Account mAccount;
     // A content resolver for accessing the provider
@@ -73,17 +68,24 @@ public class ListOfExConvicts extends MainActivity {
         // Get the content resolver for your app
         mResolver = getContentResolver();
 
-        //Ovo ne bih rekao da radi za sada bilo sta
         /*
          * Turn on periodic syncings
          */
 
         setAccountSyncable();
 
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String synhonization_interval = sharedPref.getString("synhonization_interval", "30");
+        Log.d("RESTTASK", "Interval (STRING): " + synhonization_interval);
+        long sync_interval_in_minutes = Long.parseLong(synhonization_interval);
+        long sync_interval = sync_interval_in_minutes * 60L; //minuti * sekunde
+        Log.d("RESTTASK", "Interval (LONG): " + sync_interval);
+
+
         ContentResolver.addPeriodicSync(
                 mAccount,
                 AUTHORITY,
-                Bundle.EMPTY, SYNC_INTERVAL);
+                Bundle.EMPTY, sync_interval*60L);
 
         ContentResolver.setSyncAutomatically(mAccount, AUTHORITY, true);
 
@@ -143,7 +145,7 @@ public class ListOfExConvicts extends MainActivity {
         });
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        //SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         //Primer
         //String marketPref = sharedPref.getString("distance_radius", "-1");
         //Toast.makeText(this, marketPref, Toast.LENGTH_LONG).show();

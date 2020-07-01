@@ -94,11 +94,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         Log.i(TAG, "onPerformSync() was called");
 
-        // !!!!!
-        //API 21 RADI, API 25 RADI, API 29 NE RADI!!!
-
         // TODO 1 -> Pronaći način za automatsko detektovanje ip adrese interneta
         // TODO 1 -> Potencijalno reseno ako su telefon i lap konektovani na istu wifi mrezu, otkomentarisati
+
         //Isprobati sa telefonom
         //String ip = wifiIpAddress(this.getContext().getApplicationContext());
         //Log.d("RESTTASK", ip);
@@ -106,19 +104,18 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         //Log.d("RESTTASK", ip_address);
 
 
-        final String uri = "http://192.168.0.71:8080/api/exConvicts";
-        //final String uri = "http://" + ip + ":8080/api/exConvicts";
+        String ip_address = ServerIPConfig.getIp_address();
+        final String uri = "http://" + ip_address + ":8080/api/exConvicts";
         ExConvict[] exConvicts = new RestTask().getExConvicts(uri);
-        final String uri2 = "http://192.168.0.71:8080/api/users";
-        //final String uri2 = "http://" + ip + ":8080/api/users";
+        final String uri2 = "http://" + ip_address + ":8080/api/users";
         User[] users = new RestTask().getUsers(uri2);
-        final String uri3 = "http://192.168.0.71:8080/api/reports";
-
-        //final String uri3 = "http://" + ip + ":8080/api/reports";
+        final String uri3 = "http://" + ip_address + ":8080/api/reports";
         Report[] reports = new RestTask().getReports(uri3);
+
         Log.d("RESTTASK", "Rezultat (exConvicts) : " + exConvicts.length);
         Log.d("RESTTASK", "Rezultat (users) : " + users.length);
         Log.d("RESTTASK", "Rezultat (reports) : " + reports.length);
+
         // TODO 2 -> Nakon preuzimanje svih osuđenika popuniti bazu na telefonu
 
         MyDatabase db =  MyDatabase.getDatabase(this.getContext());
@@ -126,6 +123,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         reportRepository = ReportRepository.getInstance(db.reportDao());
         userRepository = UserRepository.getInstance(db.userDao());
         exConvictsReports = exConvictRepository.getExConvictReports();
+
+        db.clearAllTables();
 
         for(ExConvict exConvict: exConvicts) {
             exConvict.setPhoto(R.drawable.img1);
