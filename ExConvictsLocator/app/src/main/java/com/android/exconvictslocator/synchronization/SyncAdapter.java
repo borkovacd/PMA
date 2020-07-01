@@ -22,6 +22,7 @@ import com.android.exconvictslocator.entities.User;
 import com.android.exconvictslocator.repositories.impl.ExConvictRepository;
 import com.android.exconvictslocator.repositories.impl.ReportRepository;
 import com.android.exconvictslocator.repositories.impl.UserRepository;
+import com.android.exconvictslocator.synchronization.resttemplate.RestTaskExConvicts;
 
 import java.math.BigInteger;
 import java.net.InetAddress;
@@ -48,6 +49,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private UserRepository userRepository;
     private ReportRepository reportRepository;
     private List<ExConvictReport> exConvictsReports;
+
 
     /**
      * Set up the sync adapter
@@ -106,38 +108,38 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         String ip_address = ServerIPConfig.getIp_address();
         final String uri = "http://" + ip_address + ":8080/api/exConvicts";
-        ExConvict[] exConvicts = new RestTask().getExConvicts(uri);
-        final String uri2 = "http://" + ip_address + ":8080/api/users";
+        new RestTaskExConvicts(this.getContext()).execute(uri);
+        /*final String uri2 = "http://" + ip_address + ":8080/api/users";
         User[] users = new RestTask().getUsers(uri2);
         final String uri3 = "http://" + ip_address + ":8080/api/reports";
-        Report[] reports = new RestTask().getReports(uri3);
+        Report[] reports = new RestTask().getReports(uri3);*/
 
-        Log.d("RESTTASK", "Rezultat (exConvicts) : " + exConvicts.length);
-        Log.d("RESTTASK", "Rezultat (users) : " + users.length);
-        Log.d("RESTTASK", "Rezultat (reports) : " + reports.length);
+        //Log.d("RESTTASK", "Rezultat (exConvicts) : " + exConvicts.length);
+        /*Log.d("RESTTASK", "Rezultat (users) : " + users.length);
+        Log.d("RESTTASK", "Rezultat (reports) : " + reports.length);*/
 
         // TODO 2 -> Nakon preuzimanje svih osuđenika popuniti bazu na telefonu
 
+        /*
         MyDatabase db =  MyDatabase.getDatabase(this.getContext());
         exConvictRepository = ExConvictRepository.getInstance(db.exConvictDao());
         reportRepository = ReportRepository.getInstance(db.reportDao());
         userRepository = UserRepository.getInstance(db.userDao());
         exConvictsReports = exConvictRepository.getExConvictReports();
 
-        db.clearAllTables();
+        db.clearAllTables();*/
 
-        for(ExConvict exConvict: exConvicts) {
+        /*for(ExConvict exConvict: exConvicts) {
             exConvict.setPhoto(R.drawable.img1);
             exConvictRepository.insertExConvict(exConvict);
-        }
-        for(User user: users) {
+        }*/
+        /*for(User user: users) {
             userRepository.insertUser(user);
         }
         for(Report report: reports) {
             reportRepository.insertReport(report);
-        }
+        }*/
 
-        Log.d("RESTTASK", "Kraj");
 
         // TODO 3 -> Provera da li se desi konflikt u bazi ili update
 
@@ -150,6 +152,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
          * Put the data transfer code here.
          */
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     protected String wifiIpAddress(Context context) {
