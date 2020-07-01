@@ -2,10 +2,14 @@ package com.android.exconvictslocator;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -14,6 +18,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
+import com.android.exconvictslocator.synchronization.SyncReceiver;
+import com.android.exconvictslocator.synchronization.SyncReportService;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
@@ -32,6 +38,10 @@ public class ListOfExConvicts extends MainActivity {
     // Session Management Class
     SessionManagement sessionManagement;
 
+    private PendingIntent pendingIntent;
+    private SyncReceiver sync;
+    public static String SYNC_DATA = "SYNC_DATA";
+
     // Constants
     // The authority for the sync adapter's content provider
     public static final String AUTHORITY = "com.android.exconvictslocator.synchronization.provider";
@@ -39,12 +49,6 @@ public class ListOfExConvicts extends MainActivity {
     public static final String ACCOUNT_TYPE = "example.com";
     // The account name
     public static final String ACCOUNT = "dummyaccount";
-    // Sync interval constants
-    public static final long SECONDS_PER_MINUTE = 60L;
-    public static final long SYNC_INTERVAL_IN_MINUTES = 60L; //60L
-    public static final long SYNC_INTERVAL =
-            SYNC_INTERVAL_IN_MINUTES *
-                    SECONDS_PER_MINUTE;
     // Instance fields
     Account mAccount;
     // A content resolver for accessing the provider
@@ -64,15 +68,26 @@ public class ListOfExConvicts extends MainActivity {
         // Get the content resolver for your app
         mResolver = getContentResolver();
 
-        //Ovo ne bih rekao da radi za sada bilo sta
         /*
-         * Turn on periodic syncing
+         * Turn on periodic syncings
          */
+
+        setAccountSyncable();
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String synhonization_interval = sharedPref.getString("synhonization_interval", "30");
+        Log.d("RESTTASK", "Interval (STRING): " + synhonization_interval);
+        long sync_interval_in_minutes = Long.parseLong(synhonization_interval);
+        long sync_interval = sync_interval_in_minutes * 60L; //minuti * sekunde
+        Log.d("RESTTASK", "Interval (LONG): " + sync_interval);
+
+
         ContentResolver.addPeriodicSync(
                 mAccount,
                 AUTHORITY,
-                Bundle.EMPTY,
-                SYNC_INTERVAL);
+                Bundle.EMPTY, sync_interval*60L);
+
+        ContentResolver.setSyncAutomatically(mAccount, AUTHORITY, true);
 
 
 
@@ -97,6 +112,8 @@ public class ListOfExConvicts extends MainActivity {
             Toast.makeText(getApplicationContext(), "Koristite aplikaciju u neprijavljenom režimu. Da biste koristili napredne funkcije aplikacije, ulogujete se na vaš korisnički nalog.", Toast.LENGTH_LONG).show();
         }
 
+
+        sync = new SyncReceiver();
 
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabMap = (TabItem) findViewById(R.id.tabMap);
@@ -128,11 +145,34 @@ public class ListOfExConvicts extends MainActivity {
         });
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        //SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         //Primer
         //String marketPref = sharedPref.getString("distance_radius", "-1");
         //Toast.makeText(this, marketPref, Toast.LENGTH_LONG).show();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(SYNC_DATA);
+
+        filter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
+        filter.addAction("android.net.wifi.STATE_CHANGE");
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(sync, filter);
+
+        Intent intent = new Intent(ListOfExConvicts.this, SyncReportService.class);
+        intent.putExtra("activityName", "ListOfExConvicts");
+        startService(intent);
+    }
+
+    @Override
+    protected void onPause() {
+        unregisterReceiver(sync);
+        super.onPause();
+    }
+
 
     /**
      * Create a new dummy account for the sync adapter
@@ -167,8 +207,10 @@ public class ListOfExConvicts extends MainActivity {
         return newAccount;
     }
 
+
     //Samo privremeno, dok se ne odradi neka pocetna verzija sinhronizacije
     //Sinhronizacija na zahtev pritiskom na button "Sync"
+    /*
     public void onRefreshButtonClick(View v) {
         // Pass the settings flags by inserting them in a bundle
         Bundle settingsBundle = new Bundle();
@@ -176,11 +218,17 @@ public class ListOfExConvicts extends MainActivity {
                 ContentResolver.SYNC_EXTRAS_MANUAL, true);
         settingsBundle.putBoolean(
                 ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-        /*
-         * Request the sync for the default account, authority, and
-         * manual sync settings
-         */
+
+         //Request the sync for the default account, authority, and
+         //manual sync settings
+
         ContentResolver.requestSync(mAccount, AUTHORITY, settingsBundle);
+    }*/
+
+    private void setAccountSyncable() {
+        if (ContentResolver.getIsSyncable(mAccount, AUTHORITY) == 0) {
+            ContentResolver.setIsSyncable(mAccount, AUTHORITY, 1);
+        }
     }
 
 }

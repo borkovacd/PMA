@@ -7,10 +7,11 @@ import lombok.Setter;
 @Setter
 public class UserDTO {
 	
-	 //private Long id;
+	 private Long id;
 	 private String firstName;
 	 private String lastName;
 	 private String email;
 	 private String password;
+	 private boolean isSync ;
 
 }

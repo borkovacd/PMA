@@ -97,6 +97,13 @@
                 android:resource="@xml/syncadapter" />
         </service>
 
+        <receiver android:name="com.android.exconvictslocator.synchronization.SyncReceiver">
+            <intent-filter>
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED"/>
+                <action android:name="android.net.wifi.STATE_CHANGE"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

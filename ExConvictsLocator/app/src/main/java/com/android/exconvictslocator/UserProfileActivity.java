@@ -26,8 +26,6 @@ public class UserProfileActivity extends MainActivity {
     private MyDatabase myDatabase;
     private UserRepository userRepository;
 
-//    private MutableLiveData<User> user2 = new MutableLiveData<>();
-
     private String emailUser;
 
     private EditText etFirstName;
@@ -145,7 +143,6 @@ public class UserProfileActivity extends MainActivity {
             }
         });
 
-
     }
 
     private class ProfileTask extends AsyncTask<String, Void, Void> {
@@ -158,6 +155,7 @@ public class UserProfileActivity extends MainActivity {
             return null;
         }
     }
+
 
 
     private class UpdateProfileTask extends  AsyncTask<User, Void, Void>{

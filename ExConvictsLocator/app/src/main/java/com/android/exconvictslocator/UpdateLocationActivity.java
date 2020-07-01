@@ -201,7 +201,6 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
         report.setUserId(userId);
         report.setSync(false);
 
-System.out.println("!!!!!!!!!!" + report);
        myDatabase.reportDao().insertReport(report);
 
          ExConvictReport exConvictReport = new ExConvictReport();

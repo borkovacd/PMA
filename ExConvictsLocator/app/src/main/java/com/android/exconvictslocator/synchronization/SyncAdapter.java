@@ -14,7 +14,9 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 
 import com.android.exconvictslocator.MyDatabase;
+import com.android.exconvictslocator.R;
 import com.android.exconvictslocator.entities.ExConvict;
+import com.android.exconvictslocator.entities.ExConvictReport;
 import com.android.exconvictslocator.entities.Report;
 import com.android.exconvictslocator.entities.User;
 import com.android.exconvictslocator.repositories.impl.ExConvictRepository;
@@ -23,8 +25,12 @@ import com.android.exconvictslocator.repositories.impl.UserRepository;
 
 import java.math.BigInteger;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.nio.ByteOrder;
+import java.util.Enumeration;
+import java.util.List;
 
 /**
  * Handle the transfer of data between a server and an
@@ -41,6 +47,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private ExConvictRepository exConvictRepository;
     private UserRepository userRepository;
     private ReportRepository reportRepository;
+    private List<ExConvictReport> exConvictsReports;
 
     /**
      * Set up the sync adapter
@@ -87,38 +94,48 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         Log.i(TAG, "onPerformSync() was called");
 
-        // !!!!!
-        //API 21 RADI, API 25 RADI, API 29 NE RADI!!!
-
         // TODO 1 -> Pronaći način za automatsko detektovanje ip adrese interneta
+        // TODO 1 -> Potencijalno reseno ako su telefon i lap konektovani na istu wifi mrezu, otkomentarisati
+
         //Isprobati sa telefonom
         //String ip = wifiIpAddress(this.getContext().getApplicationContext());
         //Log.d("RESTTASK", ip);
-        final String uri = "http://192.168.137.1:8080/api/exConvicts";
+        //String ip_address  = getIpAddress();
+        //Log.d("RESTTASK", ip_address);
+
+
+        String ip_address = ServerIPConfig.getIp_address();
+        final String uri = "http://" + ip_address + ":8080/api/exConvicts";
         ExConvict[] exConvicts = new RestTask().getExConvicts(uri);
-        final String uri2 = "http://192.168.137.1:8080/api/users";
+        final String uri2 = "http://" + ip_address + ":8080/api/users";
         User[] users = new RestTask().getUsers(uri2);
-        final String uri3 = "http://192.168.137.1:8080/api/reports";
+        final String uri3 = "http://" + ip_address + ":8080/api/reports";
         Report[] reports = new RestTask().getReports(uri3);
+
         Log.d("RESTTASK", "Rezultat (exConvicts) : " + exConvicts.length);
         Log.d("RESTTASK", "Rezultat (users) : " + users.length);
         Log.d("RESTTASK", "Rezultat (reports) : " + reports.length);
+
         // TODO 2 -> Nakon preuzimanje svih osuđenika popuniti bazu na telefonu
 
         MyDatabase db =  MyDatabase.getDatabase(this.getContext());
         exConvictRepository = ExConvictRepository.getInstance(db.exConvictDao());
         reportRepository = ReportRepository.getInstance(db.reportDao());
         userRepository = UserRepository.getInstance(db.userDao());
+        exConvictsReports = exConvictRepository.getExConvictReports();
+
+        db.clearAllTables();
 
         for(ExConvict exConvict: exConvicts) {
+            exConvict.setPhoto(R.drawable.img1);
             exConvictRepository.insertExConvict(exConvict);
         }
         for(User user: users) {
             userRepository.insertUser(user);
         }
-        /*for(Report report: reports) {
+        for(Report report: reports) {
             reportRepository.insertReport(report);
-        }*/
+        }
 
         Log.d("RESTTASK", "Kraj");
 
@@ -138,7 +155,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     protected String wifiIpAddress(Context context) {
         WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
-        Log.d("RESTTASK", "Ip je " + ipAddress);
 
         // Convert little-endian to big-endianif needed
         if (ByteOrder.nativeOrder().equals(ByteOrder.LITTLE_ENDIAN)) {
@@ -156,5 +172,33 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
 
         return ipAddressString;
+    }
+
+    private String getIpAddress() {
+        String ip = "";
+        try {
+            Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface
+                    .getNetworkInterfaces();
+            while (enumNetworkInterfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = enumNetworkInterfaces
+                        .nextElement();
+                Enumeration<InetAddress> enumInetAddress = networkInterface
+                        .getInetAddresses();
+                while (enumInetAddress.hasMoreElements()) {
+                    InetAddress inetAddress = enumInetAddress.nextElement();
+
+                    if (inetAddress.isSiteLocalAddress()) {
+                        ip += "SiteLocalAddress: "
+                                + inetAddress.getHostAddress() + "\n";
+                    }
+                }
+            }
+
+        } catch (SocketException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            ip += "Something Wrong! " + e.toString() + "\n";
+        }
+        return ip;
     }
 }

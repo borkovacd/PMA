@@ -50,7 +50,12 @@ public class ExConvictDetailsActivity extends MainActivity {
 
         setView();
 
+
         btnPrijavi = findViewById(R.id.btn_prijavi);
+
+        if (!sessionManagement.isLoggedIn()) {
+            btnPrijavi.setVisibility(View.INVISIBLE);
+        }
 
         btnPrijavi.setOnClickListener(new View.OnClickListener() {
             @Override

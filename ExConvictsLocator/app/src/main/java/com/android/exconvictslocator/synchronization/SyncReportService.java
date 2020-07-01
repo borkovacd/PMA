@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 
 import com.android.exconvictslocator.MyDatabase;
 import com.android.exconvictslocator.entities.Report;
+import com.android.exconvictslocator.entities.User;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,9 +23,10 @@ import java.util.List;
 
 public class SyncReportService extends IntentService {
 
-    private MyDatabase myDatabase = MyDatabase.getDatabase(this.getApplication()) ;
+    private MyDatabase myDatabase ;
     private List<Report> reports ;
-    private  String ip = "192.168.0.16";
+    private List<User> users ;
+    private  String ip = "192.168.0.73";
 
     public SyncReportService() {
         super("");
@@ -41,19 +43,45 @@ public class SyncReportService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
+        myDatabase = MyDatabase.getDatabase(this.getApplication()) ;
 
-        SyncTask task1 = new SyncTask();
+        ActivityTask task1 = new ActivityTask();
         task1.execute();
 
     }
 
-    private class SyncTask extends AsyncTask<Void, Void, Void> {
+    private class ActivityTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
-            String url = "http://" + ip + ":8080/api/reports/syncReports";
-            reports = myDatabase.reportDao().getNotSyncedReports();
+            // Sinhronizacija registrovanih korisnika
+            String url = "http://" + ip + ":8080/api/users/syncUsers";
+            users = myDatabase.userDao().getNotSyncedUsers();
 
             RestTemplate restTemplate = new RestTemplate();
+
+            try {
+                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Content-Type", "application/json");
+                HttpEntity<ArrayList<User>> entity = new HttpEntity<>((ArrayList<User>) users, headers);
+                ResponseEntity<User> response = restTemplate.exchange(url, HttpMethod.POST, entity, null);
+                HttpStatus status = response.getStatusCode();
+
+                if (status == HttpStatus.OK) {
+                    for (int i = 0; i < users.size(); i++) {
+                        users.get(i).setSync(true);
+
+                        myDatabase.userDao().update(users.get(i));
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return null;
+            }
+
+            // Sinhronizacija prijavljenih reportova
+            url = "http://" + ip + ":8080/api/reports/syncReports";
+            reports = myDatabase.reportDao().getNotSyncedReports();
 
             try {
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());

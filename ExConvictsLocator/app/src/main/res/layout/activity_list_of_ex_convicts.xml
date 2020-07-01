@@ -36,13 +36,13 @@
 
     </com.google.android.material.tabs.TabLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
+    <!-->compat.widget.AppCompatButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sync (TEMP)"
         android:onClick="onRefreshButtonClick">
 
-    </androidx.appcompat.widget.AppCompatButton>
+    </androidx.appcompat.widget.AppCompatButton>-->
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"

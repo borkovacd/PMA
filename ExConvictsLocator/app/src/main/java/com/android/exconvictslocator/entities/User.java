@@ -5,10 +5,17 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class User {
+
+    @NonNull
     @ColumnInfo
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    @JsonProperty("id")
+    private int id;
+    @ColumnInfo
     @NonNull
     private String email;
     @ColumnInfo
@@ -17,6 +24,8 @@ public class User {
     private String lastName;
     @ColumnInfo
     private String password;
+    @ColumnInfo
+    private boolean isSync = false ;
 
 
     public User(){}
@@ -28,6 +37,13 @@ public class User {
         this.email = email;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -59,5 +75,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isSync() {
+        return isSync;
+    }
+
+    public void setSync(boolean sync) {
+        isSync = sync;
     }
 }

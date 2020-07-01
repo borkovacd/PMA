@@ -10,11 +10,12 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
+import java.util.Arrays;
 
 public class RestTask {
 
@@ -23,7 +24,10 @@ public class RestTask {
         RestTemplate restTemplate = new RestTemplate();
         try {
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+
             HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
             HttpEntity<String> entity = new HttpEntity<String>(headers);
             Log.d("RESTTASK", "Pre exchange metode");
             ResponseEntity<ExConvict[]> response = restTemplate.exchange(url, HttpMethod.GET, entity, ExConvict[].class);
