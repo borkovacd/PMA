@@ -167,8 +167,7 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
         // --- PODACI ZA IZVESTAJ ---
 
         // Datum prijave
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
-        updatedAt = formatter.format(new Date());
+        updatedAt = new Date().toString();
         // Grad
         city = "Novi Sad";
 
@@ -196,7 +195,7 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
         report.setLocation(newLocation);
         report.setUserId(userId);
         report.setSync(false);
-
+System.out.println(report);
        myDatabase.reportDao().insertReport(report);
 
         b.putString("name", nameSurname);
@@ -220,8 +219,13 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
         try {
             Geocoder geocoder = new Geocoder(UpdateLocationActivity.this, Locale.getDefault());
             List<android.location.Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLatitude(), 1);
+            double longitude = addresses.get(0).getLongitude();
+            double latitude = addresses.get(0).getLatitude();
             String address = addresses.get(0).getAddressLine(0);
-
+            etPrijaviNovuLokaciju.setText(address);
+            newLocation = address;
+            lang = longitude;
+            lat = latitude;
           }catch (Exception e) {
             System.out.println(e.getStackTrace());
         }
