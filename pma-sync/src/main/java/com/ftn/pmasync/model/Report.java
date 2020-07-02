@@ -2,9 +2,11 @@ package com.ftn.pmasync.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,10 +31,13 @@ public class Report {
     private String city;
     @Column
     private String comment;
-    @Column
-    private String userId;
-    @Column
-    private int exConvictId;
+    
+    @OneToOne(fetch = FetchType.EAGER)
+    private User userId;
+    
+    @OneToOne(fetch = FetchType.EAGER)
+    private ExConvict exConvictId;
+    
     @Column
     private double lat;
     @Column
