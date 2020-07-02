@@ -44,6 +44,7 @@ public class UserController {
 		boolean tmp = false;
 		for(User user : users) {
 			User result = userRepository.save(user);
+
 			if(result == null)
 				tmp = true;
 		}

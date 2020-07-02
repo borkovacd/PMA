@@ -21,7 +21,6 @@ import lombok.Setter;
 public class Report {
 	
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @Column
     private String location;

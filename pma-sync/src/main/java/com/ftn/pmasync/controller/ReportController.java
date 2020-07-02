@@ -34,6 +34,7 @@ public class ReportController {
 		boolean tmp = false;
 		for(Report report : reports) {
 			Report result = reportRepository.save(report);
+
 			if(result == null)
 				tmp = true;
 		}
