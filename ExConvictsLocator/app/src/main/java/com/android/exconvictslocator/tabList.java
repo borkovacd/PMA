@@ -71,7 +71,7 @@ public class tabList extends Fragment {
         sv=(SearchView) rootView.findViewById(R.id.searchView1);
         //db.clearAllTables();
         //populateDbInit();
-        //populateDbInit2();
+       // populateDbInit2();
         return rootView;
     }
 
@@ -190,9 +190,9 @@ exConvictRepo.insertExConvict(exc3);
 
         User user = new User("Jovana", "Novakovic", "password123", "jo@mailinator.com");
 userRepo.insertUser(user);
-    Report report1 = new Report("Zeleznicka stanica",new Date().toString(), "Novi Sad","-", "jo@mailinator.com", 1, 45.264251,  19.827240);
-    Report report2 = new Report("Ruzin gaj",new Date().toString(), "Novi Sad","-", "jo@mailinator.com", 2, 45.245686,  19.815030);
-    Report report3 = new Report("Kamenicki park",new Date().toString(), "Novi Sad","-", "jo@mailinator.com", 1,  45.227990,   19.849182);
+    Report report1 = new Report("Zeleznicka stanica",new Date().toString(), "Novi Sad","-", 1, 1, 45.264251,  19.827240);
+    Report report2 = new Report("Ruzin gaj",new Date().toString(), "Novi Sad","-", 1, 2, 45.245686,  19.815030);
+    Report report3 = new Report("Kamenicki park",new Date().toString(), "Novi Sad","-", 1, 1,  45.227990,   19.849182);
 reportRepo.insertReport(report1);
 reportRepo.insertReport(report2);
 reportRepo.insertReport(report3);
@@ -201,7 +201,6 @@ reportRepo.insertReport(report3);
     }
 
     private  void populateDbInit2(){
-        System.out.println("**********************************IZVRESENOOOOOO");
         ExConvict exc1 = new ExConvict( "Miloš", "Petrović", "Pele",
                 R.drawable.img1, "Bulevar patrijarha Pavla 14, 21 000, Novi Sad, Srbija", "Muški",
                 "12.12.1955.", "ubistvo sa predumišljajem, pljačka, učešće u organizovanom kriminalu",
@@ -220,10 +219,12 @@ reportRepo.insertReport(report3);
         exConvictRepo.insertExConvict(exc3);
 
         User user = new User("Jovana", "Novakovic", "password123", "jo@mailinator.com");
-        userRepo.insertUser(user);
-        Report report1 = new Report("Zeleznicka stanica",new Date().toString(), "Novi Sad","-", "jo@mailinator.com", 1, 45.264251,  19.827240);
-        Report report2 = new Report("Ruzin gaj",new Date().toString(), "Novi Sad","-", "jo@mailinator.com", 2, 45.245686,  19.815030);
-        Report report3 = new Report("Kamenicki park",new Date().toString(), "Novi Sad","-", "jo@mailinator.com", 1,  45.227990,   19.849182);
+      userRepo.insertUser(user);
+
+
+        Report report1 = new Report("Zeleznicka stanica",new Date().toString(), "Novi Sad","-", 1, 1, 45.264251,  19.827240);
+        Report report2 = new Report("Ruzin gaj",new Date().toString(), "Novi Sad","-", 1, 2, 45.245686,  19.815030);
+        Report report3 = new Report("Kamenicki park",new Date().toString(), "Novi Sad","-", 1, 1,  45.227990,   19.849182);
         reportRepo.insertReport(report1);
         reportRepo.insertReport(report2);
         reportRepo.insertReport(report3);
