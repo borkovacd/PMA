@@ -3,15 +3,16 @@ package com.android.exconvictslocator.entities;
 import androidx.room.Embedded;
 import androidx.room.Relation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExConvictReport {
 
     @Embedded
-    public ExConvict exConvict;
+    public ExConvict exConvict ;
 
     @Relation(parentColumn = "id", entityColumn = "exConvictId", entity = Report.class)
-    public List<Report> reports;
+    public List<Report> reports = new ArrayList<Report>();
 
     public ExConvict getExConvict() {
         return exConvict;
@@ -28,4 +29,6 @@ public class ExConvictReport {
     public void setReports(List<Report> reports) {
         this.reports = reports;
     }
+
+
 }

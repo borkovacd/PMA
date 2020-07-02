@@ -10,5 +10,5 @@ public interface IExConvictRepository {
     public void deleteExConvict(ExConvict exConvict);
     public List<ExConvict> getExConvicts();
     public List<ExConvictReport> getExConvictReports();
-
+    public ExConvictReport getExConvictByIdWithReports(int id);
 }

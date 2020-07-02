@@ -26,4 +26,8 @@ public interface ExConvictDao {
 
     @Query("SELECT * from ExConvict ")
     public List<ExConvictReport> getExConvictReports();
+
+    @Query("SELECT * from ExConvict where id = :id")
+    public ExConvictReport getExConvictByIdWithReports(int id);
+
 }
