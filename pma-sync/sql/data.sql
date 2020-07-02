@@ -19,4 +19,10 @@ INSERT INTO report (id, city, comment, date, ex_convict_id, lang, lat, location,
 	VALUES (1, "Novi Sad","-", "25.06.2020", 2, 45.264251,  19.827240, "Železnicka stanica", 1, true);
 	
 
-	
+INSERT INTO `db_pma`.`address` (`id`, `lat`,`lang`, `name`) VALUES (1, 45.2359337,19.8277852, '1300 kaplara, Liman, Novi Sad');
+INSERT INTO `db_pma`.`address` (`id`, `lat`,`lang`, `name`) VALUES (2, 45.2451097,19.8095541, 'Bogdana Šuputa, Telep, Novi Sad');
+INSERT INTO `db_pma`.`address` (`id`, `lat`,`lang`, `name`) VALUES (3, 45.2523492,19.7960865, 'Braće Dronjak, Bistrica, Novi Sad');
+INSERT INTO `db_pma`.`address` (`id`, `lat`,`lang`, `name`) VALUES (4, 45.2425503,19.8343992, 'Bulevar cara Lazara, Novi Sad');
+INSERT INTO `db_pma`.`address` (`id`, `lat`,`lang`, `name`) VALUES (5, 45.2488709,19.8225385, 'Cara Dušana, Sajmište, Novi Sad');
+INSERT INTO `db_pma`.`address` (`id`, `lat`,`lang`, `name`) VALUES (6, 45.2477284,19.8343505, 'Danila Kiša, Grbavica, Novi Sad');
+INSERT INTO `db_pma`.`address` (`id`, `lat`,`lang`, `name`) VALUES (7, 45.2517194,19.835018, 'Bulevar Oslobođenja, Novi Sad');
