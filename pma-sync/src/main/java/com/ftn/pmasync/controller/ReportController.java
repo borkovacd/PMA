@@ -16,8 +16,11 @@ import com.ftn.pmasync.dto.ExConvictDTO;
 import com.ftn.pmasync.dto.ReportDTO;
 import com.ftn.pmasync.model.ExConvict;
 import com.ftn.pmasync.model.Report;
+import com.ftn.pmasync.model.User;
 import com.ftn.pmasync.repository.ReportRepository;
+import com.ftn.pmasync.service.ExConvictService;
 import com.ftn.pmasync.service.ReportService;
+import com.ftn.pmasync.service.UserService;
 
 @RestController
 @RequestMapping(path = "/api/reports")
@@ -25,15 +28,33 @@ public class ReportController {
 	
 	@Autowired
 	private ReportService reportService ;
-	//Brisi ovaj repository cole mu :D
 	@Autowired
-	private ReportRepository reportRepository ;
+	private UserService userService ;
+	@Autowired
+	private ExConvictService exConvictService ;
 	
 	@RequestMapping(value = "/syncReports", method = RequestMethod.POST)
-	public ResponseEntity<List<Report>> syncActivity(@RequestBody List<Report> reports) {
+	public ResponseEntity<List<Report>> syncActivity(@RequestBody List<ReportDTO> dtos) {
 		boolean tmp = false;
-		for(Report report : reports) {
-			Report result = reportRepository.save(report);
+		for(ReportDTO dto : dtos) {
+			
+			User u = userService.findOneById(dto.getUserId());
+			ExConvict exc = exConvictService.findOneById(dto.getExConvictId());
+			
+			Report report = new Report();
+			report.setCity(dto.getCity());
+			report.setComment(dto.getComment());
+			report.setDate(dto.getDate());
+			report.setExConvictId(exc);
+			report.setId(dto.getId());
+			report.setLang(dto.getLang());
+			report.setLat(dto.getLat());
+			report.setLocation(dto.getLocation());
+			report.setSync(true);
+			report.setUserId(u);
+			
+			System.out.println("UserEmail: " + u.getEmail() + ", ExConvictName: " + exc.getFirstName());
+			Report result = reportService.save(report);
 
 			if(result == null)
 				tmp = true;

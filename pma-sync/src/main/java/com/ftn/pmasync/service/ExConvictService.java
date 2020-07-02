@@ -17,5 +17,13 @@ public class ExConvictService {
 	public List<ExConvict> getExConvicts() {
 		return exConvictRepository.findAll();
 	}
+	
+	public ExConvict save(ExConvict exc) {
+		return exConvictRepository.save(exc) ;
+	}
+	
+	public ExConvict findOneById(int id) {
+		return exConvictRepository.getOne(id);
+	}
 
 }

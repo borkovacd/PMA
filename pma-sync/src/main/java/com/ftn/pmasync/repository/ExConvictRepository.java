@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ftn.pmasync.model.ExConvict;
 
-public interface ExConvictRepository extends JpaRepository<ExConvict, Long> {
+public interface ExConvictRepository extends JpaRepository<ExConvict, Integer> {
+	
+	//ExConvict findOneById (int id);
 
 }

@@ -17,5 +17,13 @@ public class UserService {
 	public List<User> getUsers() {
 		return userRepository.findAll();
 	}
+	
+	public User save(User u) {
+		return userRepository.save(u);
+	}
+	
+	public User findOneById(int id) {
+		return userRepository.getOne(id);
+	}
 
 }

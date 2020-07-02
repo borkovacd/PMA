@@ -24,7 +24,7 @@ public class ReportDTO {
     private String date;
     private String city;
     private String comment;
-    private String userId;
+    private int userId;
     private int exConvictId;
     private double lat;
     private double lang;

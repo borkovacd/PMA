@@ -17,5 +17,13 @@ public class ReportService {
 	public List<Report> getReports() {
 		return reportRepository.findAll();
 	}
+	
+	public Report save(Report r) {
+		return reportRepository.save(r);
+	}
+	
+	public Report findOneById(int id) {
+		return reportRepository.getOne(id);
+	}
 
 }
