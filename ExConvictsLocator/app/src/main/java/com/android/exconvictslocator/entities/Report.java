@@ -22,7 +22,7 @@ public class Report {
     @ColumnInfo
     private String comment;
     @ColumnInfo
-    private String userId;
+    private int userId;
     @ColumnInfo
     private int exConvictId;
     @ColumnInfo
@@ -34,7 +34,7 @@ public class Report {
 
     public Report(){}
 
-    public Report(String location, String date, String city, String comment, String userId, int exConvictId, double lat, double lang) {
+    public Report(String location, String date, String city, String comment, int userId, int exConvictId, double lat, double lang) {
         this.location = location;
         this.date = date;
         this.city = city;
@@ -85,11 +85,11 @@ public class Report {
         this.comment = comment;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 

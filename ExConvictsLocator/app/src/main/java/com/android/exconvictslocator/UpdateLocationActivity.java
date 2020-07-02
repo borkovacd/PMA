@@ -19,7 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -28,6 +27,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.android.exconvictslocator.entities.Address;
 import com.android.exconvictslocator.entities.ExConvictReport;
 import com.android.exconvictslocator.entities.Report;
+import com.android.exconvictslocator.entities.User;
 import com.android.exconvictslocator.repositories.impl.ExConvictRepository;
 import com.android.exconvictslocator.repositories.impl.ReportRepository;
 import com.android.exconvictslocator.repositories.impl.UserRepository;
@@ -62,7 +62,7 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
     String updatedAt ;
 
     // Dodatna polja za izvestaj
-    String userId;
+    int userId;
     int idExConvict, exConvictId ;
     String city ;
     double lat, lang ;
@@ -95,6 +95,7 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
 
         myDatabase = MyDatabase.getDatabase(this.getApplication());
         reportRepo = ReportRepository.getInstance(myDatabase.reportDao());
+        userRepository = UserRepository.getInstance(myDatabase.userDao());
         ArrayAdapter<Address> adapter = new ArrayAdapter<Address>(this,
                 android.R.layout.simple_dropdown_item_1line, addresses);
         AutoCompleteTextView actv = (AutoCompleteTextView)findViewById(R.id.et_PrijaviNovuLokaciju);
@@ -184,12 +185,11 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
         sessionManagement.checkLogin();
         HashMap<String, String> user = sessionManagement.getUserDetails();
         emailUser = user.get(SessionManagement.KEY_EMAIL);
-        userId = emailUser;
+        User loggedInUser = userRepository.findUserByEmail(emailUser);
+        userId = loggedInUser.getId();
 
         // ExConvictId
         exConvictId = idExConvict;
-
-
         Report report = new Report();
         report.setCity(city);
         report.setComment(comment);
@@ -202,10 +202,6 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
         report.setSync(false);
 
        myDatabase.reportDao().insertReport(report);
-
-         ExConvictReport exConvictReport = new ExConvictReport();
-
-         exConvictReport.getReports().add(report);
 
         b.putString("name", nameSurname);
         b.putString("nickname", nickname);

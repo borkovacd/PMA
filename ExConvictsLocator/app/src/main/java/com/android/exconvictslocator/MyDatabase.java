@@ -14,7 +14,7 @@ import com.android.exconvictslocator.entities.daos.ReportDao;
 import com.android.exconvictslocator.entities.daos.UserDao;
 
 
-@Database(entities={User.class, ExConvict.class, Report.class}, version=4)
+@Database(entities={User.class, ExConvict.class, Report.class}, version=6)
 public abstract class MyDatabase extends RoomDatabase {
 
     public abstract UserDao userDao();
