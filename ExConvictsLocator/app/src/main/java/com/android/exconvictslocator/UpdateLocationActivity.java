@@ -31,25 +31,32 @@ import com.android.exconvictslocator.entities.User;
 import com.android.exconvictslocator.repositories.impl.ExConvictRepository;
 import com.android.exconvictslocator.repositories.impl.ReportRepository;
 import com.android.exconvictslocator.repositories.impl.UserRepository;
+import com.android.exconvictslocator.synchronization.ServerIPConfig;
 import com.android.exconvictslocator.synchronization.SyncReportService;
+import com.android.exconvictslocator.synchronization.resttemplate.AddressesRestClient;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import cz.msebera.android.httpclient.Header;
+
 public class UpdateLocationActivity extends MainActivity implements LocationListener {
 
     private DrawerLayout mDrawer;
 
-    private Address[] addresses = new Address[] {
-            new Address(1, "Danila Kisa", 45.12, 19.15),
-            new Address(2, "Bulevar oslobodjenja", 45.13, 19.45),
-            new Address(3, "Sutjeska", 45.172, 19.155),
-            new Address(4, "Djurdja Brankovica", 45.5512, 19.15),
-            new Address(5, "Alekse Santica", 45.1562, 19.15),
-            };
+    private List<Address> addresses =new ArrayList<Address>();
 
     // polja sa dobijenim podacima
     String nameSurname = null;
@@ -88,32 +95,21 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.activity_update_location, null, false);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer);
         mDrawer.addView(contentView, 0);
-
+        try {
+            getAddresses();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         myDatabase = MyDatabase.getDatabase(this.getApplication());
         reportRepo = ReportRepository.getInstance(myDatabase.reportDao());
         userRepository = UserRepository.getInstance(myDatabase.userDao());
-        ArrayAdapter<Address> adapter = new ArrayAdapter<Address>(this,
-                android.R.layout.simple_dropdown_item_1line, addresses);
-        AutoCompleteTextView actv = (AutoCompleteTextView)findViewById(R.id.et_PrijaviNovuLokaciju);
-        actv.setThreshold(1);
-        actv.setAdapter(adapter);
-        actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                    long arg3) {
-                Address selected = (Address) arg0.getAdapter().getItem(arg2);
-                newLocation = selected.getName();
-                lang = selected.getLang();
-                lat = selected.getLat();
-                System.out.println("Clicked " + arg2 + " name: " + selected.getName() + ", id = " + selected.getId());
-
-            }
-        });
         setView();
         btnPrijavi = findViewById(R.id.btn_prijavi);
 
@@ -171,8 +167,7 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
         // --- PODACI ZA IZVESTAJ ---
 
         // Datum prijave
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
-        updatedAt = formatter.format(new Date());
+        updatedAt = new Date().toString();
         // Grad
         city = "Novi Sad";
 
@@ -200,7 +195,7 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
         report.setLocation(newLocation);
         report.setUserId(userId);
         report.setSync(false);
-
+System.out.println(report);
        myDatabase.reportDao().insertReport(report);
 
         b.putString("name", nameSurname);
@@ -224,10 +219,13 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
         try {
             Geocoder geocoder = new Geocoder(UpdateLocationActivity.this, Locale.getDefault());
             List<android.location.Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLatitude(), 1);
+            double longitude = addresses.get(0).getLongitude();
+            double latitude = addresses.get(0).getLatitude();
             String address = addresses.get(0).getAddressLine(0);
-            System.out.println(address);
-
-
+            etPrijaviNovuLokaciju.setText(address);
+            newLocation = address;
+            lang = longitude;
+            lat = latitude;
           }catch (Exception e) {
             System.out.println(e.getStackTrace());
         }
@@ -258,4 +256,43 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
             System.out.println(e.getStackTrace());
         }
         }
+    public void getAddresses() throws JSONException {
+        AddressesRestClient.get("addresses", new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+
+
+                if (response != null) {
+                    Gson gson = new Gson();
+                    Type type = new TypeToken<List<Address>>(){}.getType();
+                     addresses= gson.fromJson(String.valueOf(response), type);
+                    setAutocompleteAdapter();
+                }
+            }
+        });
+    }
+
+    private void setAutocompleteAdapter(){
+        ArrayAdapter<Address> adapter = new ArrayAdapter<Address>(this,
+                android.R.layout.simple_dropdown_item_1line, addresses);
+        AutoCompleteTextView actv = (AutoCompleteTextView)findViewById(R.id.et_PrijaviNovuLokaciju);
+        actv.setThreshold(1);
+        actv.setAdapter(adapter);
+        actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+                                    long arg3) {
+                Address selected = (Address) arg0.getAdapter().getItem(arg2);
+                newLocation = selected.getName();
+                lang = selected.getLang();
+                lat = selected.getLat();
+            }
+        });
+    }
 }

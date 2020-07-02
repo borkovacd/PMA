@@ -61,8 +61,8 @@ public class tabList extends Fragment {
         exConvicts= exConvictRepo.getExConvictReports();
         for(ExConvictReport er :exConvicts){
             Collections.sort(er.getReports(), new Comparator<Report>(){
-                public int compare(Report s1, Report s2) {
-                    return s2.getId()- s1.getId();
+                public int compare(Report r1, Report r2) {
+                   return  (new Date(r2.getDate())).compareTo(new Date(r1.getDate()));
                 }
             });
 
