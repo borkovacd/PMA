@@ -14,4 +14,8 @@ public interface IReportRepository {
 
     void update(Report report);
 
+    public List<Report> findAllReports();
+
+    public List<Report> findReportsByExConvict(int exConvictId);
+
 }

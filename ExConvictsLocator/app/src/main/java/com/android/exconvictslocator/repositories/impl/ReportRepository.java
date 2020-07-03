@@ -42,5 +42,15 @@ reportDao.deleteReport(report);
         reportDao.update(report);
     }
 
+    @Override
+    public List<Report> findAllReports() {
+        return reportDao.findAllReports();
+    }
+
+    @Override
+    public List<Report> findReportsByExConvict(int exConvictId) {
+        return  reportDao.findReportsByExConvict(exConvictId);
+    }
+
 
 }

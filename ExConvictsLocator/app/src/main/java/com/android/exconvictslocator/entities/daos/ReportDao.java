@@ -26,4 +26,12 @@ public interface ReportDao {
     @Update
     void update(Report report);
 
+    @Query("SELECT * FROM Report")
+    public List<Report> findAllReports();
+
+    @Query("SELECT * FROM Report where exConvictId = :exConvictId")
+    public List<Report> findReportsByExConvict(int exConvictId);
+
+
+
 }

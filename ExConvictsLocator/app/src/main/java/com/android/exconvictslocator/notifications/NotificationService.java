@@ -1,27 +1,24 @@
 package com.android.exconvictslocator.notifications;
 
-import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
+import com.android.exconvictslocator.MyDatabase;
 import com.android.exconvictslocator.R;
+import com.android.exconvictslocator.entities.ExConvict;
+import com.android.exconvictslocator.entities.Report;
+import com.google.android.gms.maps.model.LatLng;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -30,8 +27,19 @@ public class NotificationService extends Service {
     private final static String default_notification_channel_id = "default";
     Timer timer;
     TimerTask timerTask;
-    String TAG = "Timers";
-    int Your_X_SECS = 5;
+    String TAG = "OLGA";
+    int Your_X_SECS = 60;
+
+    private MyDatabase myDatabase = MyDatabase.getDatabase(this.getApplication()) ;;
+    private List<ExConvict> exConvicts ;
+    private List<Report> reportsByExConvict ;
+    private  List<Report> reports ;
+
+    double lat ;
+    double lan ;
+
+    double latUser = 45.2523492 ;
+    double lanUser = 19.7960865;
 
     @Override
     public IBinder onBind(Intent arg0) {
@@ -66,10 +74,37 @@ public class NotificationService extends Service {
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String distance_radius_string = sharedPref.getString("distance_radius", "2");
-        Log.d("RESTTASK", "Distanca (STRING): " + distance_radius_string);
         int distance_radius = Integer.parseInt(distance_radius_string);
         Log.d("RESTTASK", "Distanca (INT): " + distance_radius);
 
+        exConvicts = myDatabase.exConvictDao().getExConvicts();
+        reports = myDatabase.reportDao().findAllReports();
+        for (ExConvict exConvict: exConvicts) {
+
+            reportsByExConvict = myDatabase.reportDao().findReportsByExConvict(exConvict.getId());
+
+            if (reportsByExConvict.size() != 0 || reportsByExConvict != null) {
+                lat = reportsByExConvict.get(0).getLat() ;
+                lan = reportsByExConvict.get(0).getLang() ;
+
+                LatLng lld1 = new LatLng(lat, lan);
+                LatLng lld2 = new LatLng(latUser, lanUser);
+                Double distance = distance(lat, lan, latUser, lanUser);
+                Log.d(TAG, "Distance in kilometers " + distance);
+
+                if (distance < distance_radius) {
+                    Log.d(TAG, "BLIZU SU! ");
+
+                }
+                else {
+                    Log.d(TAG, "NISU BLIZU ! ");
+
+                }
+
+            }
+
+        }
+        /*
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -103,9 +138,10 @@ public class NotificationService extends Service {
                 // TODO Auto-generated method stub
             }
         });
-        /*
+
         NotificationCompat.Builder notifyBuilder = getNotificationBuilder();
-        mNotifyManager.notify(NOTIFICATION_ID, notifyBuilder.build());*/
+        mNotifyManager.notify(NOTIFICATION_ID, notifyBuilder.build());
+        */
     }
 
     public void startTimer() {
@@ -150,5 +186,26 @@ public class NotificationService extends Service {
         }
         assert mNotificationManager != null;
         mNotificationManager.notify((int) System.currentTimeMillis(), mBuilder.build());
+    }
+
+    private double distance(double lat1, double lon1, double lat2, double lon2) {
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1))
+                * Math.sin(deg2rad(lat2))
+                + Math.cos(deg2rad(lat1))
+                * Math.cos(deg2rad(lat2))
+                * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        return (dist);
+    }
+
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    private double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
     }
 }
