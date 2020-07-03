@@ -29,7 +29,7 @@ public interface ReportDao {
     @Query("SELECT * FROM Report")
     public List<Report> findAllReports();
 
-    @Query("SELECT * FROM Report where exConvictId = :exConvictId")
+    @Query("SELECT * FROM Report WHERE exConvictId = :exConvictId ORDER BY date DESC")
     public List<Report> findReportsByExConvict(int exConvictId);
 
 
