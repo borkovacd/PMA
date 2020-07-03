@@ -119,6 +119,8 @@ public class UserProfileActivity extends MainActivity {
                             korisnik.setFirstName(profileFirstName);
                             korisnik.setLastName(profileLastName);
                             korisnik.setSync(false);
+                            String name = korisnik.getFirstName() + ' ' + korisnik.getLastName();
+                            sessionManagement.createLoginSession(korisnik.getEmail(), name);
                             validationOk = false; // za sledeci krug, da bi opet provere prolazio
                         }
                         else {
@@ -134,6 +136,9 @@ public class UserProfileActivity extends MainActivity {
                     korisnik.setFirstName(profileFirstName);
                     korisnik.setLastName(profileLastName);
                     korisnik.setSync(false);
+                    String name = korisnik.getFirstName() + ' ' + korisnik.getLastName();
+                    sessionManagement.createLoginSession(korisnik.getEmail(), name);
+
                 }
                 else { // uneo pass manji od 4
                     Toast.makeText(getApplicationContext(), "Uneta lozinka nije dovoljno dugacka!", Toast.LENGTH_LONG).show();
