@@ -30,7 +30,7 @@ public class NotificationService extends Service {
     String TAG = "OLGA";
     int Your_X_SECS = 60;
 
-    private MyDatabase myDatabase = MyDatabase.getDatabase(this.getApplication()) ;;
+    private MyDatabase myDatabase ;
     private List<ExConvict> exConvicts ;
     private List<Report> reportsByExConvict ;
     private  List<Report> reports ;
@@ -49,6 +49,7 @@ public class NotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e(TAG, "onStartCommand");
+        myDatabase = MyDatabase.getDatabase(this.getApplication()) ;
         super.onStartCommand(intent, flags, startId);
         startTimer();
         //sendNotification();
@@ -83,7 +84,7 @@ public class NotificationService extends Service {
 
             reportsByExConvict = myDatabase.reportDao().findReportsByExConvict(exConvict.getId());
 
-            if (reportsByExConvict.size() != 0 || reportsByExConvict != null) {
+            if (reportsByExConvict.size() != 0) {
                 lat = reportsByExConvict.get(0).getLat() ;
                 lan = reportsByExConvict.get(0).getLang() ;
 
