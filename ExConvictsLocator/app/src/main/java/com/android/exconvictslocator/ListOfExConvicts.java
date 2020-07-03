@@ -75,7 +75,7 @@ public class ListOfExConvicts extends MainActivity {
         setAccountSyncable();
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String synhonization_interval = sharedPref.getString("synhonization_interval", "30");
+        String synhonization_interval = sharedPref.getString("synhonization_interval", "15");
         Log.d("RESTTASK", "Interval (STRING): " + synhonization_interval);
         long sync_interval_in_minutes = Long.parseLong(synhonization_interval);
         long sync_interval = sync_interval_in_minutes * 60L; //minuti * sekunde
