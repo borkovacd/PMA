@@ -68,10 +68,12 @@ public class SyncReportService extends IntentService {
                 HttpStatus status = response.getStatusCode();
 
                 if (status == HttpStatus.OK) {
-                    for (int i = 0; i < users.size(); i++) {
-                        users.get(i).setSync(true);
+                    if (users.size() != 0) {
+                        for (int i = 0; i < users.size(); i++) {
+                            users.get(i).setSync(true);
 
-                        myDatabase.userDao().update(users.get(i));
+                            myDatabase.userDao().update(users.get(i));
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -92,10 +94,12 @@ public class SyncReportService extends IntentService {
                 HttpStatus status = response.getStatusCode();
 
                 if (status == HttpStatus.OK) {
-                    for (int i = 0; i < reports.size(); i++) {
-                        reports.get(i).setSync(true);
+                    if (reports.size() != 0) {
+                        for (int i = 0; i < reports.size(); i++) {
+                            reports.get(i).setSync(true);
 
-                        myDatabase.reportDao().update(reports.get(i));
+                            myDatabase.reportDao().update(reports.get(i));
+                        }
                     }
                 }
             } catch (Exception e) {

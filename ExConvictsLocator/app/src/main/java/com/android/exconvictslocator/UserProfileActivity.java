@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.android.exconvictslocator.entities.User;
@@ -189,5 +190,15 @@ public class UserProfileActivity extends MainActivity {
             else
                 Toast.makeText(getApplicationContext(), "Uspesno je izmenjen profil!.", Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
     }
 }

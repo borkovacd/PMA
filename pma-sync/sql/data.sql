@@ -29,7 +29,7 @@ INSERT INTO report (id, city, comment, date, ex_convict_id_id, lang, lat, locati
 	VALUES (1, "Novi Sad","Komentar za korisnika", "Fri Jul 03 00:06:28 GMT+02:00 2020", 1, 45.2359337,  19.8277852, "1300 kaplara, Liman, Novi Sad", 100, true);
 	
 INSERT INTO report (id, city, comment, date, ex_convict_id_id, lang, lat, location, user_id_id, is_sync)
-	VALUES (2, "Novi Sad","Komentar za korisnika", Sat Jul 04 00:06:28 GMT+02:00 2020", 1, 45.2451097,  19.8095541, "Bogdana Šuputa, Telep, Novi Sad", 100, true);
+	VALUES (2, "Novi Sad","Komentar za korisnika", "Sat Jul 04 00:06:28 GMT+02:00 2020", 1, 45.2451097,  19.8095541, "Bogdana Šuputa, Telep, Novi Sad", 100, true);
 	
 INSERT INTO report (id, city, comment, date, ex_convict_id_id, lang, lat, location, user_id_id, is_sync)
 	VALUES (3, "Novi Sad","Komentar za korisnika", "Fri Jul 03 00:06:28 GMT+02:00 2020", 2, 45.2523492,  19.7960865, "Braće Dronjak, Bistrica, Novi Sad", 200, true);

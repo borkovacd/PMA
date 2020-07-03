@@ -76,17 +76,18 @@ public class NotificationService extends Service {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String distance_radius_string = sharedPref.getString("distance_radius", "2");
         int distance_radius = Integer.parseInt(distance_radius_string);
-        Log.d("RESTTASK", "Distanca (INT): " + distance_radius);
 
         exConvicts = myDatabase.exConvictDao().getExConvicts();
         reports = myDatabase.reportDao().findAllReports();
-        for (ExConvict exConvict: exConvicts) {
+        if (exConvicts.size() != 0) {
+        for (ExConvict exConvict : exConvicts) {
 
             reportsByExConvict = myDatabase.reportDao().findReportsByExConvict(exConvict.getId());
 
             if (reportsByExConvict.size() != 0) {
-                lat = reportsByExConvict.get(0).getLat() ;
-                lan = reportsByExConvict.get(0).getLang() ;
+                Log.d(TAG, "Datum poslednje prijavljene lokacije:  " + reportsByExConvict.get(0).getDate());
+                lat = reportsByExConvict.get(0).getLat();
+                lan = reportsByExConvict.get(0).getLang();
 
                 LatLng lld1 = new LatLng(lat, lan);
                 LatLng lld2 = new LatLng(latUser, lanUser);
@@ -96,15 +97,16 @@ public class NotificationService extends Service {
                 if (distance < distance_radius) {
                     Log.d(TAG, "BLIZU SU! ");
 
-                }
-                else {
+                } else {
                     Log.d(TAG, "NISU BLIZU ! ");
+                    createNotification();
 
                 }
 
             }
 
         }
+    }
         /*
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
