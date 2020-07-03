@@ -4,8 +4,6 @@ package com.ftn.pmasync.dto;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-
-@NoArgsConstructor
 @AllArgsConstructor
 public class AddressDTO {
 	
