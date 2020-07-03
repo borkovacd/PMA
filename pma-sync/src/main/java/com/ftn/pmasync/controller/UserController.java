@@ -43,6 +43,7 @@ public class UserController {
 	public ResponseEntity<List<User>> syncActivity(@RequestBody List<User> users) {
 		boolean tmp = false;
 		for(User user : users) {
+			user.setSync(true);
 			User result = userRepository.save(user);
 
 			if(result == null)

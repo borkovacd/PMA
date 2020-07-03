@@ -19,7 +19,8 @@
         <include
             layout="@layout/ex_convict_details_layout"
             android:layout_width="738dp"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="50dp"/>
     </LinearLayout>
 
 </ScrollView>

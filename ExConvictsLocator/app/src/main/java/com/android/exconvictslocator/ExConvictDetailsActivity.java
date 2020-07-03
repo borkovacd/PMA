@@ -12,7 +12,6 @@ import android.widget.TextView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class ExConvictDetailsActivity extends MainActivity {
 
