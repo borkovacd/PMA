@@ -63,6 +63,15 @@ public class SessionManagement {
     }
 
     /**
+     * Update Login Info
+     */
+    public void updateLoginSession(String email, String name) {
+        editor.putString(KEY_EMAIL, email);
+        editor.putString(KEY_NAME, name);
+        editor.apply();
+    }
+
+    /**
      * Get stored session data
      * */
     public HashMap<String, String> getUserDetails(){
