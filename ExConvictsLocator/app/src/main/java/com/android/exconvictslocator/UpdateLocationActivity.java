@@ -9,6 +9,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +32,6 @@ import com.android.exconvictslocator.entities.User;
 import com.android.exconvictslocator.repositories.impl.ExConvictRepository;
 import com.android.exconvictslocator.repositories.impl.ReportRepository;
 import com.android.exconvictslocator.repositories.impl.UserRepository;
-import com.android.exconvictslocator.synchronization.ServerIPConfig;
 import com.android.exconvictslocator.synchronization.SyncReportService;
 import com.android.exconvictslocator.synchronization.resttemplate.AddressesRestClient;
 import com.google.gson.Gson;
@@ -43,7 +43,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -118,6 +117,7 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
             @Override
             public void onClick(View view) {
                 locate();
+
             }
 
         });
@@ -215,10 +215,13 @@ System.out.println(report);
 
     @Override
     public void onLocationChanged(Location location) {
-
         try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Locale.setDefault(new Locale.Builder().setLanguage("sr").setRegion("RS").setScript("Latn").build());
+            };
             Geocoder geocoder = new Geocoder(UpdateLocationActivity.this, Locale.getDefault());
-            List<android.location.Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLatitude(), 1);
+
+            List<android.location.Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             double longitude = addresses.get(0).getLongitude();
             double latitude = addresses.get(0).getLatitude();
             String address = addresses.get(0).getAddressLine(0);
@@ -250,8 +253,23 @@ System.out.println(report);
     @SuppressLint("MissingPermission")
     private void locate(){
         try {
-            locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, UpdateLocationActivity.this);
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            Location current = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+           if(current != null){
+               Geocoder geocoder = new Geocoder(UpdateLocationActivity.this, Locale.getDefault());
+               List<android.location.Address> addresses = geocoder.getFromLocation(current.getLatitude(), current.getLongitude(),1);
+               double longitude = addresses.get(0).getLongitude();
+               double latitude = addresses.get(0).getLatitude();
+               String address = addresses.get(0).getAddressLine(0);
+               etPrijaviNovuLokaciju.setText(address);
+               newLocation = address;
+               lang = longitude;
+               lat = latitude;
+           }else{
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, UpdateLocationActivity.this);
+
+
+           }
         }catch (Exception e) {
             System.out.println(e.getStackTrace());
         }
