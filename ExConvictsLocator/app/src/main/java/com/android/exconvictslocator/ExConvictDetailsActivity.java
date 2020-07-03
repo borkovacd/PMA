@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ExConvictDetailsActivity extends MainActivity {
 
@@ -119,8 +120,12 @@ public class ExConvictDetailsActivity extends MainActivity {
         crimeV.setText(crime);
         descriptionV.setText(desc);
         lastLocationV.setText(lastLocation);
+        try{
         SimpleDateFormat formatter = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
-        //updateTimeV.setText(formatter.format(new Date(updatedAt)));
+        updateTimeV.setText(formatter.format(new Date(updatedAt)));
+            }catch(Exception e){
+            updateTimeV.setText("-");
+        }
         nameDetailV.setText(name);
         nicknameDetailV.setText(nickname);
         imageDetailV.setImageResource(img);
