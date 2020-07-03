@@ -3,74 +3,58 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+
             <ImageView
                 android:layout_width="140dp"
-                android:layout_height="170dp"
+                android:layout_height="100dp"
                 android:layout_marginTop="25dp"
                 android:layout_margin="15dp"
                 android:id="@+id/convict_details_image"
                 android:src="@drawable/img1"
                 ></ImageView>
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="60dp">
                 <TextView
                     android:id="@+id/convict_details_name"
                     android:textColor="@android:color/white"
+                    android:layout_toRightOf="@id/convict_details_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:textSize="20dp"
                     android:layout_margin="5dp"
                     android:text="Mika Mikic"
-                    ></TextView>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_toEndOf="@id/convict_details_image"></TextView>
+
                     <TextView
+                        android:id="@+id/nadimak_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/white"
                         android:text="@string/pseudonim"
+                        android:layout_below="@id/convict_details_name"
+                        android:layout_toRightOf="@id/convict_details_image"
+                        android:layout_alignStart="@id/convict_details_name"
                         android:layout_margin="5dp"
-                        ></TextView>
+                        android:layout_alignLeft="@id/convict_details_name"></TextView>
                     <TextView
                         android:id="@+id/convict_details_nickname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/white"
+                        android:layout_toRightOf="@id/nadimak_1"
+                        android:layout_below="@id/convict_details_name"
                         android:textStyle="bold"
                         android:layout_margin="5dp"
                         android:text="Mile"
-                        ></TextView>
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
+                        android:layout_toEndOf="@id/nadimak_1"></TextView>
 
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    >
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
         android:text="@string/adresa"
+        android:id="@+id/adresa_1"
+        android:layout_below="@id/convict_details_image"
         android:layout_margin="5dp"
         ></TextView>
     <TextView
@@ -78,75 +62,85 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/holo_blue_dark"
+        android:layout_below="@id/convict_details_image"
+        android:layout_toEndOf="@id/adresa_1"
+        android:layout_toRightOf="@id/adresa_1"
         android:textStyle="bold"
         android:background="@color/cardview_light_background"
         android:layout_margin="5dp"
 android:text="Neka adresa valfda "
         ></TextView>
 
-</LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:text="@string/gender"
-                android:layout_margin="5dp"
-                ></TextView>
-            <TextView
+    <TextView
+        android:id="@+id/id_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/convict_details_image"
+        android:layout_margin="5dp"
+        android:layout_marginStart="63dp"
+        android:layout_marginLeft="63dp"
+        android:layout_marginTop="18dp"
+        android:layout_toEndOf="@id/convict_details_address"
+        android:layout_toRightOf="@id/convict_details_address"
+        android:text="@string/gender"
+        android:textColor="@android:color/white"></TextView>
+
+    <TextView
                 android:id="@+id/convict_details_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/holo_blue_dark"
                 android:textStyle="bold"
                 android:layout_margin="5dp"
+                android:layout_below="@id/convict_details_image"
+                android:layout_toRightOf="@id/id_1"
                 android:text="Muski"
                 android:background="@color/cardview_light_background"
 
-                ></TextView>
+                android:layout_toEndOf="@id/id_1"></TextView>
             <TextView
+                android:id="@+id/rodjenje_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
                 android:text="@string/g_ro_enja"
+                android:layout_toRightOf="@id/convict_details_gender"
+                android:layout_below="@id/convict_details_image"
                 android:layout_margin="5dp"
                 android:layout_marginLeft="25dp"
-                ></TextView>
+                android:layout_toEndOf="@id/convict_details_gender"></TextView>
             <TextView
                 android:id="@+id/convict_details_birth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/holo_blue_dark"
                 android:textStyle="bold"
+                android:layout_below="@id/convict_details_image"
                 android:background="@color/cardview_light_background"
-
+                android:layout_toRightOf="@id/rodjenje_1"
                 android:layout_margin="5dp"
 android:text="1968."
-                ></TextView>
+                android:layout_toEndOf="@id/rodjenje_1"></TextView>
 
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
             <TextView
+                android:id="@+id/krivicno_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
                 android:text="@string/krivi_no_delo"
+                android:layout_below="@id/adresa_1"
+                android:layout_alignLeft="@id/adresa_1"
                 android:layout_margin="5dp"
-                ></TextView>
+                android:layout_alignStart="@id/adresa_1"></TextView>
             <TextView
                 android:id="@+id/convict_details_crime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/holo_blue_dark"
+                android:layout_below="@id/adresa_1"
+                android:layout_toRightOf="@id/krivicno_1"
+                android:layout_toEndOf="@id/krivicno_1"
                 android:textStyle="bold"
                 android:background="@color/cardview_light_background"
 
@@ -154,18 +148,16 @@ android:text="1968."
 android:text="silovanje"
                 ></TextView>
 
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
                 android:text="@string/fizi_ki_opis"
+                android:layout_below="@id/krivicno_1"
+                android:layout_alignLeft="@id/adresa_1"
+                android:layout_alignStart="@id/adresa_1"
                 android:layout_margin="5dp"
+                android:id="@+id/opis_1"
                 ></TextView>
 
             <ScrollView
@@ -173,6 +165,9 @@ android:text="silovanje"
                 android:textStyle="bold"
                 android:layout_height="90dip"
                 android:layout_margin="5dp"
+                android:layout_toRightOf="@id/opis_1"
+                android:layout_toEndOf="@id/opis_1"
+                android:layout_below="@id/krivicno_1"
                 >
 
                 <TextView
@@ -181,23 +176,22 @@ android:text="silovanje"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
+
+
                     android:background="@color/cardview_light_background"
 
                     android:text="Ovo je neki teksd za probuf sfdfdsfdssdfffffffffffffffffffffffffffffff fdsfds"/>
 
             </ScrollView>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
             <TextView
+                android:id="@+id/lokacija_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
+                android:layout_below="@id/opis_1"
+                android:layout_alignLeft="@id/adresa_1"
+                android:layout_alignStart="@id/adresa_1"
                 android:text="@string/poslednja_lokacija"
                 android:layout_margin="5dp"
                 ></TextView>
@@ -208,21 +202,22 @@ android:text="silovanje"
                 android:textColor="@android:color/holo_blue_dark"
                 android:textStyle="bold"
                 android:layout_margin="5dp"
+                android:layout_toRightOf="@id/lokacija_1"
+                android:layout_below="@id/opis_1"
+                android:layout_toEndOf="@id/lokacija_1"
                 android:background="@color/cardview_light_background"
                 android:text="Neka lokacija na kojoj je vidjen"
                 ></TextView>
 
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
                 android:text="@string/poslednje_a_uriranje"
+                android:layout_below="@id/lokacija_1"
+                android:layout_alignStart="@id/adresa_1"
+                android:id="@+id/azuriranje_1"
+                android:layout_alignLeft="@id/adresa_1"
                 android:layout_margin="5dp"
                 ></TextView>
             <TextView
@@ -231,17 +226,14 @@ android:text="silovanje"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/holo_blue_dark"
                 android:textStyle="bold"
+                android:layout_toRightOf="@id/azuriranje_1"
+                android:layout_toEndOf="@id/azuriranje_1"
+                android:layout_below="@id/lokacija_1"
                 android:background="@color/cardview_light_background"
                 android:layout_margin="5dp"
                 android:text="01.04.2020"
                 ></TextView>
 
-        </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
     <Button
         android:id="@+id/btn_prijavi"
         android:layout_width="wrap_content"
@@ -249,6 +241,9 @@ android:text="silovanje"
        android:text="@string/prijavi"
         android:padding="2dp"
         android:layout_margin="45dp"
+        android:layout_toEndOf="@id/btn_sveLokacije"
+        android:layout_toRightOf="@id/btn_sveLokacije"
+        android:layout_below="@id/azuriranje_1"
         android:textColor="@android:color/white"
         android:background="@drawable/button_rectangle_blue"
         android:textSize="23sp" />
@@ -257,13 +252,13 @@ android:text="silovanje"
         android:id="@+id/btn_sveLokacije"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/azuriranje_1"
         android:background="@drawable/button_rectangle_blue"
         android:text="@string/lokacije"
         android:textColor="@android:color/white"
         android:padding="2dp"
+
         android:layout_margin="45dp"
         android:textSize="23sp" />
 
-    </LinearLayout>
-    </LinearLayout>
 </RelativeLayout>

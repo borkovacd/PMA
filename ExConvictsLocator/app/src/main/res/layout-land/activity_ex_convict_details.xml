@@ -10,6 +10,7 @@
 
     <LinearLayout
         android:layout_gravity="center_vertical"
+        android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -17,7 +18,7 @@
 
         <include
             layout="@layout/ex_convict_details_layout"
-            android:layout_width="match_parent"
+            android:layout_width="738dp"
             android:layout_height="match_parent" />
     </LinearLayout>
 
