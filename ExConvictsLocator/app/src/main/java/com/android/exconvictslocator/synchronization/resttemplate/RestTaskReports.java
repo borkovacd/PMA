@@ -40,6 +40,14 @@ public class RestTaskReports extends AsyncTask<String, Void, ResponseEntity<Repo
             HttpHeaders headers = new HttpHeaders();
             HttpEntity<String> entity = new HttpEntity<String>(headers);
             ResponseEntity<Report[]> response = restTemplate.exchange(url, HttpMethod.GET, entity, Report[].class);
+            Report[] reports = response.getBody();
+            MyDatabase db =  MyDatabase.getDatabase(context);
+            exConvictRepository = ExConvictRepository.getInstance(db.exConvictDao());
+            reportRepository = ReportRepository.getInstance(db.reportDao());
+            exConvictsReports = exConvictRepository.getExConvictReports();
+            for(Report report: reports) {
+                reportRepository.insertReport(report);
+            }
             return response;
         } catch (Exception ex) {
             String message = ex.getMessage();
@@ -51,6 +59,7 @@ public class RestTaskReports extends AsyncTask<String, Void, ResponseEntity<Repo
 
     @Override
     protected void onPostExecute(ResponseEntity<Report[]> result) {
+        /*
         Report[] reports = result.getBody();
         for (Report tempReport : reports) {
             Log.d("RESTTASK", "Vracen report sa lokacijom: " + tempReport.getLocation());
@@ -62,6 +71,7 @@ public class RestTaskReports extends AsyncTask<String, Void, ResponseEntity<Repo
         for(Report report: reports) {
             reportRepository.insertReport(report);
         }
+         */
         Log.d("RESTTASK", "SINHRONIZOVANE PRIJAVE LOKACIJE");
     }
 

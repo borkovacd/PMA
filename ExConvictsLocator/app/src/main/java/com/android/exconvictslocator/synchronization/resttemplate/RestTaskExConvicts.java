@@ -31,8 +31,6 @@ public class RestTaskExConvicts extends AsyncTask<String, Void, ResponseEntity<E
         this.context = applicationContext;
     }
 
-
-
     @Override
     public ResponseEntity<ExConvict[]> doInBackground(String... uri) {
         final String url = uri[0];
@@ -47,6 +45,14 @@ public class RestTaskExConvicts extends AsyncTask<String, Void, ResponseEntity<E
             HttpEntity<String> entity = new HttpEntity<String>(headers);
             //Log.d("RESTTASK", "Pre exchange metode");
             ResponseEntity<ExConvict[]> response = restTemplate.exchange(url, HttpMethod.GET, entity, ExConvict[].class);
+            ExConvict[] exConvicts = response.getBody();
+            MyDatabase db =  MyDatabase.getDatabase(context);
+            exConvictRepository = ExConvictRepository.getInstance(db.exConvictDao());
+            db.clearAllTables();
+            for(ExConvict exConvict: exConvicts) {
+                exConvict.setPhoto(R.drawable.img1);
+                exConvictRepository.insertExConvict(exConvict);
+            }
             return response;
         } catch (Exception ex) {
             String message = ex.getMessage();
@@ -59,7 +65,7 @@ public class RestTaskExConvicts extends AsyncTask<String, Void, ResponseEntity<E
     @Override
     protected void onPostExecute(ResponseEntity<ExConvict[]> result) {
         //Log.d("RESTTASK", "Posle exchange metode");
-        ExConvict[] exConvicts = result.getBody();
+        /*ExConvict[] exConvicts = result.getBody();
         for (ExConvict tempExconvict : exConvicts) {
             Log.d("RESTTASK", "Vracen ex-convict sa imenom: " + tempExconvict.getFirstName());
         }
@@ -69,7 +75,7 @@ public class RestTaskExConvicts extends AsyncTask<String, Void, ResponseEntity<E
         for(ExConvict exConvict: exConvicts) {
             exConvict.setPhoto(R.drawable.img1);
             exConvictRepository.insertExConvict(exConvict);
-        }
+        }*/
         Log.d("RESTTASK", "SINHRONIZOVANI BIVSI OSUDJENICI");
         String ip_address = ServerIPConfig.getIp_address();
         final String uri2 = "http://" + ip_address + ":8080/api/users";

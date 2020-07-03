@@ -35,6 +35,12 @@ public class RestTaskUsers extends AsyncTask<String, Void, ResponseEntity<User[]
             HttpEntity<String> entity = new HttpEntity<String>(headers);
             //Log.d("RESTTASK", "Pre exchange metode");
             ResponseEntity<User[]> response = restTemplate.exchange(url, HttpMethod.GET, entity, User[].class);
+            User[] users = response.getBody();
+            MyDatabase db =  MyDatabase.getDatabase(context);
+            userRepository = UserRepository.getInstance(db.userDao());
+            for(User user: users) {
+                userRepository.insertUser(user);
+            }
             return response;
         } catch (Exception ex) {
             String message = ex.getMessage();
@@ -45,7 +51,7 @@ public class RestTaskUsers extends AsyncTask<String, Void, ResponseEntity<User[]
 
     @Override
     protected void onPostExecute(ResponseEntity<User[]> result) {
-        //Log.d("RESTTASK", "Posle exchange metode");
+       /*
         User[] users = result.getBody();
         for(User tempUser: users) {
             Log.d("RESTTASK", "Vracen user sa emailom: " + tempUser.getEmail());
@@ -54,7 +60,7 @@ public class RestTaskUsers extends AsyncTask<String, Void, ResponseEntity<User[]
         userRepository = UserRepository.getInstance(db.userDao());
         for(User user: users) {
             userRepository.insertUser(user);
-        }
+        }*/
         Log.d("RESTTASK", "SINHRONIZOVANI KORISNICI");
         String ip_address = ServerIPConfig.getIp_address();
         final String uri3 = "http://" + ip_address + ":8080/api/reports";
