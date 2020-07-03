@@ -1,6 +1,7 @@
 package com.android.exconvictslocator;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -108,7 +109,7 @@ public class UserProfileActivity extends MainActivity {
                     passwordChanged = true;
 
                 // ukoliko hoce da promeni sifru i ukoliko je uneo ispravnu (duzu od 5 znakova)
-                if(!(profileNewPass.equals("")) && profileNewPass.length()>=4){
+                if(!(profileNewPass.equals(""))){
                     if(validationOk) { // da li je dobra stara sifra
                         // postavlja nova polja
 
@@ -117,6 +118,7 @@ public class UserProfileActivity extends MainActivity {
                             //korisnik.setPassword(profileNewPass);
                             korisnik.setFirstName(profileFirstName);
                             korisnik.setLastName(profileLastName);
+                            korisnik.setSync(false);
                             validationOk = false; // za sledeci krug, da bi opet provere prolazio
                         }
                         else {
@@ -131,6 +133,7 @@ public class UserProfileActivity extends MainActivity {
                 else if(profileNewPass.equals("") || profileRepeatPass.equals("")) { // nije hteo da menja pass zapravo
                     korisnik.setFirstName(profileFirstName);
                     korisnik.setLastName(profileLastName);
+                    korisnik.setSync(false);
                 }
                 else { // uneo pass manji od 4
                     Toast.makeText(getApplicationContext(), "Uneta lozinka nije dovoljno dugacka!", Toast.LENGTH_LONG).show();
@@ -140,7 +143,11 @@ public class UserProfileActivity extends MainActivity {
                 myDatabase.userDao().update(korisnik);
                 Toast.makeText(getApplicationContext(), "Uspesno ste izmenili podatke!", Toast.LENGTH_LONG).show();
 
+                Intent i2 = new Intent(UserProfileActivity.this, ListOfExConvicts.class);
+                startActivity(i2);
+
             }
+
         });
 
     }
