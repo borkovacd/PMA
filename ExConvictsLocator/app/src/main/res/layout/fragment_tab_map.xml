@@ -12,24 +12,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:animateLayoutChanges="true"
         android:orientation="vertical">
+
         <SearchView
             android:id="@+id/searchViewMap"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
 
             />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/expandAdvancedSearch"
+            android:text="napredna pretraga"
+            android:animateLayoutChanges="true"
+            ></Button>
         <LinearLayout
+            android:id="@+id/advancedSearchLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:animateLayoutChanges="true"
 >
             <TextView
                 android:id="@+id/tv_citySearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:text="@string/city"
+                android:textStyle="bold"
                 android:textSize="14sp"/>
 
             <EditText
@@ -37,32 +48,47 @@
                 android:background="#F0F3F2"
                 android:layout_width="250dp"
                 android:layout_height="30dp"
-                android:layout_marginTop="40dp"
                 android:ems="10"/>
             <TextView
                 android:id="@+id/tv_radijus"
 
                 android:text="@string/radius"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent" />
-
-            <Spinner
-                android:id="@+id/spinnerRadius"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="@android:drawable/btn_dropdown"
-                android:entries="@array/radius_values"
-                android:prompt="@string/radiusPrompt"/>
+                android:orientation="horizontal"
+                >
+
+
+                <Spinner
+                    android:id="@+id/spinnerRadius"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:entries="@array/radius_values"
+                    android:prompt="@string/radiusPrompt"/>
             <Button
                 android:id="@+id/advanceSearchBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
                 android:text="@string/search"
                 >
 
             </Button>
+            <Button
+                android:id="@+id/cancelAdvanceSearchBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel"
+                >
+
+            </Button>
+        </LinearLayout>
         </LinearLayout>
     <com.google.android.gms.maps.MapView
         android:layout_width="match_parent"

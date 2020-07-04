@@ -1,5 +1,7 @@
 package com.android.exconvictslocator;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -7,11 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
@@ -45,6 +50,8 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
     Spinner radius;
     Button searchButton;
     EditText citySearch;
+    Button expandAdvancedSearchBtn;
+    LinearLayout advancedSearchLayout;
 
     private List<ExConvictReport> exConvicts;
     private ExConvictRepository exConvictRepo;
@@ -71,6 +78,27 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
         citySearch = mview.findViewById(R.id.et_citySearch);
         radius = (Spinner)  mview.findViewById(R.id.spinnerRadius);
         searchButton = (Button) mview.findViewById(R.id.advanceSearchBtn);
+        expandAdvancedSearchBtn = (Button) mview.findViewById(R.id.expandAdvancedSearch);
+        advancedSearchLayout = (LinearLayout) mview.findViewById(R.id.advancedSearchLayout);
+        advancedSearchLayout.setVisibility(View.GONE);
+        expandAdvancedSearchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("Usao sam ovde da vidim da li expand ili colapse");
+                if (advancedSearchLayout.getVisibility()==View.GONE){
+                    System.out.println("IDE EXPAND");
+
+                    expand();
+                }else{
+                    System.out.println("IDE COLLAPSE");
+
+                    collapse();
+                }
+            }
+        });
+
+
+
         if(mapView != null){
             mapView.onCreate(null);
             mapView.onResume();
@@ -177,5 +205,66 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
             }
         }
     }
+
+    private void expand() {
+        //set Visible
+        advancedSearchLayout.setVisibility(View.VISIBLE);
+        System.out.println("USAO U EXTEND");
+
+        final int widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        final int heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        advancedSearchLayout.measure(widthSpec, heightSpec);
+
+        ValueAnimator mAnimator = slideAnimator(0, advancedSearchLayout.getMeasuredHeight());
+        mAnimator.start();
+    }
+
+    private void collapse() {
+        int finalHeight = advancedSearchLayout.getHeight();
+
+        ValueAnimator mAnimator = slideAnimator(finalHeight, 0);
+        System.out.println("USAO U COLLAPSE");
+
+        mAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                advancedSearchLayout.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        mAnimator.start();
+    }
+
+    private ValueAnimator slideAnimator(int start, int end) {
+
+        ValueAnimator animator = ValueAnimator.ofInt(start, end);
+
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                //Update Height
+                int value = (Integer) valueAnimator.getAnimatedValue();
+                ViewGroup.LayoutParams layoutParams = advancedSearchLayout.getLayoutParams();
+                layoutParams.height = value;
+                advancedSearchLayout.setLayoutParams(layoutParams);
+            }
+        });
+        return animator;
+    }
+
 
 }

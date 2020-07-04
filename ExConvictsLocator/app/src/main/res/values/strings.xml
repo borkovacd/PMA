@@ -114,6 +114,7 @@
     <string name="radius">Radijus udaljenosti (u km)</string>
     <string name="city">Grad</string>
     <string name="radiusPrompt">Izaberite radijus </string>
+    <string name="cancel">Ponisti </string>
 
     <string-array name="radius_values">
         <item>1</item>
