@@ -11,6 +11,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -94,6 +95,8 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
 
     LocationManager locationManager;
 
+    String polje ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +116,16 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
         userRepository = UserRepository.getInstance(myDatabase.userDao());
 
         setView();
+        if (savedInstanceState != null) {
+            polje = savedInstanceState.getString("etPrijaviNovuLokaciju");
+            etPrijaviNovuLokaciju = findViewById(R.id.et_PrijaviNovuLokaciju);
+            etPrijaviNovuLokaciju.setText(polje);
+            newLocation = etPrijaviNovuLokaciju.getText().toString();
+            lat = savedInstanceState.getDouble("lat");
+            lang = savedInstanceState.getDouble("lang");
+            Log.d("ISPIS", "Upisao je [GET]: " + etPrijaviNovuLokaciju.getText().toString());
+        }
+
         btnPrijavi = findViewById(R.id.btn_prijavi);
 
         locateMe.setOnClickListener(new View.OnClickListener() {
@@ -143,9 +156,12 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
             }, 100);
 
         }
+
+
     }
 
     private void setView(){
+
         etImePrezime = findViewById(R.id.et_ImePrezime);
         etNadimak = findViewById(R.id.et_Nadimak);
         etPrijaviNovuLokaciju = findViewById(R.id.et_PrijaviNovuLokaciju);
@@ -332,10 +348,11 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putString("etPrijaviNovuLokaciju", etPrijaviNovuLokaciju.getText().toString());
+        outState.putString("newLocation", newLocation);
+        outState.putDouble("lat", lat);
+        outState.putDouble("lang", lang);
+        Log.d("ISPIS", "Upisao je: " + etPrijaviNovuLokaciju.getText().toString());
     }
 
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-    }
 }
