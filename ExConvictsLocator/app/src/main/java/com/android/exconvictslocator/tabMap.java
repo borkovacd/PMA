@@ -1,15 +1,26 @@
 package com.android.exconvictslocator;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +34,7 @@ import android.widget.Spinner;
 import com.android.exconvictslocator.entities.ExConvict;
 import com.android.exconvictslocator.entities.ExConvictReport;
 import com.android.exconvictslocator.entities.Report;
+import com.android.exconvictslocator.notifications.NotificationService;
 import com.android.exconvictslocator.repositories.impl.ExConvictRepository;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -36,6 +48,7 @@ import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -53,9 +66,11 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
     Button expandAdvancedSearchBtn;
     LinearLayout advancedSearchLayout;
     Button cancelAdvanceSearchBtn;
-
+    double currentLat;
+    double currentLng;
     private List<ExConvictReport> exConvicts;
     private ExConvictRepository exConvictRepo;
+    LocationManager locationManager;
 
 
     public tabMap() {
@@ -75,6 +90,8 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setView();
+        locateMe();
+
         advancedSearchLayout.setVisibility(View.GONE);
         expandAdvancedSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,16 +137,16 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
 
 
         searchButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
 
                 List<Report> filtered = new ArrayList<Report>();
                 for (ExConvictReport e : exConvicts) {
                     for(Report r : e.getReports()){
+
                         Location startPoint=new Location("locationA");
-                        startPoint.setLatitude(45.2523492);
-                        startPoint.setLongitude(19.7960865);
+                        startPoint.setLatitude(currentLat);
+                        startPoint.setLongitude(currentLng);
 
                         Location endPoint=new Location("locationB");
                         endPoint.setLatitude(r.getLat());
@@ -279,4 +296,22 @@ private void setView(){
     advancedSearchLayout = (LinearLayout) mview.findViewById(R.id.advancedSearchLayout);
     cancelAdvanceSearchBtn = (Button) mview.findViewById(R.id.cancelAdvanceSearchBtn);
 }
+    public void locateMe() {
+
+        try {
+            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            Location current = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (current != null) {
+                    currentLng = current.getLongitude();
+                     currentLat = current.getLatitude();
+            }
+        }catch (Exception e) {
+            currentLng = 19.7960865;
+            currentLat = 45.2523492;
+        }
+    }
+
 }
