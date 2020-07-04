@@ -73,25 +73,14 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mapView = (MapView) mview.findViewById(R.id.list_convicts_map);
-        sv = mview.findViewById(R.id.searchViewMap);
-        citySearch = mview.findViewById(R.id.et_citySearch);
-        radius = (Spinner)  mview.findViewById(R.id.spinnerRadius);
-        searchButton = (Button) mview.findViewById(R.id.advanceSearchBtn);
-        expandAdvancedSearchBtn = (Button) mview.findViewById(R.id.expandAdvancedSearch);
-        advancedSearchLayout = (LinearLayout) mview.findViewById(R.id.advancedSearchLayout);
+        setView();
         advancedSearchLayout.setVisibility(View.GONE);
         expandAdvancedSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Usao sam ovde da vidim da li expand ili colapse");
                 if (advancedSearchLayout.getVisibility()==View.GONE){
-                    System.out.println("IDE EXPAND");
-
                     expand();
                 }else{
-                    System.out.println("IDE COLLAPSE");
-
                     collapse();
                 }
             }
@@ -147,8 +136,17 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
 
                         double distance =startPoint.distanceTo(endPoint)/1000;
                         String searchCity = citySearch.getText().toString().toLowerCase();
-                        double radiusValue = Double.parseDouble(String.valueOf(radius.getSelectedItem()));
-                            if (r.getCity() != null && r.getCity().toLowerCase().contains(searchCity) && (distance <= radiusValue) ) {
+                        boolean checkDistance = true;
+                        try {
+                            double radiusValue = Double.parseDouble(String.valueOf(radius.getSelectedItem()));
+                            checkDistance =  (distance <= radiusValue);
+                        }catch (Exception exc){ }
+
+
+                            if (r.getCity() != null && r.getCity().toLowerCase().contains(searchCity) && checkDistance ) {
+
+                                System.out.println("dodajem "+r.getCity().toLowerCase() +" lang = "+r.getLang() + "lat = " + r.getLat());
+
                                 filtered.add(r);
                             }
                         }
@@ -209,8 +207,6 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
     private void expand() {
         //set Visible
         advancedSearchLayout.setVisibility(View.VISIBLE);
-        System.out.println("USAO U EXTEND");
-
         final int widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         final int heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         advancedSearchLayout.measure(widthSpec, heightSpec);
@@ -223,8 +219,6 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
         int finalHeight = advancedSearchLayout.getHeight();
 
         ValueAnimator mAnimator = slideAnimator(finalHeight, 0);
-        System.out.println("USAO U COLLAPSE");
-
         mAnimator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -266,5 +260,14 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
         return animator;
     }
 
+private void setView(){
+    mapView = (MapView) mview.findViewById(R.id.list_convicts_map);
+    sv = mview.findViewById(R.id.searchViewMap);
+    citySearch = mview.findViewById(R.id.et_citySearch);
+    radius = (Spinner)  mview.findViewById(R.id.spinnerRadius);
+    searchButton = (Button) mview.findViewById(R.id.advanceSearchBtn);
+    expandAdvancedSearchBtn = (Button) mview.findViewById(R.id.expandAdvancedSearch);
+    advancedSearchLayout = (LinearLayout) mview.findViewById(R.id.advancedSearchLayout);
 
+}
 }

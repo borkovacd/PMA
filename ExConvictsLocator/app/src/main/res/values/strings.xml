@@ -117,6 +117,7 @@
     <string name="cancel">Ponisti </string>
 
     <string-array name="radius_values">
+        <item>-</item>
         <item>1</item>
         <item>2</item>
         <item>5</item>
