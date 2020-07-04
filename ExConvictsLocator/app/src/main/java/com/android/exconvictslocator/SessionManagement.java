@@ -37,6 +37,8 @@ public class SessionManagement {
     public static final String KEY_EMAIL = "email";
     public static final String KEY_NAME = "name";
 
+    public static final String KEY_NOTIFICATION = "notification";
+
     // Constructor
     public SessionManagement(Context context) {
         this._context = context;
@@ -126,4 +128,21 @@ public class SessionManagement {
     public boolean isLoggedIn() {
         return pref.getBoolean(IS_LOGGED_IN, false);
     }
+
+    /**
+     * Notification Service
+     */
+    public void updateNotificationService(boolean started) {
+        editor.putBoolean(KEY_NOTIFICATION, started);
+        editor.apply();
+    }
+
+    /**
+     * Quick check for Notification Service
+     * **/
+    // Get Login State
+    public boolean isNotificationServiceStarted() {
+        return pref.getBoolean(KEY_NOTIFICATION, false);
+    }
+
 }

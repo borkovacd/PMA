@@ -1,18 +1,11 @@
 package com.android.exconvictslocator;
 
 import android.Manifest;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +17,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 
@@ -37,9 +30,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     // *** NOTIFICATIONS ***
     // Every notification channel must be associated with an ID that is unique within your package.
+    /*
     private static final String PRIMARY_CHANNEL_ID = "primary_notification_channel";
     private NotificationManager mNotifyManager;
     private static final int NOTIFICATION_ID = 0;
+    */
+
+
 
     // Session Management Class
     SessionManagement sessionManagement;
@@ -49,6 +46,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     ActionBarDrawerToggle toggle;
     Button btn_login;
+
+    String NOTIFICATION_TAG = "NOTIFICATION_TAG";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,23 +89,54 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         PreferenceManager.setDefaultValues(this,
                 R.xml.root_preferences, false);
 
-        createNotificationChannel(); //!!!
-
-        //startService( new Intent( this, NotificationService. class )) ;
+        //createNotificationChannel(); //!!!
     }
 
-    @Override
-    protected void onStop () {
-        super.onStop() ;
-        //getApplicationContext().bindService(new Intent(getApplicationContext(), NotificationService.class), ServiceConnection , BIND_AUTO_CREATE);
-        startService( new Intent( this, NotificationService.class));
-    }
 
+    /*
     public void sendNotification() {
         NotificationCompat.Builder notifyBuilder = getNotificationBuilder();
         mNotifyManager.notify(NOTIFICATION_ID, notifyBuilder.build());
     }
+     */
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean enable_notifications = sharedPref.getBoolean("enable_notifications", false);
+        Log.d(NOTIFICATION_TAG, "Enable Notification: " + enable_notifications);
+        Intent i = new Intent( this, NotificationService.class);
+        if(enable_notifications) { //Korisnik je omugućio slanje notifikacija
+            if(sessionManagement.isNotificationServiceStarted()) {
+                Log.d(NOTIFICATION_TAG, "NotificationService je vec pokrenut!");
+            } else {
+
+                if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                    }, 100);
+
+                }
+
+                Log.d(NOTIFICATION_TAG, "NotificationService nije pokrenut!");
+                sessionManagement.updateNotificationService(true);
+                startService(i);
+            }
+        } else { //Korisnik je zabranio slanje notifikacija
+            if(sessionManagement.isNotificationServiceStarted()) {
+                stopService(i);
+                Log.d(NOTIFICATION_TAG, "NotificationService je zaustavljen!");
+                sessionManagement.updateNotificationService(false);
+                //NotificationService je vec pokrenut
+                //Sada bi ga trebalo zaustaviti kako ne bi dalje stizale notifikacije
+            } //Za else granu nema potrebe
+        }
+
+
+    }
+
+    /*
     public void createNotificationChannel() {
         mNotifyManager = (NotificationManager)
                 getSystemService(NOTIFICATION_SERVICE);
@@ -123,7 +154,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mNotifyManager.createNotificationChannel(notificationChannel);
         }
     }
+    */
 
+    /*
     private NotificationCompat.Builder getNotificationBuilder() {
         Intent notificationIntent = new Intent(this, ListOfExConvicts.class);
         PendingIntent notificationPendingIntent =
@@ -137,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setDefaults(NotificationCompat.DEFAULT_ALL);
         return notifyBuilder;
-    }
+    }*/
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -190,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 sessionManagement.logoutUser();
                 break;
             case R.id.notify:
-                sendNotification();
+                //sendNotification();
                 break;
             case R.id.settings:
                 Intent i2 = new Intent(MainActivity.this, SettingsActivity.class);

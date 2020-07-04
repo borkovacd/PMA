@@ -3,13 +3,16 @@ package com.android.exconvictslocator.notifications;
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Handler;
 import android.os.IBinder;
@@ -19,9 +22,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
+import com.android.exconvictslocator.ListOfExConvicts;
 import com.android.exconvictslocator.MyDatabase;
 import com.android.exconvictslocator.R;
-import com.android.exconvictslocator.UpdateLocationActivity;
 import com.android.exconvictslocator.entities.ExConvict;
 import com.android.exconvictslocator.entities.Report;
 import com.google.android.gms.maps.model.LatLng;
@@ -32,11 +35,21 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class NotificationService extends Service {
-    public static final String NOTIFICATION_CHANNEL_ID = "10001";
-    private final static String default_notification_channel_id = "default";
+
+    // *** NOTIFICATIONS ***
+    // Every notification channel must be associated with an ID that is unique within your package.
+    private static final String PRIMARY_CHANNEL_ID = "primary_notification_channel";
+    private NotificationManager mNotifyManager;
+    private static final int NOTIFICATION_ID = 0;
+
+    //public static final String NOTIFICATION_CHANNEL_ID = "10001";
+    //private final static String default_notification_channel_id = "default";
+
     Timer timer;
     TimerTask timerTask;
-    String TAG = "OLGA";
+
+    String NOTIFICATION_TAG = "NOTIFICATION_TAG";
+
     int Your_X_SECS = 60;
 
     private MyDatabase myDatabase;
@@ -47,8 +60,14 @@ public class NotificationService extends Service {
     double lat;
     double lan;
 
+    /*
     double latUser = 45.2523492;
     double lanUser = 19.7960865;
+    */
+    double latUser = 0.0;
+    double lanUser = 0.0;
+
+    LocationManager locationManager;
 
     @Override
     public IBinder onBind(Intent arg0) {
@@ -57,24 +76,25 @@ public class NotificationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e(TAG, "onStartCommand");
+        Log.d(NOTIFICATION_TAG, "onStartCommand");
         myDatabase = MyDatabase.getDatabase(this.getApplication());
         super.onStartCommand(intent, flags, startId);
         startTimer();
-        //sendNotification();
         return START_STICKY;
     }
 
     @Override
     public void onCreate() {
-        Log.e(TAG, "onCreate");
+        Log.d(NOTIFICATION_TAG, "onCreate");
+        createNotificationChannel(); //!!!
     }
 
     @Override
     public void onDestroy() {
-        Log.e(TAG, "onDestroy");
-        //stopTimerTask();
+        Log.d(NOTIFICATION_TAG, "Pozvan onDestroy u okviru servisa!");
+        stopTimerTask();
         super.onDestroy();
+        stopSelf();
     }
 
     //we are going to use a handler to be able to run in our TimerTask
@@ -85,9 +105,9 @@ public class NotificationService extends Service {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String distance_radius_string = sharedPref.getString("distance_radius", "2");
         int distance_radius = Integer.parseInt(distance_radius_string);
-/*
+
         try {
-            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
@@ -99,95 +119,55 @@ public class NotificationService extends Service {
                 return;
             }
             Location current = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if(current != null){
-                Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-                List<android.location.Address> addresses = geocoder.getFromLocation(current.getLatitude(), current.getLongitude(),1);
+            if (current != null) {
+                Geocoder geocoder = new Geocoder(NotificationService.this, Locale.getDefault());
+                List<android.location.Address> addresses = geocoder.getFromLocation(current.getLatitude(), current.getLongitude(), 1);
                 double longitude = addresses.get(0).getLongitude();
                 double latitude = addresses.get(0).getLatitude();
                 String address = addresses.get(0).getAddressLine(0);
-
                 lanUser = longitude;
-                Log.d(TAG, "LAN: " + lanUser);
+                Log.d(NOTIFICATION_TAG, "Longituda korisnika " + lanUser);
                 latUser = latitude;
-                Log.d(TAG, "LAT: " + latUser);
-            }else{
-                //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, UpdateLocationActivity.this);
-
-
+                Log.d(NOTIFICATION_TAG, "Latituda korisnika " + latUser);
             }
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, (LocationListener) NotificationService.this);
+
         }catch (Exception e) {
             System.out.println(e.getStackTrace());
         }
-*/
         exConvicts = myDatabase.exConvictDao().getExConvicts();
         reports = myDatabase.reportDao().findAllReports();
         if (exConvicts.size() != 0) {
-        for (ExConvict exConvict : exConvicts) {
+            
+            for (ExConvict exConvict : exConvicts) {
 
-            reportsByExConvict = myDatabase.reportDao().findReportsByExConvict(exConvict.getId());
+                reportsByExConvict = myDatabase.reportDao().findReportsByExConvict(exConvict.getId());
 
-            if (reportsByExConvict.size() != 0) {
-                Log.d(TAG, "Datum poslednje prijavljene lokacije:  " + reportsByExConvict.get(0).getDate());
-                lat = reportsByExConvict.get(0).getLat();
-                lan = reportsByExConvict.get(0).getLang();
+                if (reportsByExConvict.size() != 0) {
+                    Log.d(NOTIFICATION_TAG, "Datum poslednje prijavljene lokacije:  " + reportsByExConvict.get(0).getDate());
+                    lat = reportsByExConvict.get(0).getLat();
+                    lan = reportsByExConvict.get(0).getLang();
 
-                LatLng lld1 = new LatLng(lat, lan);
-                LatLng lld2 = new LatLng(latUser, lanUser);
-                Double distance = distance(lat, lan, latUser, lanUser);
-                Log.d(TAG, "Distance in kilometers " + distance);
+                    LatLng lld1 = new LatLng(lat, lan);
+                    LatLng lld2 = new LatLng(latUser, lanUser);
+                    Double distance = distance(lat, lan, latUser, lanUser);
+                    distance = Math.round(distance * 100.0) / 100.0;
+                    Log.d(NOTIFICATION_TAG, "Distance in kilometers " + distance);
 
-                if (distance <= distance_radius) {
-                    Log.d(TAG, "BLIZU SU! ");
-                    createNotification();
-                    stopSelf();
-                } else {
-                    Log.d(TAG, "NISU BLIZU ! ");
-
+                    if (distance <= distance_radius) {
+                        Log.d(NOTIFICATION_TAG, "BLIZU SU! ");
+                        //createNotification();
+                        NotificationCompat.Builder notifyBuilder = getNotificationBuilder(exConvict, distance);
+                        mNotifyManager.notify(NOTIFICATION_ID, notifyBuilder.build());
+                        //stopSelf(); //valjda ovo nista ne radi, ne brisem dok ne proverim!
+                    } else {
+                        Log.d(NOTIFICATION_TAG, "NISU BLIZU ! ");
+                    }
 
                 }
 
             }
-
         }
-    }
-        /*
-        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                createNotification();
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status,
-                                        Bundle extras) {
-                // TODO Auto-generated method stub
-            }
-        });
-
-        NotificationCompat.Builder notifyBuilder = getNotificationBuilder();
-        mNotifyManager.notify(NOTIFICATION_ID, notifyBuilder.build());
-        */
     }
 
     public void startTimer() {
@@ -215,6 +195,41 @@ public class NotificationService extends Service {
         };
     }
 
+    private NotificationCompat.Builder getNotificationBuilder(ExConvict exConvict, Double distance) {
+        Intent notificationIntent = new Intent(this, ListOfExConvicts.class);
+        PendingIntent notificationPendingIntent =
+                PendingIntent.getActivity(this, NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(this, PRIMARY_CHANNEL_ID)
+                .setContentTitle("UPOZORENJE!")
+                .setContentText("Na udaljenosti od " + distance + "km  nalazi se bivši osuđenik " + exConvict.getFirstName() + " " + exConvict.getLastName())
+                .setStyle(new NotificationCompat.BigTextStyle().bigText("Na udaljenosti od " + distance + "km nalazi se bivši osuđenik " + exConvict.getFirstName() + " " + exConvict.getLastName()))
+                .setSmallIcon(R.drawable.ic_warning)
+                .setContentIntent(notificationPendingIntent)
+                .setAutoCancel(true) //Setting auto-cancel to true closes the notification when user taps on it.
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setDefaults(NotificationCompat.DEFAULT_ALL);
+        return notifyBuilder;
+    }
+
+    public void createNotificationChannel() {
+        mNotifyManager = (NotificationManager)
+                getSystemService(NOTIFICATION_SERVICE);
+        // Because notification channels are only available in API 26 and higher,
+        // adding a condition to check for the device's API version.
+        if (android.os.Build.VERSION.SDK_INT >=
+                android.os.Build.VERSION_CODES.O) {
+            // The name is displayed under notification Categories in the device's user-visible Settings app.
+            NotificationChannel notificationChannel = new NotificationChannel(PRIMARY_CHANNEL_ID,
+                    "Ex-Convicts Notifications", NotificationManager.IMPORTANCE_HIGH);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.enableVibration(true);
+            notificationChannel.setDescription("Notification from Ex-Convicts Locator");
+            mNotifyManager.createNotificationChannel(notificationChannel);
+        }
+    }
+
+    /*
     private void createNotification() {
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), default_notification_channel_id);
@@ -232,7 +247,7 @@ public class NotificationService extends Service {
         }
         assert mNotificationManager != null;
         mNotificationManager.notify((int) System.currentTimeMillis(), mBuilder.build());
-    }
+    }*/
 
     private double distance(double lat1, double lon1, double lat2, double lon2) {
         double theta = lon1 - lon2;
