@@ -86,7 +86,7 @@ public class tabList extends Fragment {
         TextView textView = (TextView) sv.findViewById(id);
         textView.setTextColor(Color.WHITE);
         textView.setHintTextColor(Color.WHITE);
-        sv.setQueryHint("Pretraga...");
+        sv.setQueryHint("Pretraga po imenu...");
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override

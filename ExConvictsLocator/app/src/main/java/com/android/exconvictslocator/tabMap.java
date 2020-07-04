@@ -114,7 +114,7 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
         MyDatabase db =  MyDatabase.getDatabase(getActivity().getApplication());
         exConvictRepo = ExConvictRepository.getInstance(db.exConvictDao());
         exConvicts = exConvictRepo.getExConvictReports();
-        sv.setQueryHint("Pretraga...");
+        sv.setQueryHint("Pretraga po imenu...");
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override

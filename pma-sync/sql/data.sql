@@ -3,12 +3,12 @@ INSERT INTO ex_convict (id, first_name, last_name, pseudonym, address, date_of_b
 			'Visina 185cm, težina 80 kg, boja očiju: plava, plava kosa vezana u rep, tetovaža u obliku zmaja na vratu, slika džokera na levoj potkolenici, ožiljci na licu, potiljku i gornjem delu leve ruke, beleg na stomaku.',
 			'Muški', 1);	
 INSERT INTO ex_convict (id, first_name, last_name, pseudonym, address, date_of_birth, crime , description, gender, photo) 
-	VALUES (2, 'Marko', 'Marković', 'Markić', 'Bulevar patrijarha Pavla 132, 21 000, Novi Sad', '1965-06-06', 'ubistvo sa predumišljajem, pljačka',
-			'Visina 202cm, težina 130 kg, boja očiju: plava, plava kosa vezana u rep, tetovaža u obliku zmaja na vratu, slika džokera na levoj potkolenici, ožiljci na licu, potiljku i gornjem delu leve ruke, beleg na stomaku.',
+	VALUES (2, 'Nikola', 'Milošević', 'Džoni', 'Bulevar kralja Aleksandra 19, 11 000, Beograd, Srbija', '1968-06-06', 'ubistvo iz nehata, ubistvo sa predumišljajem',
+			'Visina 202cm, težina 102 kg, boja očiju: plava, ćelav, tetovaža u obliku škorpije na bicepsu, slika džokera na levoj potkolenici, ožiljci na licu, potiljku i gornjem delu leve ruke, beleg na stomaku.',
 			'Muški', 2);
 INSERT INTO ex_convict (id, first_name, last_name, pseudonym, address, date_of_birth, crime , description, gender, photo) 
-	VALUES (3, 'Veljko', 'Prelić', 'Veljan', 'Bulevar patrijarha Pavla 14, 21 000, Novi Sad', '1955-05-05', 'ubistvo sa predumišljajem, pljačka',
-			'Visina 185cm, težina 80 kg, boja očiju: plava, plava kosa vezana u rep, tetovaža u obliku zmaja na vratu, slika džokera na levoj potkolenici, ožiljci na licu, potiljku i gornjem delu leve ruke, beleg na stomaku.',
+	VALUES (3, 'Veljko', 'Prelić', 'Veljan', 'Braće Dronjak 26, 21 000, Novi Sad, Srbija', '1985-05-05', 'silovanje, ubistvo iz nehata',
+			'Visina 189cm, težina 90 kg, boja očiju: zelena, crna kratka kosa, tetovaža u obliku zmaja na vratu, slika džokera na levoj potkolenici, ožiljci na licu, potiljku i gornjem delu leve ruke, beleg na stomaku.',
 			'Muški', 3);	
 			
 # Lozinka je "lozinka"
