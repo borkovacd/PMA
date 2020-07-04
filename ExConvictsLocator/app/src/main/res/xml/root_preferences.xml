@@ -11,9 +11,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/location">
-        <SwitchPreferenceCompat
-            app:key="enable_location"
-            app:title="@string/enable_location" />
         <ListPreference
             app:key="distance_radius"
             app:defaultValue="2"

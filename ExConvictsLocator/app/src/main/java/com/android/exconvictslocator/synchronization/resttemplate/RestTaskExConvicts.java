@@ -43,14 +43,18 @@ public class RestTaskExConvicts extends AsyncTask<String, Void, ResponseEntity<E
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
             HttpEntity<String> entity = new HttpEntity<String>(headers);
-            //Log.d("RESTTASK", "Pre exchange metode");
             ResponseEntity<ExConvict[]> response = restTemplate.exchange(url, HttpMethod.GET, entity, ExConvict[].class);
             ExConvict[] exConvicts = response.getBody();
             MyDatabase db =  MyDatabase.getDatabase(context);
             exConvictRepository = ExConvictRepository.getInstance(db.exConvictDao());
             db.clearAllTables();
             for(ExConvict exConvict: exConvicts) {
-                exConvict.setPhoto(R.drawable.img1);
+                if(exConvict.getId() == 1)
+                    exConvict.setPhoto(R.drawable.img1);
+                if(exConvict.getId() == 2)
+                    exConvict.setPhoto(R.drawable.img2);
+                if(exConvict.getId() == 3)
+                    exConvict.setPhoto(R.drawable.img3);
                 exConvictRepository.insertExConvict(exConvict);
             }
             return response;
@@ -64,18 +68,6 @@ public class RestTaskExConvicts extends AsyncTask<String, Void, ResponseEntity<E
     //Ova metoda se izvrsava kada se izvrsi async task
     @Override
     protected void onPostExecute(ResponseEntity<ExConvict[]> result) {
-        //Log.d("RESTTASK", "Posle exchange metode");
-        /*ExConvict[] exConvicts = result.getBody();
-        for (ExConvict tempExconvict : exConvicts) {
-            Log.d("RESTTASK", "Vracen ex-convict sa imenom: " + tempExconvict.getFirstName());
-        }
-        MyDatabase db =  MyDatabase.getDatabase(context);
-        exConvictRepository = ExConvictRepository.getInstance(db.exConvictDao());
-        db.clearAllTables();
-        for(ExConvict exConvict: exConvicts) {
-            exConvict.setPhoto(R.drawable.img1);
-            exConvictRepository.insertExConvict(exConvict);
-        }*/
         Log.d("RESTTASK", "SINHRONIZOVANI BIVSI OSUDJENICI");
         String ip_address = ServerIPConfig.getIp_address();
         final String uri2 = "http://" + ip_address + ":8080/api/users";

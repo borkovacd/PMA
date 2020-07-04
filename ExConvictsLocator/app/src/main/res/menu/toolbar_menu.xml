@@ -13,9 +13,6 @@
         android:title="@string/logout"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/notify"
-        android:title="Pošalji notifikaciju" />
-    <item
         android:id="@+id/settings"
         android:title="@string/settings"
         app:showAsAction="never"/>

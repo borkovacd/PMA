@@ -46,7 +46,7 @@ public class ListOfExConvicts extends MainActivity {
     // The authority for the sync adapter's content provider
     public static final String AUTHORITY = "com.android.exconvictslocator.synchronization.provider";
     // An account type, in the form of a domain name
-    public static final String ACCOUNT_TYPE = "example.com";
+    public static final String ACCOUNT_TYPE = "exconvictslocator.com";
     // The account name
     public static final String ACCOUNT = "dummyaccount";
     // Instance fields

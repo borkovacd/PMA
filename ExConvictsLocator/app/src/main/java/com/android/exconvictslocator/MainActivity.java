@@ -28,16 +28,6 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    // *** NOTIFICATIONS ***
-    // Every notification channel must be associated with an ID that is unique within your package.
-    /*
-    private static final String PRIMARY_CHANNEL_ID = "primary_notification_channel";
-    private NotificationManager mNotifyManager;
-    private static final int NOTIFICATION_ID = 0;
-    */
-
-
-
     // Session Management Class
     SessionManagement sessionManagement;
 
@@ -89,16 +79,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         PreferenceManager.setDefaultValues(this,
                 R.xml.root_preferences, false);
 
-        //createNotificationChannel(); //!!!
     }
 
-
-    /*
-    public void sendNotification() {
-        NotificationCompat.Builder notifyBuilder = getNotificationBuilder();
-        mNotifyManager.notify(NOTIFICATION_ID, notifyBuilder.build());
-    }
-     */
 
     @Override
     protected void onResume() {
@@ -135,42 +117,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     }
-
-    /*
-    public void createNotificationChannel() {
-        mNotifyManager = (NotificationManager)
-                getSystemService(NOTIFICATION_SERVICE);
-        // Because notification channels are only available in API 26 and higher,
-        // adding a condition to check for the device's API version.
-        if (android.os.Build.VERSION.SDK_INT >=
-                android.os.Build.VERSION_CODES.O) {
-            // The name is displayed under notification Categories in the device's user-visible Settings app.
-            NotificationChannel notificationChannel = new NotificationChannel(PRIMARY_CHANNEL_ID,
-                    "Ex-Convicts Notifications", NotificationManager.IMPORTANCE_HIGH);
-            notificationChannel.enableLights(true);
-            notificationChannel.setLightColor(Color.RED);
-            notificationChannel.enableVibration(true);
-            notificationChannel.setDescription("Notification from Ex-Convicts Locator");
-            mNotifyManager.createNotificationChannel(notificationChannel);
-        }
-    }
-    */
-
-    /*
-    private NotificationCompat.Builder getNotificationBuilder() {
-        Intent notificationIntent = new Intent(this, ListOfExConvicts.class);
-        PendingIntent notificationPendingIntent =
-                PendingIntent.getActivity(this, NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(this, PRIMARY_CHANNEL_ID)
-                .setContentTitle("Obavešteni ste!")
-                .setContentText("U vašoj blizini nalazi se bivši osuđenik.")
-                .setSmallIcon(R.drawable.ic_warning)
-                .setContentIntent(notificationPendingIntent)
-                .setAutoCancel(true) //Setting auto-cancel to true closes the notification when user taps on it.
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setDefaults(NotificationCompat.DEFAULT_ALL);
-        return notifyBuilder;
-    }*/
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -221,9 +167,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.logout:
                 sessionManagement.logoutUser();
-                break;
-            case R.id.notify:
-                //sendNotification();
                 break;
             case R.id.settings:
                 Intent i2 = new Intent(MainActivity.this, SettingsActivity.class);
