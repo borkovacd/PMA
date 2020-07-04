@@ -1,5 +1,6 @@
 package com.android.exconvictslocator;
 
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,20 +106,26 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
 
-                System.out.println( "OnClickListener : " +
-                        "radijus 1 : "+ String.valueOf(radius.getSelectedItem())  );
-
-                List<ExConvictReport> filtered = new ArrayList<ExConvictReport>();
+                List<Report> filtered = new ArrayList<Report>();
                 for (ExConvictReport e : exConvicts) {
                     for(Report r : e.getReports()){
-                        String searchCity = citySearch.getText().toString().toLowerCase();
+                        Location startPoint=new Location("locationA");
+                        startPoint.setLatitude(45.2523492);
+                        startPoint.setLongitude(19.7960865);
 
-                            if (r.getCity() != null && r.getCity().toLowerCase().contains(searchCity)) {
-                                filtered.add(e);
+                        Location endPoint=new Location("locationB");
+                        endPoint.setLatitude(r.getLat());
+                        endPoint.setLongitude(r.getLang());
+
+                        double distance =startPoint.distanceTo(endPoint)/1000;
+                        String searchCity = citySearch.getText().toString().toLowerCase();
+                        double radiusValue = Double.parseDouble(String.valueOf(radius.getSelectedItem()));
+                            if (r.getCity() != null && r.getCity().toLowerCase().contains(searchCity) && (distance <= radiusValue) ) {
+                                filtered.add(r);
                             }
-                    }
+                        }
                 }
-                refreshMapMarkers(filtered);
+                refreshMapMarkersReports(filtered);
             }
 
         });
@@ -152,6 +160,20 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
                         mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(r.getLat(),
                                 r.getLang())).title(exr.getExConvict().getFirstName() + " " + exr.getExConvict().getLastName()));
                     }      }
+            }
+        }
+    }
+
+    public void refreshMapMarkersReports(List<Report> filtered){
+        if(mGoogleMap != null){ //prevent crashing if the map doesn't exist yet (eg. on starting activity)
+            mGoogleMap.clear();
+
+            for(Report r : filtered) {
+                        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(r.getLat(),
+                                r.getLang())));
+                 CameraPosition.builder().target(new LatLng(r.getLat(), r.getLang())).zoom(16).bearing(0).build();
+
+
             }
         }
     }

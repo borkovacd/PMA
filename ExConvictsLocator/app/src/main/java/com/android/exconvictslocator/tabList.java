@@ -59,15 +59,17 @@ public class tabList extends Fragment {
         reportRepo = ReportRepository.getInstance(db.reportDao());
         userRepo= UserRepository.getInstance(db.userDao());
         exConvicts= exConvictRepo.getExConvictReports();
-        for(ExConvictReport er :exConvicts){
-            Collections.sort(er.getReports(), new Comparator<Report>(){
+        try{
+        for(ExConvictReport er :exConvicts) {
+            Collections.sort(er.getReports(), new Comparator<Report>() {
                 public int compare(Report r1, Report r2) {
-                   return  (new Date(r2.getDate())).compareTo(new Date(r1.getDate()));
+                    return (new Date(r2.getDate())).compareTo(new Date(r1.getDate()));
                 }
             });
 
-
         }
+        }catch (Exception e){}
+
         sv=(SearchView) rootView.findViewById(R.id.searchView1);
         //db.clearAllTables();
         //populateDbInit();

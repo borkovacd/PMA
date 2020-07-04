@@ -44,6 +44,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
@@ -72,7 +73,7 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
     // Dodatna polja za izvestaj
     int userId;
     int idExConvict, exConvictId ;
-    String city ;
+    String city = "Novi Sad" ;
     double lat, lang ;
 
     // polja sa forme
@@ -176,9 +177,6 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
 
         // Datum prijave
         updatedAt = new Date().toString();
-        // Grad
-        city = "Novi Sad";
-
         // Komentar
         comment = etKomentar.getText().toString();
 
@@ -203,7 +201,7 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
         report.setLocation(newLocation);
         report.setUserId(userId);
         report.setSync(false);
-System.out.println(report);
+System.out.println("REPORT" + report);
        myDatabase.reportDao().insertReport(report);
 
         b.putString("name", nameSurname);
@@ -225,7 +223,7 @@ System.out.println(report);
     public void onLocationChanged(Location location) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Locale.setDefault(new Locale.Builder().setLanguage("sr").setRegion("RS").setScript("Latn").build());
+                Locale.setDefault(new Locale.Builder().setLanguage("sr").setScript("Latn").build());
             };
             Geocoder geocoder = new Geocoder(UpdateLocationActivity.this, Locale.getDefault());
 
@@ -273,11 +271,13 @@ System.out.println(report);
                newLocation = address;
                lang = longitude;
                lat = latitude;
+               city = addresses.get(0).getLocality();
+
            }
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, UpdateLocationActivity.this);
 
         }catch (Exception e) {
-            System.out.println(e.getStackTrace());
+            city = "Novi Sad";
         }
         }
     public void getAddresses() throws JSONException {
@@ -314,8 +314,18 @@ System.out.println(report);
                                     long arg3) {
                 Address selected = (Address) arg0.getAdapter().getItem(arg2);
                 newLocation = selected.getName();
+
                 lang = selected.getLang();
                 lat = selected.getLat();
+
+                Geocoder geocoder = new Geocoder(UpdateLocationActivity.this, Locale.getDefault());
+                try {
+                    List<android.location.Address> addresses = geocoder.getFromLocation(selected.getLat(), selected.getLang(),1);
+                    city = addresses.get(0).getLocality();
+                } catch (IOException e) {
+                   city = "Novi Sad";
+                }
+
             }
         });
     }
