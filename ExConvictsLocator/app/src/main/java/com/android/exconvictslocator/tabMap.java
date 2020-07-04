@@ -9,7 +9,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SearchView;
+import android.widget.Spinner;
 
 import com.android.exconvictslocator.entities.ExConvict;
 import com.android.exconvictslocator.entities.ExConvictReport;
@@ -37,6 +40,10 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
     MapView mapView;
     SearchView sv;
     View mview;
+    Spinner radius;
+    Button searchButton;
+    EditText citySearch;
+
     private List<ExConvictReport> exConvicts;
     private ExConvictRepository exConvictRepo;
 
@@ -59,6 +66,9 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState);
         mapView = (MapView) mview.findViewById(R.id.list_convicts_map);
         sv = mview.findViewById(R.id.searchViewMap);
+        citySearch = mview.findViewById(R.id.et_citySearch);
+        radius = (Spinner)  mview.findViewById(R.id.spinnerRadius);
+        searchButton = (Button) mview.findViewById(R.id.advanceSearchBtn);
         if(mapView != null){
             mapView.onCreate(null);
             mapView.onResume();
@@ -86,6 +96,30 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
                 refreshMapMarkers(filtered);
                 return false;
             }
+        });
+
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                System.out.println( "OnClickListener : " +
+                        "radijus 1 : "+ String.valueOf(radius.getSelectedItem())  );
+
+                List<ExConvictReport> filtered = new ArrayList<ExConvictReport>();
+                for (ExConvictReport e : exConvicts) {
+                    for(Report r : e.getReports()){
+                        String searchCity = citySearch.getText().toString().toLowerCase();
+
+                            if (r.getCity() != null && r.getCity().toLowerCase().contains(searchCity)) {
+                                filtered.add(e);
+                            }
+                    }
+                }
+                refreshMapMarkers(filtered);
+            }
+
         });
     }
 

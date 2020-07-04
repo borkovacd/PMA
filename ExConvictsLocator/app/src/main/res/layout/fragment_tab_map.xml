@@ -19,6 +19,51 @@
             android:layout_width="match_parent"
 
             />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+>
+            <TextView
+                android:id="@+id/tv_citySearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/city"
+                android:textSize="14sp"/>
+
+            <EditText
+                android:id="@+id/et_citySearch"
+                android:background="#F0F3F2"
+                android:layout_width="250dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="40dp"
+                android:ems="10"/>
+            <TextView
+                android:id="@+id/tv_radijus"
+
+                android:text="@string/radius"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent" />
+
+            <Spinner
+                android:id="@+id/spinnerRadius"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@android:drawable/btn_dropdown"
+                android:entries="@array/radius_values"
+                android:prompt="@string/radiusPrompt"/>
+            <Button
+                android:id="@+id/advanceSearchBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/search"
+                >
+
+            </Button>
+        </LinearLayout>
     <com.google.android.gms.maps.MapView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
