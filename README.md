@@ -16,6 +16,8 @@ Funkcionalnosti:
 • Naziv mesta
 <br>
 • Udaljenost od lokacije korisnika
+<br>
+• Ime osuđenika
 
 <br><b>3. Prijavljivanje nove lokacije na kojoj je viđen bivši osuđenik </b>
 <br>
