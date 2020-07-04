@@ -38,19 +38,16 @@ public class NotificationService extends Service {
 
     // *** NOTIFICATIONS ***
     // Every notification channel must be associated with an ID that is unique within your package.
-    private static final String PRIMARY_CHANNEL_ID = "primary_notification_channel";
-    private NotificationManager mNotifyManager;
+    public static final String NOTIFICATION_CHANNEL_ID = "10001";
+    private final static String default_notification_channel_id = "default";
     private static final int NOTIFICATION_ID = 0;
-
-    //public static final String NOTIFICATION_CHANNEL_ID = "10001";
-    //private final static String default_notification_channel_id = "default";
 
     Timer timer;
     TimerTask timerTask;
 
     String NOTIFICATION_TAG = "NOTIFICATION_TAG";
 
-    int Your_X_SECS = 60;
+    int Your_X_SECS = 900;
 
     private MyDatabase myDatabase;
     private List<ExConvict> exConvicts;
@@ -86,7 +83,7 @@ public class NotificationService extends Service {
     @Override
     public void onCreate() {
         Log.d(NOTIFICATION_TAG, "onCreate");
-        createNotificationChannel(); //!!!
+        //createNotificationChannel(); //!!!
     }
 
     @Override
@@ -156,10 +153,9 @@ public class NotificationService extends Service {
 
                     if (distance <= distance_radius) {
                         Log.d(NOTIFICATION_TAG, "BLIZU SU! ");
-                        //createNotification();
-                        NotificationCompat.Builder notifyBuilder = getNotificationBuilder(exConvict, distance);
-                        mNotifyManager.notify(NOTIFICATION_ID, notifyBuilder.build());
-                        //stopSelf(); //valjda ovo nista ne radi, ne brisem dok ne proverim!
+                        createNotification(exConvict, distance);
+                        //NotificationCompat.Builder notifyBuilder = getNotificationBuilder(exConvict, distance);
+                        //mNotifyManager.notify(NOTIFICATION_ID, notifyBuilder.build());
                     } else {
                         Log.d(NOTIFICATION_TAG, "NISU BLIZU ! ");
                     }
@@ -195,6 +191,7 @@ public class NotificationService extends Service {
         };
     }
 
+    /*
     private NotificationCompat.Builder getNotificationBuilder(ExConvict exConvict, Double distance) {
         Intent notificationIntent = new Intent(this, ListOfExConvicts.class);
         PendingIntent notificationPendingIntent =
@@ -228,26 +225,33 @@ public class NotificationService extends Service {
             mNotifyManager.createNotificationChannel(notificationChannel);
         }
     }
+    */
 
-    /*
-    private void createNotification() {
+
+
+    private void createNotification(ExConvict exConvict, Double distance) {
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        Intent notificationIntent = new Intent(this, ListOfExConvicts.class);
+        PendingIntent notificationPendingIntent =
+                PendingIntent.getActivity(this, NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), default_notification_channel_id);
-        mBuilder.setContentTitle("My Notification");
-        mBuilder.setContentText("Notification Listener Service Example");
-        mBuilder.setTicker("Notification Listener Service Example");
+        mBuilder.setTicker("Obaveštenje Lokatora bivših osuđenika"); //If you were to turn on accessibility services in your device (for like visually challenged people), the text passed onto setTicker() will be audibly announced.
+        mBuilder.setContentTitle("UPOZORENJE!");
+        mBuilder.setContentText("Na udaljenosti od " + distance + "km  nalazi se bivši osuđenik " + exConvict.getFirstName() + " " + exConvict.getLastName());
+        mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText("Na udaljenosti od " + distance + "km nalazi se bivši osuđenik " + exConvict.getFirstName() + " " + exConvict.getLastName()));
+        mBuilder.setContentIntent(notificationPendingIntent);
         mBuilder.setSmallIcon(R.drawable.ic_launcher_foreground);
         mBuilder.setAutoCancel(true);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME", importance);
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Ex-convicts Notifications", importance);
             mBuilder.setChannelId(NOTIFICATION_CHANNEL_ID);
             assert mNotificationManager != null;
             mNotificationManager.createNotificationChannel(notificationChannel);
         }
         assert mNotificationManager != null;
         mNotificationManager.notify((int) System.currentTimeMillis(), mBuilder.build());
-    }*/
+    }
 
     private double distance(double lat1, double lon1, double lat2, double lon2) {
         double theta = lon1 - lon2;

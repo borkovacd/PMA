@@ -61,20 +61,15 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
 
     private List<Address> addresses =new ArrayList<Address>();
 
-    // polja sa dobijenim podacima
     String nameSurname = null;
     String nickname = null;
     int img = -1;
-
-    // prazna polja
     String newLocation = null;
     String comment = null ;
     String updatedAt ;
-
-    // Dodatna polja za izvestaj
     int userId;
     int idExConvict, exConvictId ;
-    String city = "Novi Sad" ;
+    String city = "" ;
     double lat, lang ;
 
     // polja sa forme
@@ -144,7 +139,6 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
                 if(newLocation ==null  || newLocation.equals("") || lat == 0 || lang == 0){
                     Toast.makeText(getApplicationContext(), "Uneta lokacija nije ispravna.", Toast.LENGTH_LONG).show();
                 }else {
-
                     openAllLocationsActivity();
                 }
             }
@@ -238,9 +232,9 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
     public void onLocationChanged(Location location) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Locale.setDefault(new Locale.Builder().setLanguage("sr").setScript("Latn").build());
+                Locale.setDefault(new Locale ("en", "US"));
             };
-            Geocoder geocoder = new Geocoder(UpdateLocationActivity.this, Locale.getDefault());
+            Geocoder geocoder = new Geocoder(UpdateLocationActivity.this, new Locale ("en", "US"));
 
             List<android.location.Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             double longitude = addresses.get(0).getLongitude();
@@ -250,6 +244,7 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
             newLocation = address;
             lang = longitude;
             lat = latitude;
+            city = addresses.get(0).getLocality();
           }catch (Exception e) {
             System.out.println(e.getStackTrace());
         }
@@ -277,7 +272,7 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             Location current = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
            if(current != null){
-               Geocoder geocoder = new Geocoder(UpdateLocationActivity.this, Locale.getDefault());
+               Geocoder geocoder = new Geocoder(UpdateLocationActivity.this, new Locale ("en", "US"));
                List<android.location.Address> addresses = geocoder.getFromLocation(current.getLatitude(), current.getLongitude(),1);
                double longitude = addresses.get(0).getLongitude();
                double latitude = addresses.get(0).getLatitude();
@@ -292,7 +287,6 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, UpdateLocationActivity.this);
 
         }catch (Exception e) {
-            city = "Novi Sad";
         }
         }
     public void getAddresses() throws JSONException {
@@ -333,12 +327,12 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
                 lang = selected.getLang();
                 lat = selected.getLat();
 
-                Geocoder geocoder = new Geocoder(UpdateLocationActivity.this, Locale.getDefault());
+                Geocoder geocoder = new Geocoder(UpdateLocationActivity.this, new Locale ("en", "US"));
                 try {
                     List<android.location.Address> addresses = geocoder.getFromLocation(selected.getLat(), selected.getLang(),1);
                     city = addresses.get(0).getLocality();
+
                 } catch (IOException e) {
-                   city = "Novi Sad";
                 }
 
             }
