@@ -104,10 +104,10 @@ public class ListOfExConvicts extends MainActivity {
 
         if (sessionManagement.isLoggedIn()) {
             // Get user data from session
-            HashMap<String, String> user = sessionManagement.getUserDetails();
+            //HashMap<String, String> user = sessionManagement.getUserDetails();
             // Email
-            String email = user.get(SessionManagement.KEY_EMAIL);
-            Toast.makeText(getApplicationContext(), "Ulogovan korisnik: " + email, Toast.LENGTH_LONG).show();
+            //String email = user.get(SessionManagement.KEY_EMAIL);
+            //Toast.makeText(getApplicationContext(), "Ulogovan korisnik: " + email, Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(getApplicationContext(), "Koristite aplikaciju u neprijavljenom režimu. Da biste koristili napredne funkcije aplikacije, ulogujete se na vaš korisnički nalog.", Toast.LENGTH_LONG).show();
         }
