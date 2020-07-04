@@ -13,6 +13,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -98,12 +99,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onStop () {
         super.onStop() ;
         //getApplicationContext().bindService(new Intent(getApplicationContext(), NotificationService.class), ServiceConnection , BIND_AUTO_CREATE);
-        startService( new Intent( this, NotificationService.class));
+        //startService( new Intent( this, NotificationService.class));
     }
+
+
 
     public void sendNotification() {
         NotificationCompat.Builder notifyBuilder = getNotificationBuilder();
         mNotifyManager.notify(NOTIFICATION_ID, notifyBuilder.build());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(sessionManagement.isNotificationServiceStarted()) {
+            Log.d("OLGA", "VREDNOST" + sessionManagement.isNotificationServiceStarted());
+            Log.d("OLGA", "NotificationService je vec pokrenut!");
+            Log.d("OLGA", "*********");
+        } else {
+            Log.d("OLGA", "NotificationService nije pokrenut!");
+            Log.d("OLGA", "VREDNOST" + sessionManagement.isNotificationServiceStarted());
+            Log.d("OLGA", "--------------------");
+            sessionManagement.updateNotificationService(true);
+            startService( new Intent( this, NotificationService.class));
+        }
+
+
     }
 
     public void createNotificationChannel() {

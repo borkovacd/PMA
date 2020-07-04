@@ -37,7 +37,7 @@ public class NotificationService extends Service {
     Timer timer;
     TimerTask timerTask;
     String TAG = "OLGA";
-    int Your_X_SECS = 60;
+    int Your_X_SECS = 180;
 
     private MyDatabase myDatabase;
     private List<ExConvict> exConvicts;
