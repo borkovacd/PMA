@@ -6,6 +6,10 @@ INSERT INTO ex_convict (id, first_name, last_name, pseudonym, address, date_of_b
 	VALUES (2, 'Marko', 'Marković', 'Markić', 'Bulevar patrijarha Pavla 132, 21 000, Novi Sad', '1965-06-06', 'ubistvo sa predumišljajem, pljačka',
 			'Visina 202cm, težina 130 kg, boja očiju: plava, plava kosa vezana u rep, tetovaža u obliku zmaja na vratu, slika džokera na levoj potkolenici, ožiljci na licu, potiljku i gornjem delu leve ruke, beleg na stomaku.',
 			'Muški', 2);
+INSERT INTO ex_convict (id, first_name, last_name, pseudonym, address, date_of_birth, crime , description, gender, photo) 
+	VALUES (3, 'Veljko', 'Prelić', 'Veljan', 'Bulevar patrijarha Pavla 14, 21 000, Novi Sad', '1955-05-05', 'ubistvo sa predumišljajem, pljačka',
+			'Visina 185cm, težina 80 kg, boja očiju: plava, plava kosa vezana u rep, tetovaža u obliku zmaja na vratu, slika džokera na levoj potkolenici, ožiljci na licu, potiljku i gornjem delu leve ruke, beleg na stomaku.',
+			'Muški', 3);	
 			
 # Lozinka je "lozinka"
 INSERT INTO user (id, email, first_name, last_name, password,  is_sync)
