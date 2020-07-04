@@ -52,6 +52,7 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
     EditText citySearch;
     Button expandAdvancedSearchBtn;
     LinearLayout advancedSearchLayout;
+    Button cancelAdvanceSearchBtn;
 
     private List<ExConvictReport> exConvicts;
     private ExConvictRepository exConvictRepo;
@@ -141,12 +142,7 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
                             double radiusValue = Double.parseDouble(String.valueOf(radius.getSelectedItem()));
                             checkDistance =  (distance <= radiusValue);
                         }catch (Exception exc){ }
-
-
                             if (r.getCity() != null && r.getCity().toLowerCase().contains(searchCity) && checkDistance ) {
-
-                                System.out.println("dodajem "+r.getCity().toLowerCase() +" lang = "+r.getLang() + "lat = " + r.getLat());
-
                                 filtered.add(r);
                             }
                         }
@@ -155,6 +151,19 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
             }
 
         });
+        cancelAdvanceSearchBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+              citySearch.setText("");
+              radius.setSelection(0);
+                refreshMapMarkers(exConvicts);
+            }
+
+        });
+
+
     }
 
     @Override
@@ -268,6 +277,6 @@ private void setView(){
     searchButton = (Button) mview.findViewById(R.id.advanceSearchBtn);
     expandAdvancedSearchBtn = (Button) mview.findViewById(R.id.expandAdvancedSearch);
     advancedSearchLayout = (LinearLayout) mview.findViewById(R.id.advancedSearchLayout);
-
+    cancelAdvanceSearchBtn = (Button) mview.findViewById(R.id.cancelAdvanceSearchBtn);
 }
 }

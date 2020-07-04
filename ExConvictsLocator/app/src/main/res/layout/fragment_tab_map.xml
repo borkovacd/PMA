@@ -27,6 +27,9 @@
             android:id="@+id/expandAdvancedSearch"
             android:text="napredna pretraga"
             android:animateLayoutChanges="true"
+            android:background="@color/colorAccent"
+            android:textColor="@android:color/white"
+
             ></Button>
         <LinearLayout
             android:id="@+id/advancedSearchLayout"
@@ -48,6 +51,7 @@
                 android:background="#F0F3F2"
                 android:layout_width="250dp"
                 android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
                 android:ems="10"/>
             <TextView
                 android:id="@+id/tv_radijus"
@@ -65,16 +69,22 @@
 
 
                 <Spinner
+                    android:layout_marginLeft="10dp"
+
                     android:id="@+id/spinnerRadius"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:background="@android:drawable/btn_dropdown"
                     android:entries="@array/radius_values"
-                    android:prompt="@string/radiusPrompt"/>
+                    android:prompt="@string/radiusPrompt"
+
+                    />
             <Button
                 android:id="@+id/advanceSearchBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:background="@color/colorAccent"
                 android:layout_marginLeft="50dp"
                 android:text="@string/search"
                 >
@@ -85,6 +95,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/cancel"
+                android:layout_marginLeft="10dp"
+                android:background="@color/colorAccent"
+                android:textColor="@android:color/white"
+
                 >
 
             </Button>
