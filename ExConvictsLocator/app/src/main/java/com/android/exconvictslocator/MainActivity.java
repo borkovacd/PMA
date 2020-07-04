@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -96,7 +97,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStop () {
         super.onStop() ;
-        startService( new Intent( this, NotificationService. class));
+        //getApplicationContext().bindService(new Intent(getApplicationContext(), NotificationService.class), ServiceConnection , BIND_AUTO_CREATE);
+        startService( new Intent( this, NotificationService.class));
     }
 
     public void sendNotification() {

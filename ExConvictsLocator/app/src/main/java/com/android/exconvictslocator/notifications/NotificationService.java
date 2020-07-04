@@ -1,24 +1,33 @@
 package com.android.exconvictslocator.notifications;
 
+import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
 import com.android.exconvictslocator.MyDatabase;
 import com.android.exconvictslocator.R;
+import com.android.exconvictslocator.UpdateLocationActivity;
 import com.android.exconvictslocator.entities.ExConvict;
 import com.android.exconvictslocator.entities.Report;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -30,15 +39,15 @@ public class NotificationService extends Service {
     String TAG = "OLGA";
     int Your_X_SECS = 60;
 
-    private MyDatabase myDatabase ;
-    private List<ExConvict> exConvicts ;
-    private List<Report> reportsByExConvict ;
-    private  List<Report> reports ;
+    private MyDatabase myDatabase;
+    private List<ExConvict> exConvicts;
+    private List<Report> reportsByExConvict;
+    private List<Report> reports;
 
-    double lat ;
-    double lan ;
+    double lat;
+    double lan;
 
-    double latUser = 45.2523492 ;
+    double latUser = 45.2523492;
     double lanUser = 19.7960865;
 
     @Override
@@ -49,7 +58,7 @@ public class NotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e(TAG, "onStartCommand");
-        myDatabase = MyDatabase.getDatabase(this.getApplication()) ;
+        myDatabase = MyDatabase.getDatabase(this.getApplication());
         super.onStartCommand(intent, flags, startId);
         startTimer();
         //sendNotification();
@@ -76,7 +85,40 @@ public class NotificationService extends Service {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String distance_radius_string = sharedPref.getString("distance_radius", "2");
         int distance_radius = Integer.parseInt(distance_radius_string);
+/*
+        try {
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            Location current = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if(current != null){
+                Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+                List<android.location.Address> addresses = geocoder.getFromLocation(current.getLatitude(), current.getLongitude(),1);
+                double longitude = addresses.get(0).getLongitude();
+                double latitude = addresses.get(0).getLatitude();
+                String address = addresses.get(0).getAddressLine(0);
 
+                lanUser = longitude;
+                Log.d(TAG, "LAN: " + lanUser);
+                latUser = latitude;
+                Log.d(TAG, "LAT: " + latUser);
+            }else{
+                //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, UpdateLocationActivity.this);
+
+
+            }
+        }catch (Exception e) {
+            System.out.println(e.getStackTrace());
+        }
+*/
         exConvicts = myDatabase.exConvictDao().getExConvicts();
         reports = myDatabase.reportDao().findAllReports();
         if (exConvicts.size() != 0) {
@@ -94,12 +136,13 @@ public class NotificationService extends Service {
                 Double distance = distance(lat, lan, latUser, lanUser);
                 Log.d(TAG, "Distance in kilometers " + distance);
 
-                if (distance < distance_radius) {
+                if (distance <= distance_radius) {
                     Log.d(TAG, "BLIZU SU! ");
-
+                    createNotification();
+                    stopSelf();
                 } else {
                     Log.d(TAG, "NISU BLIZU ! ");
-                    createNotification();
+
 
                 }
 
