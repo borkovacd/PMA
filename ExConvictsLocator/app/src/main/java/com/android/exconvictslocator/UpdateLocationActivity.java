@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -123,9 +124,15 @@ public class UpdateLocationActivity extends MainActivity implements LocationList
 
         });
         btnPrijavi.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                openAllLocationsActivity();
+                if(newLocation ==null  || newLocation.equals("") || lat == 0 || lang == 0){
+                    Toast.makeText(getApplicationContext(), "Uneta lokacija nije ispravna.", Toast.LENGTH_LONG).show();
+                }else {
+
+                    openAllLocationsActivity();
+                }
             }
         });
 
@@ -266,11 +273,9 @@ System.out.println(report);
                newLocation = address;
                lang = longitude;
                lat = latitude;
-           }else{
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, UpdateLocationActivity.this);
-
-
            }
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, UpdateLocationActivity.this);
+
         }catch (Exception e) {
             System.out.println(e.getStackTrace());
         }

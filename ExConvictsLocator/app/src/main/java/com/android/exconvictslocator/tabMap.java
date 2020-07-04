@@ -13,6 +13,7 @@ import android.widget.SearchView;
 
 import com.android.exconvictslocator.entities.ExConvict;
 import com.android.exconvictslocator.entities.ExConvictReport;
+import com.android.exconvictslocator.entities.Report;
 import com.android.exconvictslocator.repositories.impl.ExConvictRepository;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -93,16 +94,19 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
         MapsInitializer.initialize(getContext());
         mGoogleMap= googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        CameraPosition camera = CameraPosition.builder().target(new LatLng(45.267136, 19.833549)).zoom(16).bearing(0).build();
 
         for(ExConvictReport exr : exConvicts){
 
             if (exr.getReports() != null &&  exr.getReports().size()> 0 ) {
-                googleMap.addMarker(new MarkerOptions().position(new LatLng(exr.getReports().get(0).getLat(),
-                        exr.getReports().get(0).getLang())).title(exr.getExConvict().getFirstName() + " " + exr.getExConvict().getLastName()));
+                for(Report r : exr.getReports()) {
+                    googleMap.addMarker(new MarkerOptions().position(new LatLng(r.getLat(),
+                            r.getLang())).title(exr.getExConvict().getFirstName() + " " + exr.getExConvict().getLastName()));
+                    camera = CameraPosition.builder().target(new LatLng(r.getLat(), r.getLang())).zoom(10).bearing(0).build();
+                }
             }
         }
 
-        CameraPosition camera = CameraPosition.builder().target(new LatLng(45.267136, 19.833549)).zoom(16).bearing(0).build();
          googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(camera));
     }
     public void refreshMapMarkers(List<ExConvictReport> filtered){
@@ -110,9 +114,10 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
             mGoogleMap.clear();
             for(ExConvictReport exr : filtered){
                 if (exr.getReports() != null &&  exr.getReports().size()> 0 ) {
-                    mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(exr.getReports().get(0).getLat(),
-                            exr.getReports().get(0).getLang())).title(exr.getExConvict().getFirstName() + " " + exr.getExConvict().getLastName()));
-                }
+                    for(Report r : exr.getReports()) {
+                        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(r.getLat(),
+                                r.getLang())).title(exr.getExConvict().getFirstName() + " " + exr.getExConvict().getLastName()));
+                    }      }
             }
         }
     }
