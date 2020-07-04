@@ -1,18 +1,7 @@
 package com.android.exconvictslocator;
 
-import android.Manifest;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -25,8 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 
@@ -115,16 +102,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         boolean enable_notifications = sharedPref.getBoolean("enable_notifications", false);
         Log.d(NOTIFICATION_TAG, "Enable Notification: " + enable_notifications);
+        Intent i = new Intent( this, NotificationService.class);
         if(enable_notifications) { //Korisnik je omugućio slanje notifikacija
             if(sessionManagement.isNotificationServiceStarted()) {
                 Log.d(NOTIFICATION_TAG, "NotificationService je vec pokrenut!");
             } else {
                 Log.d(NOTIFICATION_TAG, "NotificationService nije pokrenut!");
                 sessionManagement.updateNotificationService(true);
-                startService( new Intent( this, NotificationService.class));
+                startService(i);
             }
         } else { //Korisnik je zabranio slanje notifikacija
             if(sessionManagement.isNotificationServiceStarted()) {
+                stopService(i);
+                Log.d(NOTIFICATION_TAG, "NotificationService je zaustavljen!");
+                sessionManagement.updateNotificationService(false);
                 //NotificationService je vec pokrenut
                 //Sada bi ga trebalo zaustaviti kako ne bi dalje stizale notifikacije
             } //Za else granu nema potrebe
