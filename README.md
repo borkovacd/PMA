@@ -71,6 +71,9 @@ offline režimu, sinhronizacija podataka se vrši nakon ponovnog povezivanja na 
 online režimu korisnik može da odredi interval sinhronizacije. Takođe, pri svakoj novoj prijavi
 lokacije od strane korisnika, vrši se sinhronizacija.
 
+<br><b>Demonstracija rada aplikacije </b>
+<br> Youtube video: https://www.youtube.com/watch?v=0DKP7Y1D7es&feature=youtu.be&fbclid=IwAR0iYjgFgmeKzm2NWXgCpvaZaRHAqR-JGsbEw1I_CojZ8Bc7R2ptSDfA7Hw
+
 <b>[Tim 21] <br>
 Olga Savić R1 29/2019 <br>
 Jovana Novaković E2 78/2019 <br>
