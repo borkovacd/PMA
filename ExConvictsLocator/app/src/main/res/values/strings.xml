@@ -81,7 +81,7 @@
     <string name="nadimak_pseudonim">Nadimak/pseudonim</string>
     <string name="detalji">Detalji</string>
 
-    <string name="search">Pretražite...</string>
+    <string name="search">Pretražite</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_convict_locations_maps">Map</string>
 
@@ -111,6 +111,18 @@
     <string name="define_distance_radius_summary">Definišite radijus udaljenosti od lokacije gde je viđen osuđenik za koji želite da primate obaveštenja</string>
     <string name="synchronization">Sinhronizacija</string>
     <string name="define_synhronization_interval">Definišite interval sinhronizacije</string>
+    <string name="radius">Radijus udaljenosti (u km)</string>
+    <string name="city">Grad</string>
+    <string name="radiusPrompt">Izaberite radijus </string>
+    <string name="cancel">Ponisti </string>
 
+    <string-array name="radius_values">
+        <item>-</item>
+        <item>1</item>
+        <item>2</item>
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+    </string-array>
 
 </resources>

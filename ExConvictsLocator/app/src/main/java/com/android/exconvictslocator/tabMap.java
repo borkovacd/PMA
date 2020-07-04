@@ -1,19 +1,40 @@
 package com.android.exconvictslocator;
 
+import android.Manifest;
+import android.animation.Animator;
+import android.animation.ValueAnimator;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
+import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.Spinner;
 
 import com.android.exconvictslocator.entities.ExConvict;
 import com.android.exconvictslocator.entities.ExConvictReport;
 import com.android.exconvictslocator.entities.Report;
+import com.android.exconvictslocator.notifications.NotificationService;
 import com.android.exconvictslocator.repositories.impl.ExConvictRepository;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,9 +44,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -37,8 +60,17 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
     MapView mapView;
     SearchView sv;
     View mview;
+    Spinner radius;
+    Button searchButton;
+    EditText citySearch;
+    Button expandAdvancedSearchBtn;
+    LinearLayout advancedSearchLayout;
+    Button cancelAdvanceSearchBtn;
+    double currentLat;
+    double currentLng;
     private List<ExConvictReport> exConvicts;
     private ExConvictRepository exConvictRepo;
+    LocationManager locationManager;
 
 
     public tabMap() {
@@ -57,8 +89,23 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mapView = (MapView) mview.findViewById(R.id.list_convicts_map);
-        sv = mview.findViewById(R.id.searchViewMap);
+        setView();
+        locateMe();
+
+        advancedSearchLayout.setVisibility(View.GONE);
+        expandAdvancedSearchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (advancedSearchLayout.getVisibility()==View.GONE){
+                    expand();
+                }else{
+                    collapse();
+                }
+            }
+        });
+
+
+
         if(mapView != null){
             mapView.onCreate(null);
             mapView.onResume();
@@ -87,6 +134,53 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
                 return false;
             }
         });
+
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                List<Report> filtered = new ArrayList<Report>();
+                for (ExConvictReport e : exConvicts) {
+                    for(Report r : e.getReports()){
+
+                        Location startPoint=new Location("locationA");
+                        startPoint.setLatitude(currentLat);
+                        startPoint.setLongitude(currentLng);
+
+                        Location endPoint=new Location("locationB");
+                        endPoint.setLatitude(r.getLat());
+                        endPoint.setLongitude(r.getLang());
+
+                        double distance =startPoint.distanceTo(endPoint)/1000;
+                        String searchCity = citySearch.getText().toString().toLowerCase();
+                        boolean checkDistance = true;
+                        try {
+                            double radiusValue = Double.parseDouble(String.valueOf(radius.getSelectedItem()));
+                            checkDistance =  (distance <= radiusValue);
+                        }catch (Exception exc){ }
+                            if (r.getCity() != null && r.getCity().toLowerCase().contains(searchCity) && checkDistance ) {
+                                filtered.add(r);
+                            }
+                        }
+                }
+                refreshMapMarkersReports(filtered);
+            }
+
+        });
+        cancelAdvanceSearchBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+              citySearch.setText("");
+              radius.setSelection(0);
+                refreshMapMarkers(exConvicts);
+            }
+
+        });
+
+
     }
 
     @Override
@@ -119,6 +213,104 @@ public class tabMap extends Fragment implements OnMapReadyCallback {
                                 r.getLang())).title(exr.getExConvict().getFirstName() + " " + exr.getExConvict().getLastName()));
                     }      }
             }
+        }
+    }
+
+    public void refreshMapMarkersReports(List<Report> filtered){
+        if(mGoogleMap != null){ //prevent crashing if the map doesn't exist yet (eg. on starting activity)
+            mGoogleMap.clear();
+
+            for(Report r : filtered) {
+                        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(r.getLat(),
+                                r.getLang())));
+                 CameraPosition.builder().target(new LatLng(r.getLat(), r.getLang())).zoom(16).bearing(0).build();
+
+
+            }
+        }
+    }
+
+    private void expand() {
+        //set Visible
+        advancedSearchLayout.setVisibility(View.VISIBLE);
+        final int widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        final int heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        advancedSearchLayout.measure(widthSpec, heightSpec);
+
+        ValueAnimator mAnimator = slideAnimator(0, advancedSearchLayout.getMeasuredHeight());
+        mAnimator.start();
+    }
+
+    private void collapse() {
+        int finalHeight = advancedSearchLayout.getHeight();
+
+        ValueAnimator mAnimator = slideAnimator(finalHeight, 0);
+        mAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                advancedSearchLayout.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        mAnimator.start();
+    }
+
+    private ValueAnimator slideAnimator(int start, int end) {
+
+        ValueAnimator animator = ValueAnimator.ofInt(start, end);
+
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                //Update Height
+                int value = (Integer) valueAnimator.getAnimatedValue();
+                ViewGroup.LayoutParams layoutParams = advancedSearchLayout.getLayoutParams();
+                layoutParams.height = value;
+                advancedSearchLayout.setLayoutParams(layoutParams);
+            }
+        });
+        return animator;
+    }
+
+private void setView(){
+    mapView = (MapView) mview.findViewById(R.id.list_convicts_map);
+    sv = mview.findViewById(R.id.searchViewMap);
+    citySearch = mview.findViewById(R.id.et_citySearch);
+    radius = (Spinner)  mview.findViewById(R.id.spinnerRadius);
+    searchButton = (Button) mview.findViewById(R.id.advanceSearchBtn);
+    expandAdvancedSearchBtn = (Button) mview.findViewById(R.id.expandAdvancedSearch);
+    advancedSearchLayout = (LinearLayout) mview.findViewById(R.id.advancedSearchLayout);
+    cancelAdvanceSearchBtn = (Button) mview.findViewById(R.id.cancelAdvanceSearchBtn);
+}
+    public void locateMe() {
+
+        try {
+            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            Location current = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (current != null) {
+                    currentLng = current.getLongitude();
+                     currentLat = current.getLatitude();
+            }
+        }catch (Exception e) {
+            currentLng = 19.7960865;
+            currentLat = 45.2523492;
         }
     }
 
