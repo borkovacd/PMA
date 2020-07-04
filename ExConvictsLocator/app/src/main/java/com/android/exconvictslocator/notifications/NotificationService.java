@@ -1,16 +1,24 @@
 package com.android.exconvictslocator.notifications;
 
+import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
@@ -22,6 +30,7 @@ import com.android.exconvictslocator.entities.Report;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -51,8 +60,14 @@ public class NotificationService extends Service {
     double lat;
     double lan;
 
+    /*
     double latUser = 45.2523492;
     double lanUser = 19.7960865;
+    */
+    double latUser = 0.0;
+    double lanUser = 0.0;
+
+    LocationManager locationManager;
 
     @Override
     public IBinder onBind(Intent arg0) {
@@ -90,9 +105,9 @@ public class NotificationService extends Service {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String distance_radius_string = sharedPref.getString("distance_radius", "2");
         int distance_radius = Integer.parseInt(distance_radius_string);
-/*
+
         try {
-            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
@@ -104,26 +119,22 @@ public class NotificationService extends Service {
                 return;
             }
             Location current = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if(current != null){
-                Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-                List<android.location.Address> addresses = geocoder.getFromLocation(current.getLatitude(), current.getLongitude(),1);
+            if (current != null) {
+                Geocoder geocoder = new Geocoder(NotificationService.this, Locale.getDefault());
+                List<android.location.Address> addresses = geocoder.getFromLocation(current.getLatitude(), current.getLongitude(), 1);
                 double longitude = addresses.get(0).getLongitude();
                 double latitude = addresses.get(0).getLatitude();
                 String address = addresses.get(0).getAddressLine(0);
-
                 lanUser = longitude;
-                Log.d(TAG, "LAN: " + lanUser);
+                Log.d(NOTIFICATION_TAG, "Longituda korisnika " + lanUser);
                 latUser = latitude;
-                Log.d(TAG, "LAT: " + latUser);
-            }else{
-                //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, UpdateLocationActivity.this);
-
-
+                Log.d(NOTIFICATION_TAG, "Latituda korisnika " + latUser);
             }
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, (LocationListener) NotificationService.this);
+
         }catch (Exception e) {
             System.out.println(e.getStackTrace());
         }
-*/
         exConvicts = myDatabase.exConvictDao().getExConvicts();
         reports = myDatabase.reportDao().findAllReports();
         if (exConvicts.size() != 0) {
